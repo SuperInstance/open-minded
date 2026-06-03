@@ -1,0 +1,614 @@
+[
+  {
+    "name": "main",
+    "module": "tools.copilot_raw_acp_probe",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/tools/copilot_raw_acp_probe.py",
+    "line_start": 11,
+    "line_end": 106,
+    "signature": "def main() -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "terminate",
+      "start",
+      "put",
+      "Queue",
+      "kill",
+      "get",
+      "add_argument",
+      "send_json",
+      "cwd",
+      "print",
+      "Thread",
+      "Popen",
+      "str",
+      "wait",
+      "rstrip",
+      "parse_args",
+      "elapsed",
+      "wait_for_response",
+      "ArgumentParser",
+      "perf_counter"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "send_json",
+    "module": "tools.copilot_raw_acp_probe",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/tools/copilot_raw_acp_probe.py",
+    "line_start": 109,
+    "line_end": 112,
+    "signature": "def send_json(proc, payload) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "proc",
+      "payload"
+    ],
+    "arg_types": {
+      "proc": "subprocess.Popen",
+      "payload": "dict"
+    },
+    "return_type": "None",
+    "calls": [
+      "dumps",
+      "write",
+      "flush"
+    ],
+    "called_by": [
+      "tools.copilot_raw_acp_probe.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "wait_for_response",
+    "module": "tools.copilot_raw_acp_probe",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/tools/copilot_raw_acp_probe.py",
+    "line_start": 115,
+    "line_end": 144,
+    "signature": "def wait_for_response(events, expected_id, timeout) -> dict",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "events",
+      "expected_id",
+      "timeout"
+    ],
+    "arg_types": {
+      "events": "queue.Queue",
+      "expected_id": "int",
+      "timeout": "float"
+    },
+    "return_type": "dict",
+    "calls": [
+      "max",
+      "loads",
+      "append",
+      "get",
+      "perf_counter",
+      "TimeoutError"
+    ],
+    "called_by": [
+      "tools.copilot_raw_acp_probe.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "elapsed",
+    "module": "tools.copilot_raw_acp_probe",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/tools/copilot_raw_acp_probe.py",
+    "line_start": 33,
+    "line_end": 34,
+    "signature": "def elapsed() -> float",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "float",
+    "calls": [
+      "perf_counter"
+    ],
+    "called_by": [
+      "tools.copilot_raw_acp_probe.main",
+      "tools.copilot_raw_acp_probe.read_stdout",
+      "tools.copilot_raw_acp_probe.read_stderr"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "read_stdout",
+    "module": "tools.copilot_raw_acp_probe",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/tools/copilot_raw_acp_probe.py",
+    "line_start": 36,
+    "line_end": 43,
+    "signature": "def read_stdout() -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "rstrip",
+      "elapsed",
+      "put"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "read_stderr",
+    "module": "tools.copilot_raw_acp_probe",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/tools/copilot_raw_acp_probe.py",
+    "line_start": 45,
+    "line_end": 49,
+    "signature": "def read_stderr() -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "rstrip",
+      "elapsed",
+      "put"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "parse_yaml_files",
+    "module": "doc.specs.#1595 - Suggestions UI.dump-workflows",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/doc/specs/#1595 - Suggestions UI/dump-workflows.py",
+    "line_start": 6,
+    "line_end": 30,
+    "signature": "def parse_yaml_files(tool, directory)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "tool",
+      "directory"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "endswith",
+      "listdir",
+      "print",
+      "append",
+      "join",
+      "safe_load",
+      "exit",
+      "open"
+    ],
+    "called_by": [
+      "doc.specs.#1595 - Suggestions UI.dump-workflows.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "main",
+    "module": "doc.specs.#1595 - Suggestions UI.dump-workflows",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/doc/specs/#1595 - Suggestions UI/dump-workflows.py",
+    "line_start": 32,
+    "line_end": 40,
+    "signature": "def main(directory) -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "directory"
+    ],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "dumps",
+      "listdir",
+      "parse_yaml_files",
+      "print",
+      "append",
+      "join"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "write",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 34,
+    "line_end": 35,
+    "signature": "def write(s)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "s"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "write"
+    ],
+    "called_by": [
+      "tools.copilot_raw_acp_probe.send_json",
+      "src.tools.vttests.common.write",
+      "src.tools.vttests.common.esc",
+      "src.tools.vttests.common.csi",
+      "src.tools.vttests.common.osc",
+      "src.tools.vttests.common.ht"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "esc",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 37,
+    "line_end": 38,
+    "signature": "def esc(seq)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "seq"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "format",
+      "write"
+    ],
+    "called_by": [
+      "src.tools.vttests.common.hts"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "csi",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 40,
+    "line_end": 41,
+    "signature": "def csi(seq)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "seq"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "format",
+      "write"
+    ],
+    "called_by": [
+      "src.tools.vttests.common.cup",
+      "src.tools.vttests.common.margins",
+      "src.tools.vttests.common.clear_all",
+      "src.tools.vttests.common.sgr",
+      "src.tools.vttests.common.sgr_n",
+      "src.tools.vttests.common.tbc",
+      "src.tools.vttests.common.cbt",
+      "src.tools.vttests.common.hts",
+      "src.tools.vttests.common.alt_buffer",
+      "src.tools.vttests.common.main_buffer"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "osc",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 43,
+    "line_end": 44,
+    "signature": "def osc(seq)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "seq"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "format",
+      "write"
+    ],
+    "called_by": [
+      "src.tools.vttests.common.set_color"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "cup",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 46,
+    "line_end": 47,
+    "signature": "def cup(r, c)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "r",
+      "c"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "format",
+      "csi"
+    ],
+    "called_by": [
+      "src.tools.vttests.common.cupxy"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "cupxy",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 49,
+    "line_end": 50,
+    "signature": "def cupxy(x, y)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "x",
+      "y"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "cup"
+    ],
+    "called_by": [
+      "src.tools.vttests.common.clear_all"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "margins",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 52,
+    "line_end": 53,
+    "signature": "def margins(top, bottom)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "top",
+      "bottom"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "format",
+      "csi"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "clear_all",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 55,
+    "line_end": 57,
+    "signature": "def clear_all()",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "csi",
+      "cupxy"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "sgr",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 59,
+    "line_end": 60,
+    "signature": "def sgr(code)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "code"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "format",
+      "csi"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "sgr_n",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 62,
+    "line_end": 74,
+    "signature": "def sgr_n(seq)",
+    "docstring": "Apply multiple SGR (Select Graphic Rendition) parameters.\n\nParameters\n----------\nseq : Iterable of int | None\n    Sequence of numeric SGR codes to emit. If ``None`` (default) an empty\n    sequence is assumed. A mutable default argument must be avoided to\n    prevent unwanted state sharing between calls.",
+    "decorators": [],
+    "arg_names": [
+      "seq"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "join",
+      "format",
+      "csi",
+      "str"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "tbc",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 76,
+    "line_end": 81,
+    "signature": "def tbc()",
+    "docstring": "Clear all tabstops from the terminal.\nTab will take the cursor to the last column, then the first column.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "csi"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "ht",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 83,
+    "line_end": 84,
+    "signature": "def ht()",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "write"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "cbt",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 86,
+    "line_end": 87,
+    "signature": "def cbt()",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "csi"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "hts",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 89,
+    "line_end": 92,
+    "signature": "def hts(column)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "column"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "csi",
+      "esc",
+      "format"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "alt_buffer",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 94,
+    "line_end": 95,
+    "signature": "def alt_buffer()",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "csi"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "main_buffer",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 97,
+    "line_end": 98,
+    "signature": "def main_buffer()",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "csi"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "flush",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 100,
+    "line_end": 102,
+    "signature": "def flush(timeout)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "timeout"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "sleep",
+      "flush"
+    ],
+    "called_by": [
+      "tools.copilot_raw_acp_probe.send_json",
+      "src.tools.vttests.common.flush"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "set_color",
+    "module": "src.tools.vttests.common",
+    "file_path": "/home/phoenix/repos/intelligent-terminal/src/tools/vttests/common.py",
+    "line_start": 104,
+    "line_end": 105,
+    "signature": "def set_color(index, r, g, b)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "index",
+      "r",
+      "g",
+      "b"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "format",
+      "osc"
+    ],
+    "called_by": [],
+    "has_tests": false
+  }
+]

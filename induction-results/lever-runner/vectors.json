@@ -1,0 +1,1770 @@
+[
+  {
+    "function_name": "get_embedder",
+    "module": "init_db",
+    "input_text": "function: get_embedder signature: def get_embedder() called_by: init_db.main, tests.smoke.main, src.lever_runner.benchmark.main Lazy-load the sentence-transformers model so import time stays fast.",
+    "output_text": "calls: SentenceTransformer Lazy-load the sentence-transformers model so import time stays fast. behavior: \"\"\"Lazy-load the sentence-transformers model so import time stays fast.\"\"\"\n    from sentence_transformers import SentenceTransformer\n    return SentenceTransformer(EMBEDDING_MODEL)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "embed",
+    "module": "init_db",
+    "input_text": "function: embed signature: def embed(embedder, phrases) -> List[List[float]] called_by: init_db.build arg phrases: List[str] Encode a batch of phrases. Returns Python lists (LanceDB-friendly).",
+    "output_text": "returns: List[List[float]] calls: tolist, encode Encode a batch of phrases. Returns Python lists (LanceDB-friendly). behavior: \"\"\"Encode a batch of phrases. Returns Python lists (LanceDB-friendly).\"\"\"\n    vectors = embedder.encode(phrases, normalize_embeddings=True, show_progress_bar=False)\n    return [v.tolist() for v in vectors]",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "get_table",
+    "module": "init_db",
+    "input_text": "function: get_table signature: def get_table(db) called_by: init_db.build Open the table, or create it empty if missing and create=True.",
+    "output_text": "calls: create_table, open_table, list_tables, FileNotFoundError Open the table, or create it empty if missing and create=True. behavior: \"\"\"Open the table, or create it empty if missing and create=True.\"\"\"\n    existing = db.list_tables().tables\n    if LANCEDB_TABLE in existing:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "table_is_empty",
+    "module": "init_db",
+    "input_text": "function: table_is_empty signature: def table_is_empty(table) -> bool called_by: init_db.build True if the only row is the schema seed we used to create the table.",
+    "output_text": "returns: bool calls: limit, search, count_rows, to_list, where True if the only row is the schema seed we used to create the table. behavior: \"\"\"True if the only row is the schema seed we used to create the table.\"\"\"\n    if table.count_rows() == 0:\n        return True",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "build",
+    "module": "init_db",
+    "input_text": "function: build signature: def build(embedder) -> int called_by: init_db.main, tests.smoke.main, src.lever_runner.benchmark.main, src.lever_runner.bot.main",
+    "output_text": "returns: int calls: zip, mkdir, search, delete, len, print, embed, connect, to_list, get_table behavior: db = lancedb.connect(LANCEDB_PATH)\n    Path(LANCEDB_PATH).mkdir(parents=True, exist_ok=True)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "init_db",
+    "input_text": "function: main signature: def main() -> int",
+    "output_text": "returns: int calls: build, parse_args, print, ArgumentParser, get_embedder, add_argument behavior: parser = argparse.ArgumentParser(description=\"Initialize the Lever-Runner LanceDB.\")\n    parser.add_argument(\"--reset\", action=\"store_true\",\n                        help=\"Drop the existing table and rebuild from the seed pack. \"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "mock_message",
+    "module": "tests.conftest",
+    "input_text": "function: mock_message signature: def mock_message() -> MagicMock A MagicMock that acts like telegram.Message.",
+    "output_text": "returns: MagicMock calls: AsyncMock, MagicMock A MagicMock that acts like telegram.Message. behavior: \"\"\"A MagicMock that acts like telegram.Message.\"\"\"\n    msg = MagicMock()\n    msg.reply_text = AsyncMock()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "mock_update",
+    "module": "tests.conftest",
+    "input_text": "function: mock_update signature: def mock_update(mock_message) -> MagicMock arg mock_message: MagicMock A MagicMock that acts like telegram.Update.",
+    "output_text": "returns: MagicMock calls: MagicMock A MagicMock that acts like telegram.Update. behavior: \"\"\"A MagicMock that acts like telegram.Update.\"\"\"\n    upd = MagicMock()\n    upd.effective_user.id = 123456789",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "mock_context",
+    "module": "tests.conftest",
+    "input_text": "function: mock_context signature: def mock_context() -> MagicMock A MagicMock that acts like telegram.ext.CallbackContext.\n\nctx.args holds list of command arguments (everything after /cmd).",
+    "output_text": "returns: MagicMock calls: MagicMock A MagicMock that acts like telegram.ext.CallbackContext.\n\nctx.args holds list of command arguments (everything after /cmd). behavior: \"\"\"A MagicMock that acts like telegram.ext.CallbackContext.\n\n    ctx.args holds list of command arguments (everything after /cmd).",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "mock_unauthorized_update",
+    "module": "tests.conftest",
+    "input_text": "function: mock_unauthorized_update signature: def mock_unauthorized_update(mock_message) -> MagicMock arg mock_message: MagicMock An update from a user NOT on the allowlist.",
+    "output_text": "returns: MagicMock calls: MagicMock An update from a user NOT on the allowlist. behavior: \"\"\"An update from a user NOT on the allowlist.\"\"\"\n    upd = MagicMock()\n    upd.effective_user.id = 999999999",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_clean_env",
+    "module": "tests.conftest",
+    "input_text": "function: _clean_env signature: def _clean_env() -> None Reset env vars before each test so tests are hermetic.\n\nWe patch the os.getenv calls that bot.py reads at import time\nby setting/clearing ALLOWED_USER_ID per test, and ensure the\nimportant env vars are clean.",
+    "output_text": "returns: None calls: fixture, pop Reset env vars before each test so tests are hermetic.\n\nWe patch the os.getenv calls that bot.py reads at import time\nby setting/clearing ALLOWED_USER_ID per test, and ensure the\nimportant env vars are clean. behavior: \"\"\"Reset env vars before each test so tests are hermetic.\n\n    We patch the os.getenv calls that bot.py reads at import time",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_fake_rows",
+    "module": "tests.test_export_nail",
+    "input_text": "function: _fake_rows signature: def _fake_rows() called_by: tests.test_export_nail.test_pack_rows_creates_valid_db, tests.test_export_nail.test_export_creates_valid_nail, tests.test_export_nail.test_export_with_min_trust, tests.test_export_nail.test_export_no_embeddings, tests.test_export_nail.test_filter_by_existing_pack Return fake lever-runner rows matching LanceDB schema.",
+    "output_text": "Return fake lever-runner rows matching LanceDB schema. behavior: \"\"\"Return fake lever-runner rows matching LanceDB schema.\"\"\"\n    return [\n        {",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_clamp_confidence",
+    "module": "tests.test_export_nail",
+    "input_text": "function: test_clamp_confidence signature: def test_clamp_confidence(self)",
+    "output_text": "calls: _clamp_confidence behavior: from lever_runner.export_nail import _clamp_confidence\n\n        assert _clamp_confidence(0) == 0.0",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_build_identity",
+    "module": "tests.test_export_nail",
+    "input_text": "function: test_build_identity signature: def test_build_identity(self)",
+    "output_text": "calls: _build_identity behavior: from lever_runner.export_nail import _build_identity\n\n        ident = _build_identity()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_build_config",
+    "module": "tests.test_export_nail",
+    "input_text": "function: test_build_config signature: def test_build_config(self)",
+    "output_text": "calls: _build_config behavior: from lever_runner.export_nail import _build_config\n\n        config = _build_config()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_build_manifest",
+    "module": "tests.test_export_nail",
+    "input_text": "function: test_build_manifest signature: def test_build_manifest(self)",
+    "output_text": "calls: _build_manifest behavior: from lever_runner.export_nail import _build_manifest\n\n        manifest = _build_manifest(42, {\"reflexes_db\": \"abc123\", \"identity_json\": \"def456\", \"config_toml\": \"ghi789\"})",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_pack_rows_creates_valid_db",
+    "module": "tests.test_export_nail",
+    "input_text": "function: test_pack_rows_creates_valid_db signature: def test_pack_rows_creates_valid_db(self)",
+    "output_text": "calls: fetchone, NamedTemporaryFile, write, close, _fake_rows, unlink, abs, execute, connect, _pack_rows_into_sqlite behavior: from lever_runner.export_nail import _pack_rows_into_sqlite\n\n        rows = _fake_rows()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_pack_rows_empty",
+    "module": "tests.test_export_nail",
+    "input_text": "function: test_pack_rows_empty signature: def test_pack_rows_empty(self)",
+    "output_text": "calls: fetchone, NamedTemporaryFile, close, write, unlink, execute, connect, _pack_rows_into_sqlite behavior: from lever_runner.export_nail import _pack_rows_into_sqlite\n\n        db_bytes = _pack_rows_into_sqlite([])",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_export_creates_valid_nail",
+    "module": "tests.test_export_nail",
+    "input_text": "function: test_export_creates_valid_nail signature: def test_export_creates_valid_nail(self, tmp_path)",
+    "output_text": "calls: NamedTemporaryFile, export_nail, _fake_rows, unlink, BytesIO, getnames, patch, write, close, read behavior: from lever_runner.export_nail import export_nail\n\n        output = str(tmp_path / \"test.nail\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_export_with_min_trust",
+    "module": "tests.test_export_nail",
+    "input_text": "function: test_export_with_min_trust signature: def test_export_with_min_trust(self, tmp_path)",
+    "output_text": "calls: str, export_nail, _fake_rows, DataFrame, patch, MagicMock behavior: from lever_runner.export_nail import export_nail\n\n        output = str(tmp_path / \"trusted.nail\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_export_no_embeddings",
+    "module": "tests.test_export_nail",
+    "input_text": "function: test_export_no_embeddings signature: def test_export_no_embeddings(self, tmp_path)",
+    "output_text": "calls: str, export_nail, _fake_rows, DataFrame, patch, MagicMock behavior: from lever_runner.export_nail import export_nail\n\n        output = str(tmp_path / \"no-emb.nail\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_filter_by_existing_pack",
+    "module": "tests.test_export_nail",
+    "input_text": "function: test_filter_by_existing_pack signature: def test_filter_by_existing_pack(self, tmp_path)",
+    "output_text": "calls: str, _filter_by_pack, len, _fake_rows, mkdir, write_text, patch, MagicMock behavior: from lever_runner.export_nail import _filter_by_pack\n\n        # Create a temp pack file",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_blake3_hex_produces_hex_string",
+    "module": "tests.test_export_nail",
+    "input_text": "function: test_blake3_hex_produces_hex_string signature: def test_blake3_hex_produces_hex_string(self)",
+    "output_text": "calls: _blake3_hex, isinstance, len, int behavior: from lever_runner.export_nail import _blake3_hex\n\n        h = _blake3_hex(b\"hello\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_simple_placeholder",
+    "module": "tests.test_params",
+    "input_text": "function: test_simple_placeholder signature: def test_simple_placeholder(self)",
+    "output_text": "calls: has_placeholders behavior: assert has_placeholders(\"show logs for {{container}}\") is True",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_multiple_placeholders",
+    "module": "tests.test_params",
+    "input_text": "function: test_multiple_placeholders signature: def test_multiple_placeholders(self)",
+    "output_text": "calls: has_placeholders behavior: assert has_placeholders(\"copy {{src}} to {{dst}}\") is True",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_no_placeholders",
+    "module": "tests.test_params",
+    "input_text": "function: test_no_placeholders signature: def test_no_placeholders(self)",
+    "output_text": "calls: has_placeholders behavior: assert has_placeholders(\"show disk usage\") is False",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_empty_string",
+    "module": "tests.test_params",
+    "input_text": "function: test_empty_string signature: def test_empty_string(self)",
+    "output_text": "calls: has_placeholders behavior: assert has_placeholders(\"\") is False",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_partial_braces",
+    "module": "tests.test_params",
+    "input_text": "function: test_partial_braces signature: def test_partial_braces(self)",
+    "output_text": "calls: has_placeholders behavior: assert has_placeholders(\"show {container}\") is False",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_command_with_placeholder",
+    "module": "tests.test_params",
+    "input_text": "function: test_command_with_placeholder signature: def test_command_with_placeholder(self)",
+    "output_text": "calls: has_placeholders behavior: assert has_placeholders(\"docker logs --tail 100 {{container}}\") is True",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_single_placeholder",
+    "module": "tests.test_params",
+    "input_text": "function: test_single_placeholder signature: def test_single_placeholder(self)",
+    "output_text": "calls: get_placeholders behavior: assert get_placeholders(\"show logs for {{container}}\") == [\"container\"]",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_multiple_unique",
+    "module": "tests.test_params",
+    "input_text": "function: test_multiple_unique signature: def test_multiple_unique(self)",
+    "output_text": "calls: get_placeholders behavior: assert get_placeholders(\"copy {{src}} to {{dst}}\") == [\"src\", \"dst\"]",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_duplicate_placeholder",
+    "module": "tests.test_params",
+    "input_text": "function: test_duplicate_placeholder signature: def test_duplicate_placeholder(self)",
+    "output_text": "calls: get_placeholders behavior: # Same placeholder used twice in command\n        result = get_placeholders(\"ping {{host}} and traceroute {{host}}\")\n        assert result == [\"host\"]  # deduplicated",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_no_placeholders",
+    "module": "tests.test_params",
+    "input_text": "function: test_no_placeholders signature: def test_no_placeholders(self)",
+    "output_text": "calls: get_placeholders behavior: assert get_placeholders(\"show disk usage\") == []",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_order_preserved",
+    "module": "tests.test_params",
+    "input_text": "function: test_order_preserved signature: def test_order_preserved(self)",
+    "output_text": "calls: get_placeholders behavior: result = get_placeholders(\"{{service}} on port {{port}} in {{namespace}}\")\n        assert result == [\"service\", \"port\", \"namespace\"]",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_strip_single",
+    "module": "tests.test_params",
+    "input_text": "function: test_strip_single signature: def test_strip_single(self)",
+    "output_text": "calls: strip_placeholders behavior: assert strip_placeholders(\"show logs for {{container}}\") == \"show logs for\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_strip_multiple",
+    "module": "tests.test_params",
+    "input_text": "function: test_strip_multiple signature: def test_strip_multiple(self)",
+    "output_text": "calls: strip_placeholders behavior: # strip_placeholders removes {{}} but leaves surrounding spaces,\n        # then .strip() cleans the edges. Middle spaces remain.\n        result = strip_placeholders(\"restart {{service}} on {{host}}\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_no_placeholders",
+    "module": "tests.test_params",
+    "input_text": "function: test_no_placeholders signature: def test_no_placeholders(self)",
+    "output_text": "calls: strip_placeholders behavior: assert strip_placeholders(\"show disk usage\") == \"show disk usage\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_only_placeholder",
+    "module": "tests.test_params",
+    "input_text": "function: test_only_placeholder signature: def test_only_placeholder(self)",
+    "output_text": "calls: strip_placeholders behavior: result = strip_placeholders(\"{{container}}\")\n        assert result == \"\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_alphanumeric",
+    "module": "tests.test_params",
+    "input_text": "function: test_alphanumeric signature: def test_alphanumeric(self)",
+    "output_text": "calls: validate_arg behavior: assert validate_arg(\"container\", \"nginx\") == \"nginx\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_with_dashes",
+    "module": "tests.test_params",
+    "input_text": "function: test_with_dashes signature: def test_with_dashes(self)",
+    "output_text": "calls: validate_arg behavior: assert validate_arg(\"container\", \"my-container\") == \"my-container\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_with_underscores",
+    "module": "tests.test_params",
+    "input_text": "function: test_with_underscores signature: def test_with_underscores(self)",
+    "output_text": "calls: validate_arg behavior: assert validate_arg(\"service\", \"my_service\") == \"my_service\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_with_dots",
+    "module": "tests.test_params",
+    "input_text": "function: test_with_dots signature: def test_with_dots(self)",
+    "output_text": "calls: validate_arg behavior: assert validate_arg(\"file\", \"config.yaml\") == \"config.yaml\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_with_numbers",
+    "module": "tests.test_params",
+    "input_text": "function: test_with_numbers signature: def test_with_numbers(self)",
+    "output_text": "calls: validate_arg behavior: assert validate_arg(\"port\", \"8080\") == \"8080\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_complex_name",
+    "module": "tests.test_params",
+    "input_text": "function: test_complex_name signature: def test_complex_name(self)",
+    "output_text": "calls: validate_arg behavior: # Dots, dashes, underscores, alphanumerics are all OK\n        assert validate_arg(\"image\", \"my-image.v2\") == \"my-image.v2\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_reject_semicolon",
+    "module": "tests.test_params",
+    "input_text": "function: test_reject_semicolon signature: def test_reject_semicolon(self)",
+    "output_text": "calls: raises, validate_arg behavior: with pytest.raises(ValueError, match=\"disallowed characters\"):\n            validate_arg(\"cmd\", \"nginx; rm -rf /\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_reject_pipe",
+    "module": "tests.test_params",
+    "input_text": "function: test_reject_pipe signature: def test_reject_pipe(self)",
+    "output_text": "calls: raises, validate_arg behavior: with pytest.raises(ValueError, match=\"disallowed characters\"):\n            validate_arg(\"cmd\", \"nginx | cat /etc/passwd\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_reject_backticks",
+    "module": "tests.test_params",
+    "input_text": "function: test_reject_backticks signature: def test_reject_backticks(self)",
+    "output_text": "calls: raises, validate_arg behavior: with pytest.raises(ValueError, match=\"disallowed characters\"):\n            validate_arg(\"cmd\", \"`rm -rf /`\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_reject_dollar_sign",
+    "module": "tests.test_params",
+    "input_text": "function: test_reject_dollar_sign signature: def test_reject_dollar_sign(self)",
+    "output_text": "calls: raises, validate_arg behavior: with pytest.raises(ValueError, match=\"disallowed characters\"):\n            validate_arg(\"cmd\", \"$(whoami)\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_reject_ampersand",
+    "module": "tests.test_params",
+    "input_text": "function: test_reject_ampersand signature: def test_reject_ampersand(self)",
+    "output_text": "calls: raises, validate_arg behavior: with pytest.raises(ValueError, match=\"disallowed characters\"):\n            validate_arg(\"cmd\", \"nginx && echo pwned\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_reject_spaces",
+    "module": "tests.test_params",
+    "input_text": "function: test_reject_spaces signature: def test_reject_spaces(self)",
+    "output_text": "calls: raises, validate_arg behavior: with pytest.raises(ValueError, match=\"disallowed characters\"):\n            validate_arg(\"cmd\", \"nginx status\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_reject_empty",
+    "module": "tests.test_params",
+    "input_text": "function: test_reject_empty signature: def test_reject_empty(self)",
+    "output_text": "calls: raises, validate_arg behavior: with pytest.raises(ValueError, match=\"must not be empty\"):\n            validate_arg(\"container\", \"\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_reject_redirect",
+    "module": "tests.test_params",
+    "input_text": "function: test_reject_redirect signature: def test_reject_redirect(self)",
+    "output_text": "calls: raises, validate_arg behavior: with pytest.raises(ValueError, match=\"disallowed characters\"):\n            validate_arg(\"file\", \"> /etc/passwd\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_single_arg",
+    "module": "tests.test_params",
+    "input_text": "function: test_single_arg signature: def test_single_arg(self)",
+    "output_text": "calls: substitute_args behavior: result = substitute_args(\"docker logs {{container}}\", {\"container\": \"nginx\"})\n        assert result == \"docker logs nginx\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_multiple_args",
+    "module": "tests.test_params",
+    "input_text": "function: test_multiple_args signature: def test_multiple_args(self)",
+    "output_text": "calls: substitute_args behavior: result = substitute_args(\n            \"systemctl restart {{service}}\",\n            {\"service\": \"sshd\"},",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_arg_in_middle",
+    "module": "tests.test_params",
+    "input_text": "function: test_arg_in_middle signature: def test_arg_in_middle(self)",
+    "output_text": "calls: substitute_args behavior: result = substitute_args(\n            \"docker logs --tail 100 {{container}}\",\n            {\"container\": \"redis\"},",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_missing_arg_raises",
+    "module": "tests.test_params",
+    "input_text": "function: test_missing_arg_raises signature: def test_missing_arg_raises(self)",
+    "output_text": "calls: substitute_args, raises behavior: with pytest.raises(ValueError, match=\"missing arguments: container\"):\n            substitute_args(\"docker logs {{container}}\", {})",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_invalid_arg_raises",
+    "module": "tests.test_params",
+    "input_text": "function: test_invalid_arg_raises signature: def test_invalid_arg_raises(self)",
+    "output_text": "calls: substitute_args, raises behavior: with pytest.raises(ValueError, match=\"disallowed characters\"):\n            substitute_args(\"docker logs {{container}}\", {\"container\": \"nx; rm -rf /\"})",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_no_placeholders_no_args",
+    "module": "tests.test_params",
+    "input_text": "function: test_no_placeholders_no_args signature: def test_no_placeholders_no_args(self)",
+    "output_text": "calls: substitute_args behavior: result = substitute_args(\"df -h\", {})\n        assert result == \"df -h\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_extra_args_ignored",
+    "module": "tests.test_params",
+    "input_text": "function: test_extra_args_ignored signature: def test_extra_args_ignored(self)",
+    "output_text": "calls: substitute_args behavior: # Extra args in the dict that aren't in the template are fine\n        result = substitute_args(\"docker logs {{container}}\", {\"container\": \"nginx\", \"extra\": \"val\"})\n        assert result == \"docker logs nginx\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_single_arg",
+    "module": "tests.test_params",
+    "input_text": "function: test_single_arg signature: def test_single_arg(self)",
+    "output_text": "calls: _parse_args behavior: assert _parse_args(\"container=nginx\") == {\"container\": \"nginx\"}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_multiple_args",
+    "module": "tests.test_params",
+    "input_text": "function: test_multiple_args signature: def test_multiple_args(self)",
+    "output_text": "calls: _parse_args behavior: result = _parse_args(\"src=file.txt\\ndst=server:/tmp/\")\n        assert result == {\"src\": \"file.txt\", \"dst\": \"server:/tmp/\"}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_empty_input",
+    "module": "tests.test_params",
+    "input_text": "function: test_empty_input signature: def test_empty_input(self)",
+    "output_text": "calls: _parse_args behavior: assert _parse_args(\"\") == {}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_no_equals",
+    "module": "tests.test_params",
+    "input_text": "function: test_no_equals signature: def test_no_equals(self)",
+    "output_text": "calls: _parse_args behavior: assert _parse_args(\"no args here\") == {}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_with_spaces",
+    "module": "tests.test_params",
+    "input_text": "function: test_with_spaces signature: def test_with_spaces(self)",
+    "output_text": "calls: _parse_args behavior: assert _parse_args(\"  container = nginx  \") == {\"container\": \"nginx\"}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_invalid_key_rejected",
+    "module": "tests.test_params",
+    "input_text": "function: test_invalid_key_rejected signature: def test_invalid_key_rejected(self)",
+    "output_text": "calls: _parse_args behavior: # Keys with spaces aren't valid identifiers\n        assert _parse_args(\"my key=value\") == {}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_empty_value_rejected",
+    "module": "tests.test_params",
+    "input_text": "function: test_empty_value_rejected signature: def test_empty_value_rejected(self)",
+    "output_text": "calls: _parse_args behavior: assert _parse_args(\"container=\") == {}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_phrase_only",
+    "module": "tests.test_params",
+    "input_text": "function: test_phrase_only signature: def test_phrase_only(self)",
+    "output_text": "calls: _normalize behavior: phrase, args = _normalize(\"show disk usage\")\n        assert phrase == \"show disk usage\"\n        assert args == {}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_phrase_with_args",
+    "module": "tests.test_params",
+    "input_text": "function: test_phrase_with_args signature: def test_phrase_with_args(self)",
+    "output_text": "calls: _normalize behavior: phrase, args = _normalize(\"show logs for container\\ncontainer=nginx\")\n        assert phrase == \"show logs for container\"\n        assert args == {\"container\": \"nginx\"}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_multiline_args",
+    "module": "tests.test_params",
+    "input_text": "function: test_multiline_args signature: def test_multiline_args(self)",
+    "output_text": "calls: _normalize behavior: phrase, args = _normalize(\"restart service\\nservice=sshd\\nhost=web01\")\n        assert phrase == \"restart service\"\n        assert args == {\"service\": \"sshd\", \"host\": \"web01\"}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_empty_input",
+    "module": "tests.test_params",
+    "input_text": "function: test_empty_input signature: def test_empty_input(self)",
+    "output_text": "calls: _normalize behavior: phrase, args = _normalize(\"\")\n        assert phrase == \"\"\n        assert args == {}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_strips_punctuation",
+    "module": "tests.test_params",
+    "input_text": "function: test_strips_punctuation signature: def test_strips_punctuation(self)",
+    "output_text": "calls: _normalize behavior: phrase, args = _normalize('\"show disk usage\"')\n        assert phrase == \"show disk usage\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_truncates_long_phrase",
+    "module": "tests.test_params",
+    "input_text": "function: test_truncates_long_phrase signature: def test_truncates_long_phrase(self)",
+    "output_text": "calls: join, len, split, _normalize behavior: phrase, args = _normalize(\" \".join([\"word\"] * 15))\n        assert len(phrase.split()) == 8",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_default_args_is_none",
+    "module": "tests.test_params",
+    "input_text": "function: test_default_args_is_none signature: def test_default_args_is_none(self)",
+    "output_text": "calls: Extraction behavior: e = Extraction(phrase=\"test\", tokens_in=0, tokens_out=0, backend=\"test\")\n        assert e.args is None",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_args_stored",
+    "module": "tests.test_params",
+    "input_text": "function: test_args_stored signature: def test_args_stored(self)",
+    "output_text": "calls: Extraction behavior: e = Extraction(\n            phrase=\"show logs for container\",\n            tokens_in=10,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_passthrough_extracts_phrase",
+    "module": "tests.test_params",
+    "input_text": "function: test_passthrough_extracts_phrase signature: def test_passthrough_extracts_phrase(self)",
+    "output_text": "calls: extract behavior: from src.lever_runner.intent_extractor import extract\n\n        result = extract(\"show disk usage\", backend=\"passthrough\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_passthrough_empty_request",
+    "module": "tests.test_params",
+    "input_text": "function: test_passthrough_empty_request signature: def test_passthrough_empty_request(self)",
+    "output_text": "calls: extract behavior: from src.lever_runner.intent_extractor import extract\n\n        result = extract(\"\", backend=\"passthrough\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_template_command_with_args",
+    "module": "tests.test_params",
+    "input_text": "function: test_template_command_with_args signature: def test_template_command_with_args(self) When a template command is matched and args are extracted,\nthe command should be substituted before execution.",
+    "output_text": "calls: Match, patch, do, assert_called_once_with, MagicMock When a template command is matched and args are extracted,\nthe command should be substituted before execution. behavior: \"\"\"When a template command is matched and args are extracted,\n        the command should be substituted before execution.\"\"\"\n        from src.lever_runner.orchestrator import do",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_template_command_without_args_fails",
+    "module": "tests.test_params",
+    "input_text": "function: test_template_command_without_args_fails signature: def test_template_command_without_args_fails(self) When a template command is matched but no args are extracted,\nthe result should be an error.",
+    "output_text": "calls: patch, Match, do, MagicMock When a template command is matched but no args are extracted,\nthe result should be an error. behavior: \"\"\"When a template command is matched but no args are extracted,\n        the result should be an error.\"\"\"\n        from src.lever_runner.orchestrator import do",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_non_template_command_unchanged",
+    "module": "tests.test_params",
+    "input_text": "function: test_non_template_command_unchanged signature: def test_non_template_command_unchanged(self) When a non-template command is matched, it should run as-is.",
+    "output_text": "calls: Match, patch, do, assert_called_once_with, MagicMock When a non-template command is matched, it should run as-is. behavior: \"\"\"When a non-template command is matched, it should run as-is.\"\"\"\n        from src.lever_runner.orchestrator import do\n        from src.lever_runner.store import Match",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_template_with_invalid_arg_rejected",
+    "module": "tests.test_params",
+    "input_text": "function: test_template_with_invalid_arg_rejected signature: def test_template_with_invalid_arg_rejected(self) When extracted args contain shell metacharacters, the substitution\nshould fail with a validation error.",
+    "output_text": "calls: patch, Match, do, MagicMock When extracted args contain shell metacharacters, the substitution\nshould fail with a validation error. behavior: \"\"\"When extracted args contain shell metacharacters, the substitution\n        should fail with a validation error.\"\"\"\n        from src.lever_runner.orchestrator import do",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_teach_stores_template",
+    "module": "tests.test_params",
+    "input_text": "function: test_teach_stores_template signature: def test_teach_stores_template(self)",
+    "output_text": "calls: teach, assert_called_once_with, MagicMock behavior: from src.lever_runner.orchestrator import teach\n\n        mock_store = MagicMock()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_teach_regular_command",
+    "module": "tests.test_params",
+    "input_text": "function: test_teach_regular_command signature: def test_teach_regular_command(self)",
+    "output_text": "calls: teach, assert_called_once_with, MagicMock behavior: from src.lever_runner.orchestrator import teach\n\n        mock_store = MagicMock()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_authorized",
+    "module": "tests.test_bot",
+    "input_text": "function: _authorized signature: def _authorized() -> Iterator[None] Context manager: patch ALLOWED_USER_ID to match mock_update.",
+    "output_text": "returns: Iterator[None] calls: object Context manager: patch ALLOWED_USER_ID to match mock_update. behavior: \"\"\"Context manager: patch ALLOWED_USER_ID to match mock_update.\"\"\"\n    with patch.object(bot_mod, \"ALLOWED_USER_ID\", _MOCK_USER_ID):\n        yield",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_authorized_when_allowlist_empty",
+    "module": "tests.test_bot",
+    "input_text": "function: test_authorized_when_allowlist_empty signature: def test_authorized_when_allowlist_empty(self) When ALLOWED_USER_ID is unset, everyone is authorized.",
+    "output_text": "calls: object, _is_authorized, MagicMock When ALLOWED_USER_ID is unset, everyone is authorized. behavior: \"\"\"When ALLOWED_USER_ID is unset, everyone is authorized.\"\"\"\n        with patch.object(bot_mod, \"ALLOWED_USER_ID\", \"\"):\n            msg = MagicMock()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_authorized_when_allowlist_matches",
+    "module": "tests.test_bot",
+    "input_text": "function: test_authorized_when_allowlist_matches signature: def test_authorized_when_allowlist_matches(self) When ALLOWED_USER_ID is set and user id matches.",
+    "output_text": "calls: object, _is_authorized, MagicMock When ALLOWED_USER_ID is set and user id matches. behavior: \"\"\"When ALLOWED_USER_ID is set and user id matches.\"\"\"\n        with patch.object(bot_mod, \"ALLOWED_USER_ID\", \"42\"):\n            msg = MagicMock()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_authorized_when_allowlist_does_not_match",
+    "module": "tests.test_bot",
+    "input_text": "function: test_authorized_when_allowlist_does_not_match signature: def test_authorized_when_allowlist_does_not_match(self) When ALLOWED_USER_ID is set and user id differs.",
+    "output_text": "calls: object, _is_authorized, MagicMock When ALLOWED_USER_ID is set and user id differs. behavior: \"\"\"When ALLOWED_USER_ID is set and user id differs.\"\"\"\n        with patch.object(bot_mod, \"ALLOWED_USER_ID\", \"42\"):\n            msg = MagicMock()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_authorized_handles_none_user",
+    "module": "tests.test_bot",
+    "input_text": "function: test_authorized_handles_none_user signature: def test_authorized_handles_none_user(self) When effective_user is None (e.g. channel post), deny.",
+    "output_text": "calls: _is_authorized, MagicMock When effective_user is None (e.g. channel post), deny. behavior: \"\"\"When effective_user is None (e.g. channel post), deny.\"\"\"\n        msg = MagicMock()\n        msg.effective_user = None",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_deny_sends_expected_message",
+    "module": "tests.test_bot",
+    "input_text": "function: test_deny_sends_expected_message signature: def test_deny_sends_expected_message(self) _deny sends the correct 'not authorized' reply.",
+    "output_text": "calls: AsyncMock, run, _deny, assert_awaited_once_with, MagicMock _deny sends the correct 'not authorized' reply. behavior: \"\"\"_deny sends the correct 'not authorized' reply.\"\"\"\n        msg = MagicMock()\n        msg.message = MagicMock()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_format_do_basic_success",
+    "module": "tests.test_bot",
+    "input_text": "function: test_format_do_basic_success signature: def test_format_do_basic_success(self)",
+    "output_text": "calls: _format_do, FakeDoResult behavior: result = FakeDoResult()\n        output = bot_mod._format_do(result)\n        assert \"intent: 'test command'\" in output",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_format_do_failed_command",
+    "module": "tests.test_bot",
+    "input_text": "function: test_format_do_failed_command signature: def test_format_do_failed_command(self)",
+    "output_text": "calls: _format_do, FakeRunResult, FakeDoResult behavior: result = FakeDoResult(\n            ok=False,\n            run=FakeRunResult(ok=False, exit_code=1, stdout=\"\", stderr=\"error: not found\"),",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_format_do_no_match",
+    "module": "tests.test_bot",
+    "input_text": "function: test_format_do_no_match signature: def test_format_do_no_match(self)",
+    "output_text": "calls: _format_do, FakeDoResult behavior: result = FakeDoResult(\n            match=None, run=None, no_match=True, error=\"(no matching command in the table)\"\n        )",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_format_do_error_without_match",
+    "module": "tests.test_bot",
+    "input_text": "function: test_format_do_error_without_match signature: def test_format_do_error_without_match(self)",
+    "output_text": "calls: _format_do, FakeDoResult behavior: result = FakeDoResult(match=None, run=None, error=\"LLM returned an empty intent phrase\")\n        output = bot_mod._format_do(result)\n        assert \"error: LLM returned an empty intent phrase\" in output",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_format_do_no_run",
+    "module": "tests.test_bot",
+    "input_text": "function: test_format_do_no_run signature: def test_format_do_no_run(self) When result.run is None, skip stdout/stderr section.",
+    "output_text": "calls: _format_do, FakeDoResult When result.run is None, skip stdout/stderr section. behavior: \"\"\"When result.run is None, skip stdout/stderr section.\"\"\"\n        result = FakeDoResult(run=None)\n        output = bot_mod._format_do(result)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_format_do_stdout_truncation",
+    "module": "tests.test_bot",
+    "input_text": "function: test_format_do_stdout_truncation signature: def test_format_do_stdout_truncation(self) stdout > 3000 chars gets truncated.",
+    "output_text": "calls: _format_do, FakeRunResult, FakeDoResult stdout > 3000 chars gets truncated. behavior: \"\"\"stdout > 3000 chars gets truncated.\"\"\"\n        long_out = \"line\\n\" * 2000\n        result = FakeDoResult(run=FakeRunResult(stdout=long_out))",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_format_do_stderr_truncation",
+    "module": "tests.test_bot",
+    "input_text": "function: test_format_do_stderr_truncation signature: def test_format_do_stderr_truncation(self) stderr > 1500 chars gets truncated.",
+    "output_text": "calls: _format_do, FakeRunResult, FakeDoResult stderr > 1500 chars gets truncated. behavior: \"\"\"stderr > 1500 chars gets truncated.\"\"\"\n        long_err = \"error\\n\" * 500\n        result = FakeDoResult(",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_format_do_empty_stdout_stderr",
+    "module": "tests.test_bot",
+    "input_text": "function: test_format_do_empty_stdout_stderr signature: def test_format_do_empty_stdout_stderr(self) No stdout/stderr sections when both are empty.",
+    "output_text": "calls: _format_do, FakeRunResult, FakeDoResult No stdout/stderr sections when both are empty. behavior: \"\"\"No stdout/stderr sections when both are empty.\"\"\"\n        result = FakeDoResult(run=FakeRunResult(stdout=\"\", stderr=\"\"))\n        output = bot_mod._format_do(result)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_main_raises_without_token",
+    "module": "tests.test_bot",
+    "input_text": "function: test_main_raises_without_token signature: def test_main_raises_without_token(self) main() raises SystemExit when TELEGRAM_BOT_TOKEN is empty.",
+    "output_text": "calls: object, main, raises, patch main() raises SystemExit when TELEGRAM_BOT_TOKEN is empty. behavior: \"\"\"main() raises SystemExit when TELEGRAM_BOT_TOKEN is empty.\"\"\"\n        with (\n            patch.object(bot_mod, \"TELEGRAM_BOT_TOKEN\", \"\"),",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_main_starts_with_token",
+    "module": "tests.test_bot",
+    "input_text": "function: test_main_starts_with_token signature: def test_main_starts_with_token(self) main() builds the Application and returns 0.",
+    "output_text": "calls: main, object, assert_called_once_with, assert_called_once, MagicMock main() builds the Application and returns 0. behavior: \"\"\"main() builds the Application and returns 0.\"\"\"\n        mock_app = MagicMock()\n        mock_builder = MagicMock()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_main_registers_handlers",
+    "module": "tests.test_bot",
+    "input_text": "function: test_main_registers_handlers signature: def test_main_registers_handlers(self) main() registers 8 handlers via add_handler.",
+    "output_text": "calls: object, main, MagicMock main() registers 8 handlers via add_handler. behavior: \"\"\"main() registers 8 handlers via add_handler.\"\"\"\n        mock_app = MagicMock()\n        mock_builder = MagicMock()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_healthz_success_shape",
+    "module": "tests.test_bot",
+    "input_text": "function: test_healthz_success_shape signature: def test_healthz_success_shape(self)",
+    "output_text": "calls: isinstance behavior: from src.lever_runner.__init__ import __version__\n\n        payload = {",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_healthz_failure_shape",
+    "module": "tests.test_bot",
+    "input_text": "function: test_healthz_failure_shape signature: def test_healthz_failure_shape(self)",
+    "output_text": "behavior: payload = {\n            \"ok\": False,\n            \"version\": \"0.3.1\",",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_do_result_has_token_counts",
+    "module": "tests.test_bot",
+    "input_text": "function: test_do_result_has_token_counts signature: def test_do_result_has_token_counts(self)",
+    "output_text": "calls: FakeDoResult behavior: result = FakeDoResult(tokens_in=100, tokens_out=25)\n        assert result.tokens_in == 100\n        assert result.tokens_out == 25",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "total_tokens",
+    "module": "tests.helpers",
+    "input_text": "function: total_tokens signature: def total_tokens(self) -> int",
+    "output_text": "returns: int behavior: return self.tokens_in + self.tokens_out",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "check",
+    "module": "tests.smoke",
+    "input_text": "function: check signature: def check(name, cond, detail) -> None called_by: tests.smoke.main arg name: str arg cond: bool arg detail: str",
+    "output_text": "returns: None calls: append, print behavior: tag = PASS if cond else FAIL\n    print(f\"  [{tag}] {name}\" + (f\"   {detail}\" if detail else \"\"))\n    results.append((name, cond, detail))",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "tests.smoke",
+    "input_text": "function: main signature: def main() -> int",
+    "output_text": "returns: int calls: teach, items, endswith, run_until_complete, cmd_teach, _is_authorized, build, glob, count, unlink behavior: print(f\"smoke: using temp dir {TMP_DIR}\")\n\n    # 0. Seed a fresh table.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "run",
+    "module": "tests.smoke",
+    "input_text": "function: run signature: def run(coro) called_by: tests.test_bot.test_deny_sends_expected_message, tests.smoke.main, tests.smoke.run",
+    "output_text": "calls: get_event_loop, run, run_until_complete behavior: return asyncio.get_event_loop().run_until_complete(coro) if False else asyncio.run(coro)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "tests.smoke",
+    "input_text": "function: __init__ signature: def __init__(self, path)",
+    "output_text": "calls: BytesIO behavior: self.path = path\n            self.wfile = io.BytesIO()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "send_response",
+    "module": "tests.smoke",
+    "input_text": "function: send_response signature: def send_response(self, c) called_by: src.lever_runner.http_api._send, src.lever_runner.http_api._serve_file",
+    "output_text": "",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "send_header",
+    "module": "tests.smoke",
+    "input_text": "function: send_header signature: def send_header(self, k, v) called_by: src.lever_runner.http_api._send, src.lever_runner.http_api._serve_file",
+    "output_text": "",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "end_headers",
+    "module": "tests.smoke",
+    "input_text": "function: end_headers signature: def end_headers(self) called_by: src.lever_runner.http_api._send, src.lever_runner.http_api._serve_file",
+    "output_text": "",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "setup",
+    "module": "tests.smoke",
+    "input_text": "function: setup signature: def setup(self)",
+    "output_text": "",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "raise_for_status",
+    "module": "tests.smoke",
+    "input_text": "function: raise_for_status signature: def raise_for_status(self) called_by: src.lever_runner.doctor.check_llm_backend, src.lever_runner.auto_promote.rewrite_with_remote_llm, src.lever_runner.intent_extractor._post_minimax_or_openai, src.lever_runner.intent_extractor._post_ollama",
+    "output_text": "",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "json",
+    "module": "tests.smoke",
+    "input_text": "function: json signature: def json(self) called_by: src.lever_runner.auto_promote.rewrite_with_remote_llm, src.lever_runner.intent_extractor._post_minimax_or_openai, src.lever_runner.intent_extractor._post_ollama",
+    "output_text": "behavior: return {\"choices\": [{\"message\": {\"content\": \"show disk usage\"}}]}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "post",
+    "module": "tests.smoke",
+    "input_text": "function: post signature: def post(self, url) called_by: src.lever_runner.auto_promote.rewrite_with_remote_llm, src.lever_runner.intent_extractor._post_minimax_or_openai, src.lever_runner.intent_extractor._post_ollama",
+    "output_text": "calls: get, replace, len, _StubResp behavior: # Validate the bearer token isn't a concatenation\n            auth = kw[\"headers\"].get(\"authorization\", \"\")\n            token = auth.replace(\"Bearer \", \"\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "tests.smoke",
+    "input_text": "function: __init__ signature: def __init__(self, text)",
+    "output_text": "behavior: self.text = text\n            self.replies = []",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "tests.smoke",
+    "input_text": "function: __init__ signature: def __init__(self, uid)",
+    "output_text": "",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "tests.smoke",
+    "input_text": "function: __init__ signature: def __init__(self, cid)",
+    "output_text": "",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "tests.smoke",
+    "input_text": "function: __init__ signature: def __init__(self, uid, chat_id, text, args)",
+    "output_text": "calls: _Msg, _User, _Chat behavior: self.effective_user = _User(uid)\n            self.effective_chat = _Chat(chat_id)\n            self.message = _Msg(text)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "args",
+    "module": "tests.smoke",
+    "input_text": "function: args signature: def args(self)",
+    "output_text": "",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "tests.smoke",
+    "input_text": "function: __init__ signature: def __init__(self, args)",
+    "output_text": "calls: list behavior: self.args = list(args)\n            self.user_data = {}\n            self.chat_data = {}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "src.lever_runner.cli",
+    "input_text": "function: main signature: def main(argv) -> int arg argv: list[str]",
+    "output_text": "returns: int calls: strip, teach, list, startswith, len, float, rstrip, print, do, append behavior: # Manual arg parse: support --chat-id in front or after the subcommand.\n    chat_id = \"default\"\n    args = list(argv)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_rotate_if_needed",
+    "module": "src.lever_runner.token_logger",
+    "input_text": "function: _rotate_if_needed signature: def _rotate_if_needed(path, max_bytes, backup_count) -> None called_by: tests.smoke.main, src.lever_runner.token_logger._append arg path: str arg max_bytes: int arg backup_count: int If `path` exceeds max_bytes, rotate: name -> name.1, .1 -> .2, etc.\n\nKeeps at most `backup_count` backups; the oldest is dropped.\nThis is a small reimplementation of RotatingFileHandler to avoid\nholding a long-lived file handle inside a stateless helper.",
+    "output_text": "returns: None calls: exists, stat, Path, unlink, with_suffix, range, replace If `path` exceeds max_bytes, rotate: name -> name.1, .1 -> .2, etc.\n\nKeeps at most `backup_count` backups; the oldest is dropped.\nThis is a small reimplementation of RotatingFileHandler to avoid\nholding a long-lived file handle inside a stateless helper. behavior: \"\"\"If `path` exceeds max_bytes, rotate: name -> name.1, .1 -> .2, etc.\n\n    Keeps at most `backup_count` backups; the oldest is dropped.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_append",
+    "module": "src.lever_runner.token_logger",
+    "input_text": "function: _append signature: def _append(path, record) -> None called_by: src.lever_runner.token_logger.log_intent, src.lever_runner.token_logger.log_embed arg path: str arg record: dict",
+    "output_text": "returns: None calls: dumps, _rotate_if_needed, write, Path, mkdir, open behavior: p = Path(path)\n    p.parent.mkdir(parents=True, exist_ok=True)\n    _rotate_if_needed(path, LOG_MAX_BYTES, LOG_BACKUP_COUNT)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "log_intent",
+    "module": "src.lever_runner.token_logger",
+    "input_text": "function: log_intent signature: def log_intent(backend, tokens_in, tokens_out, source) -> None called_by: src.lever_runner.orchestrator.do arg backend: str arg tokens_in: int arg tokens_out: int arg source: str",
+    "output_text": "returns: None calls: _append, time, TokenRecord, asdict behavior: _append(\n        LOG_PATH,\n        asdict(",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "log_embed",
+    "module": "src.lever_runner.token_logger",
+    "input_text": "function: log_embed signature: def log_embed(text, source) -> None called_by: src.lever_runner.orchestrator.do arg text: str arg source: str Approximate embedding token accounting. all-MiniLM-L6-v2 tokenizes\nwith a WordPiece vocab; we count ~1 token per 0.75 words.",
+    "output_text": "returns: None calls: split, len, max, _append, time, int Approximate embedding token accounting. all-MiniLM-L6-v2 tokenizes\nwith a WordPiece vocab; we count ~1 token per 0.75 words. behavior: \"\"\"Approximate embedding token accounting. all-MiniLM-L6-v2 tokenizes\n    with a WordPiece vocab; we count ~1 token per 0.75 words.\"\"\"\n    n_words = max(1, len(text.split()))",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_check",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: _check signature: def _check(label, ok, detail, level) -> tuple[str, str, str] called_by: src.lever_runner.doctor.check_python, src.lever_runner.doctor.check_lancedb, src.lever_runner.doctor.check_telegram_token, src.lever_runner.doctor.check_allowed_user, src.lever_runner.doctor.check_db_path, src.lever_runner.doctor.check_sandbox_path, src.lever_runner.doctor.check_llm_backend, src.lever_runner.doctor.check_fallbacks, src.lever_runner.doctor.check_log_dir, src.lever_runner.doctor.check_disk_space arg label: str arg ok: bool arg detail: str arg level: str",
+    "output_text": "returns: tuple[str, str, str] behavior: return (label, level, detail if not ok else (detail or \"ok\"))",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "check_python",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: check_python signature: def check_python() -> tuple[str, str, str]",
+    "output_text": "returns: tuple[str, str, str] calls: _check behavior: v = sys.version_info\n    if v.major == 3 and v.minor >= 10:\n        return _check(\"python version\", True, f\"{v.major}.{v.minor}.{v.micro}\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "check_lancedb",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: check_lancedb signature: def check_lancedb() -> tuple[str, str, str]",
+    "output_text": "returns: tuple[str, str, str] calls: _check, str behavior: try:\n        import lancedb  # noqa: F401\n        return _check(\"lancedb importable\", True)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "check_telegram_token",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: check_telegram_token signature: def check_telegram_token() -> tuple[str, str, str]",
+    "output_text": "returns: tuple[str, str, str] calls: strip, len, _check, getenv, split behavior: tok = os.getenv(\"TELEGRAM_BOT_TOKEN\", \"\").strip()\n    if not tok:\n        return _check(\"TELEGRAM_BOT_TOKEN\", False, \"unset\", FAIL)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "check_allowed_user",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: check_allowed_user signature: def check_allowed_user() -> tuple[str, str, str]",
+    "output_text": "returns: tuple[str, str, str] calls: strip, getenv, _check, isdigit behavior: uid = os.getenv(\"ALLOWED_USER_ID\", \"\").strip()\n    if not uid:\n        return _check(\"ALLOWED_USER_ID\", True, \"unset (bot is open to anyone)\", WARN)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "check_db_path",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: check_db_path signature: def check_db_path() -> tuple[str, str, str]",
+    "output_text": "returns: tuple[str, str, str] calls: exists, _check, getenv, sorted, isabs, list_tables, connect, abspath behavior: path = os.getenv(\"LANCEDB_PATH\", \"./data/lever.lancedb\")\n    if not os.path.isabs(path):\n        path = os.path.abspath(path)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "check_sandbox_path",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: check_sandbox_path signature: def check_sandbox_path() -> tuple[str, str, str]",
+    "output_text": "returns: tuple[str, str, str] calls: remove, write, _check, getenv, join, makedirs, isabs, open behavior: path = os.getenv(\"SANDBOX_ROOT\", \"/tmp/lever-runner\")\n    if not os.path.isabs(path):\n        return _check(\"sandbox root\", False, f\"{path} (must be absolute)\", FAIL)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "check_llm_backend",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: check_llm_backend signature: def check_llm_backend() -> tuple[str, str, str] Check the configured LLM backend is reachable.",
+    "output_text": "returns: tuple[str, str, str] calls: strip, lower, raise_for_status, _check, getenv, get Check the configured LLM backend is reachable. behavior: \"\"\"Check the configured LLM backend is reachable.\"\"\"\n    backend = os.getenv(\"LLM_BACKEND\", \"passthrough\").strip().lower()\n    if backend == \"passthrough\":",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "check_fallbacks",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: check_fallbacks signature: def check_fallbacks() -> tuple[str, str, str]",
+    "output_text": "returns: tuple[str, str, str] calls: strip, lower, _check, getenv, split behavior: chain = os.getenv(\"LLM_FALLBACKS\", \"deepinfra\").strip()\n    if not chain:\n        return _check(\"LLM_FALLBACKS\", True, \"unset (no fallbacks; passthrough is the last resort)\", WARN)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "check_log_dir",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: check_log_dir signature: def check_log_dir() -> tuple[str, str, str] Verify the directory holding token_usage.jsonl and embed_usage.jsonl is writable.",
+    "output_text": "returns: tuple[str, str, str] calls: remove, write, dirname, _check, getenv, join, makedirs, isabs, abspath, open Verify the directory holding token_usage.jsonl and embed_usage.jsonl is writable. behavior: \"\"\"Verify the directory holding token_usage.jsonl and embed_usage.jsonl is writable.\"\"\"\n    tok_path = os.getenv(\"TOKEN_LOG_PATH\", \"./data/token_usage.jsonl\")\n    embed_path = os.getenv(\"EMBED_LOG_PATH\", \"./data/embed_usage.jsonl\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "check_disk_space",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: check_disk_space signature: def check_disk_space() -> tuple[str, str, str] Warn if less than 1GB free on the lancedb path's filesystem.",
+    "output_text": "returns: tuple[str, str, str] calls: exists, dirname, _check, getenv, isabs, disk_usage, abspath Warn if less than 1GB free on the lancedb path's filesystem. behavior: \"\"\"Warn if less than 1GB free on the lancedb path's filesystem.\"\"\"\n    import shutil\n    db = os.getenv(\"LANCEDB_PATH\", \"./data/lever.lancedb\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "check_smoke",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: check_smoke signature: def check_smoke() -> tuple[str, str, str] Run a tiny in-process smoke (no LLM call) to verify DB+embedder wiring.",
+    "output_text": "returns: tuple[str, str, str] calls: _check, str, count, CommandStore Run a tiny in-process smoke (no LLM call) to verify DB+embedder wiring. behavior: \"\"\"Run a tiny in-process smoke (no LLM call) to verify DB+embedder wiring.\"\"\"\n    try:\n        from .store import CommandStore",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "src.lever_runner.doctor",
+    "input_text": "function: main signature: def main() -> int",
+    "output_text": "returns: int calls: gmtime, print, strftime, fn, load_dotenv behavior: load_dotenv()\n    print(f\"lever-runner doctor @ {time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime())}\\n\")\n    fails = 0",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_is_loopback",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: _is_loopback signature: def _is_loopback(host) -> bool called_by: src.lever_runner.http_api.main arg host: str True if the bind address is loopback (127.0.0.0/8 or ::1).",
+    "output_text": "returns: bool calls: startswith True if the bind address is loopback (127.0.0.0/8 or ::1). behavior: \"\"\"True if the bind address is loopback (127.0.0.0/8 or ::1).\"\"\"\n    if host in (\"127.0.0.1\", \"localhost\", \"::1\"):\n        return True",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_check_token",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: _check_token signature: def _check_token(headers) -> bool called_by: src.lever_runner.http_api.do_GET, src.lever_runner.http_api.do_POST True if the request's Authorization header matches HTTP_API_TOKEN.",
+    "output_text": "returns: bool calls: strip, lower, startswith, get, split True if the request's Authorization header matches HTTP_API_TOKEN. behavior: \"\"\"True if the request's Authorization header matches HTTP_API_TOKEN.\"\"\"\n    if not API_TOKEN:\n        return True  # no token configured = open",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_chat_id_from",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: _chat_id_from signature: def _chat_id_from(data, qs) -> str called_by: src.lever_runner.http_api.do_GET, src.lever_runner.http_api.do_POST arg data: dict arg qs: dict chat_id may come from JSON body or query string. Default = 'default'.",
+    "output_text": "returns: str calls: get, str chat_id may come from JSON body or query string. Default = 'default'. behavior: \"\"\"chat_id may come from JSON body or query string. Default = 'default'.\"\"\"\n    cid = data.get(\"chat_id\") or qs.get(\"chat_id\", [None])[0]\n    return str(cid) if cid else \"default\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: main signature: def main() -> int",
+    "output_text": "returns: int calls: _is_loopback, ThreadingHTTPServer, print, serve_forever behavior: if not _is_loopback(BIND) and not API_TOKEN:\n        print(\n            f\"refusing to start: HTTP_BIND={BIND!r} is non-loopback and HTTP_API_TOKEN is unset. \"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: __init__ signature: def __init__(self, rpm) arg rpm: int",
+    "output_text": "behavior: self._rpm = rpm\n        self._windows: dict[str, _Window] = {}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_get_or_create",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: _get_or_create signature: def _get_or_create(self, key) -> _Window called_by: src.lever_runner.http_api.allow arg key: str",
+    "output_text": "returns: _Window calls: _Window, get, time behavior: now = time.time()\n        w = self._windows.get(key)\n        if w is None or now >= w.reset_at:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "allow",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: allow signature: def allow(self, key) -> tuple[bool, int, float] called_by: src.lever_runner.http_api._rate_limit arg key: str Return (allowed, requests_remaining_in_window, window_reset_at).",
+    "output_text": "returns: tuple[bool, int, float] calls: _get_or_create Return (allowed, requests_remaining_in_window, window_reset_at). behavior: \"\"\"Return (allowed, requests_remaining_in_window, window_reset_at).\"\"\"\n        w = self._get_or_create(key)\n        if w.count >= self._rpm:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "cleanup",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: cleanup signature: def cleanup(self) -> None called_by: src.lever_runner.http_api.do_GET, src.lever_runner.http_api.do_POST Evict stale windows to prevent unbounded memory growth.",
+    "output_text": "returns: None calls: time, items Evict stale windows to prevent unbounded memory growth. behavior: \"\"\"Evict stale windows to prevent unbounded memory growth.\"\"\"\n        now = time.time()\n        stale = [k for k, w in self._windows.items() if now >= w.reset_at]",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_send",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: _send signature: def _send(self, code, payload) -> None called_by: src.lever_runner.http_api._rate_limit, src.lever_runner.http_api.do_GET, src.lever_runner.http_api.do_POST arg code: int arg payload: dict",
+    "output_text": "returns: None calls: dumps, str, items, len, write, send_header, send_response, encode, end_headers behavior: body = json.dumps(payload).encode()\n        self.send_response(code)\n        self.send_header(\"content-type\", \"application/json\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_rate_limit",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: _rate_limit signature: def _rate_limit(self) -> bool called_by: src.lever_runner.http_api.do_GET, src.lever_runner.http_api.do_POST Apply per-IP rate limit. Returns False if the request should be\nrejected (and already sent a 429 response).",
+    "output_text": "returns: bool calls: str, allow, _send, time, int Apply per-IP rate limit. Returns False if the request should be\nrejected (and already sent a 429 response). behavior: \"\"\"Apply per-IP rate limit. Returns False if the request should be\n        rejected (and already sent a 429 response).\"\"\"\n        client = self.client_address[0] if self.client_address else \"unknown\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_read_body",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: _read_body signature: def _read_body(self, max_bytes) -> bytes called_by: src.lever_runner.http_api.do_POST arg max_bytes: int Read the request body, enforcing a size limit. Returns empty\nbytes if the content-length is missing or exceeds the limit.",
+    "output_text": "returns: bytes calls: get, read, int Read the request body, enforcing a size limit. Returns empty\nbytes if the content-length is missing or exceeds the limit. behavior: \"\"\"Read the request body, enforcing a size limit. Returns empty\n        bytes if the content-length is missing or exceeds the limit.\"\"\"\n        try:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_check_token",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: _check_token signature: def _check_token(self) -> bool called_by: src.lever_runner.http_api.do_GET, src.lever_runner.http_api.do_POST Return True if the request is authorized (no token configured\nor bearer token matches). If this returns False, the caller must\nstill send the 401 \u2014 we just check.",
+    "output_text": "returns: bool calls: strip, lower, startswith, get, split Return True if the request is authorized (no token configured\nor bearer token matches). If this returns False, the caller must\nstill send the 401 \u2014 we just check. behavior: \"\"\"Return True if the request is authorized (no token configured\n        or bearer token matches). If this returns False, the caller must\n        still send the 401 \u2014 we just check.\"\"\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_serve_file",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: _serve_file signature: def _serve_file(self, rel_path) -> None called_by: src.lever_runner.http_api.do_GET arg rel_path: str Serve a static file from the web/ directory.",
+    "output_text": "returns: None calls: getsize, startswith, str, write, send_header, read, dirname, send_response, splitext, join Serve a static file from the web/ directory. behavior: \"\"\"Serve a static file from the web/ directory.\"\"\"\n        web_dir = os.path.join(os.path.dirname(__file__), \"..\", \"..\", \"web\")\n        web_dir = os.path.normpath(os.path.abspath(web_dir))",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "do_GET",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: do_GET signature: def do_GET(self) called_by: tests.smoke.main",
+    "output_text": "calls: urlparse, sorted, _serve_file, _check_token, parse_qs, list, len, open_table, _send, cleanup behavior: if not self._rate_limit():\n            _limiter.cleanup()\n            return",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "do_POST",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: do_POST signature: def do_POST(self)",
+    "output_text": "calls: strip, teach, _rate_limit, _send, loads, do, urlparse, cleanup, _check_token, _read_body behavior: if not self._rate_limit():\n            _limiter.cleanup()\n            return",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "log_message",
+    "module": "src.lever_runner.http_api",
+    "input_text": "function: log_message signature: def log_message(self, format)",
+    "output_text": "behavior: return",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_new_session",
+    "module": "src.lever_runner.executor",
+    "input_text": "function: _new_session signature: def _new_session() -> Path called_by: src.lever_runner.executor.run_command",
+    "output_text": "returns: Path calls: mkdir, uuid4 behavior: SANDBOX_ROOT.mkdir(parents=True, exist_ok=True)\n    sid = uuid.uuid4().hex[:12]\n    p = SANDBOX_ROOT / sid",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_sandbox_env",
+    "module": "src.lever_runner.executor",
+    "input_text": "function: _sandbox_env signature: def _sandbox_env() -> dict[str, str] called_by: src.lever_runner.executor.run_command Build a minimal environment with only whitelisted variables.",
+    "output_text": "returns: dict[str, str] Build a minimal environment with only whitelisted variables. behavior: \"\"\"Build a minimal environment with only whitelisted variables.\"\"\"\n    env = {}\n    for key in _ENV_WHITELIST:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_set_resource_limits",
+    "module": "src.lever_runner.executor",
+    "input_text": "function: _set_resource_limits signature: def _set_resource_limits() -> None Apply RLIMIT_CPU and RLIMIT_AS to the child process (called via preexec_fn).",
+    "output_text": "returns: None calls: setrlimit Apply RLIMIT_CPU and RLIMIT_AS to the child process (called via preexec_fn). behavior: \"\"\"Apply RLIMIT_CPU and RLIMIT_AS to the child process (called via preexec_fn).\"\"\"\n    # CPU time limit (seconds) \u2014 gives ~2x wall-clock as buffer\n    if MAX_CPU_SEC > 0:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_validate_command",
+    "module": "src.lever_runner.executor",
+    "input_text": "function: _validate_command signature: def _validate_command(command) -> str | None called_by: src.lever_runner.executor.run_command arg command: str Check a command string for shell-injection metacharacters.\n\nReturns an error message if validation fails, or None if the command\nlooks safe. We split the command on whitespace and check each token\n(after the first, which is the program name) against a safe-character\nwhitelist.",
+    "output_text": "returns: str | None calls: match, split, search Check a command string for shell-injection metacharacters.\n\nReturns an error message if validation fails, or None if the command\nlooks safe. We split the command on whitespace and check each token\n(after the first, which is the program name) against a safe-character\nwhitelist. behavior: \"\"\"Check a command string for shell-injection metacharacters.\n\n    Returns an error message if validation fails, or None if the command",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "run_command",
+    "module": "src.lever_runner.executor",
+    "input_text": "function: run_command signature: def run_command(command) -> RunResult called_by: src.lever_runner.orchestrator.do arg command: str Execute a shell command string in a fresh sandbox dir with\nrestricted env, resource limits, and process-group kill on timeout.",
+    "output_text": "returns: RunResult calls: str, RunResult, _validate_command, Popen, _sandbox_env, communicate, killpg, kill, rmtree, time Execute a shell command string in a fresh sandbox dir with\nrestricted env, resource limits, and process-group kill on timeout. behavior: \"\"\"Execute a shell command string in a fresh sandbox dir with\n    restricted env, resource limits, and process-group kill on timeout.\"\"\"\n    # Validate command for shell-injection metacharacters before execution.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "src.lever_runner.__main__",
+    "input_text": "function: main signature: def main() Entry point for `lever-runner` console script.",
+    "output_text": "calls: _cli_main, SystemExit Entry point for `lever-runner` console script. behavior: \"\"\"Entry point for `lever-runner` console script.\"\"\"\n    raise SystemExit(_cli_main(sys.argv[1:]))",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_blake3_hex",
+    "module": "src.lever_runner.export_nail",
+    "input_text": "function: _blake3_hex signature: def _blake3_hex(data) -> str called_by: tests.test_export_nail.test_blake3_hex_produces_hex_string, src.lever_runner.export_nail.export_nail arg data: bytes Compute a BLAKE3-compatible hash.\n\nFalls back to blake2b if the blake3 package is not installed.\nPincherOS uses BLAKE3, but for cross-compatibility we accept either.",
+    "output_text": "returns: str calls: blake3, hexdigest, blake2b Compute a BLAKE3-compatible hash.\n\nFalls back to blake2b if the blake3 package is not installed.\nPincherOS uses BLAKE3, but for cross-compatibility we accept either. behavior: \"\"\"Compute a BLAKE3-compatible hash.\n\n    Falls back to blake2b if the blake3 package is not installed.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_reflexes_schema_sql",
+    "module": "src.lever_runner.export_nail",
+    "input_text": "function: _reflexes_schema_sql signature: def _reflexes_schema_sql() -> str called_by: src.lever_runner.export_nail._pack_rows_into_sqlite Return the CREATE TABLE SQL matching pincherOS's reflexes table.",
+    "output_text": "returns: str Return the CREATE TABLE SQL matching pincherOS's reflexes table. behavior: \"\"\"Return the CREATE TABLE SQL matching pincherOS's reflexes table.\"\"\"\n    return \"\"\"\n    CREATE TABLE IF NOT EXISTS reflexes (",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_pack_rows_into_sqlite",
+    "module": "src.lever_runner.export_nail",
+    "input_text": "function: _pack_rows_into_sqlite signature: def _pack_rows_into_sqlite(rows) -> bytes called_by: tests.test_export_nail.test_pack_rows_creates_valid_db, tests.test_export_nail.test_pack_rows_empty, src.lever_runner.export_nail.export_nail arg rows: list[dict] Create an in-memory SQLite DB with the pincherOS reflexes schema,\ninserting lever-runner command rows. Returns the raw DB bytes.",
+    "output_text": "returns: bytes calls: float, unlink, pack, serialize, isoformat, get, now, len, close, read Create an in-memory SQLite DB with the pincherOS reflexes schema,\ninserting lever-runner command rows. Returns the raw DB bytes. behavior: \"\"\"Create an in-memory SQLite DB with the pincherOS reflexes schema,\n    inserting lever-runner command rows. Returns the raw DB bytes.\"\"\"\n    conn = sqlite3.connect(\":memory:\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_clamp_confidence",
+    "module": "src.lever_runner.export_nail",
+    "input_text": "function: _clamp_confidence signature: def _clamp_confidence(trust_score) -> float called_by: tests.test_export_nail.test_clamp_confidence, src.lever_runner.export_nail._pack_rows_into_sqlite arg trust_score: float Convert lever-runner trust (0-100) to pincherOS confidence (0-1).",
+    "output_text": "returns: float calls: max, min Convert lever-runner trust (0-100) to pincherOS confidence (0-1). behavior: \"\"\"Convert lever-runner trust (0-100) to pincherOS confidence (0-1).\"\"\"\n    return max(0.0, min(1.0, trust_score / 100.0))",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_build_manifest",
+    "module": "src.lever_runner.export_nail",
+    "input_text": "function: _build_manifest signature: def _build_manifest(reflex_count, checksums, source) -> dict[str, Any] called_by: tests.test_export_nail.test_build_manifest, src.lever_runner.export_nail.export_nail arg reflex_count: int arg checksums: dict[str, str] arg source: str Build a .nail manifest dict.",
+    "output_text": "returns: dict[str, Any] calls: isoformat, now Build a .nail manifest dict. behavior: reflex_count: int,\n    checksums: dict[str, str],\n    source: str = \"lever-runner\",",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_build_identity",
+    "module": "src.lever_runner.export_nail",
+    "input_text": "function: _build_identity signature: def _build_identity() -> dict[str, Any] called_by: tests.test_export_nail.test_build_identity, src.lever_runner.export_nail.export_nail Build a default identity.json for the nail archive.",
+    "output_text": "returns: dict[str, Any] calls: isoformat, now Build a default identity.json for the nail archive. behavior: \"\"\"Build a default identity.json for the nail archive.\"\"\"\n    return {\n        \"name\": \"lever-runner-export\",",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_build_config",
+    "module": "src.lever_runner.export_nail",
+    "input_text": "function: _build_config signature: def _build_config() -> str called_by: tests.test_export_nail.test_build_config, src.lever_runner.export_nail.export_nail Build a default config.toml for the nail archive.",
+    "output_text": "returns: str Build a default config.toml for the nail archive. behavior: \"\"\"Build a default config.toml for the nail archive.\"\"\"\n    return \"\"\"[resource_thresholds]\nram_light = 70.0",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_get_all_rows",
+    "module": "src.lever_runner.export_nail",
+    "input_text": "function: _get_all_rows signature: def _get_all_rows(store) -> list[dict] called_by: src.lever_runner.export_nail.export_nail arg store: CommandStore Get all rows from the store, including embeddings.",
+    "output_text": "returns: list[dict] calls: to_dict, to_pandas Get all rows from the store, including embeddings. behavior: \"\"\"Get all rows from the store, including embeddings.\"\"\"\n    df = store.table.to_pandas()\n    df = df[df[\"id\"] != \"__schema_seed__\"]",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_filter_by_pack",
+    "module": "src.lever_runner.export_nail",
+    "input_text": "function: _filter_by_pack signature: def _filter_by_pack(rows, pack_name) -> list[dict] called_by: tests.test_export_nail.test_filter_by_existing_pack, src.lever_runner.export_nail.export_nail arg rows: list[dict] arg pack_name: str Filter rows by matching against a skill pack file.\n\nPacks are JSONL files in the packs/ directory. We load the pack's\nintent phrases and filter rows to only those whose intent_phrase\nappears in the pack.",
+    "output_text": "returns: list[dict] calls: strip, startswith, exists, loads, Path, print, add, set, get, open Filter rows by matching against a skill pack file.\n\nPacks are JSONL files in the packs/ directory. We load the pack's\nintent phrases and filter rows to only those whose intent_phrase\nappears in the pack. behavior: \"\"\"Filter rows by matching against a skill pack file.\n\n    Packs are JSONL files in the packs/ directory. We load the pack's",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "export_nail",
+    "module": "src.lever_runner.export_nail",
+    "input_text": "function: export_nail signature: def export_nail(output_path) -> dict[str, Any] called_by: tests.test_export_nail.test_export_creates_valid_nail, tests.test_export_nail.test_export_with_min_trust, tests.test_export_nail.test_export_no_embeddings, src.lever_runner.export_nail.main arg output_path: str Export lever-runner commands as a .nail file.\n\nReturns a summary dict with count and path.",
+    "output_text": "returns: dict[str, Any] calls: _get_all_rows, mkdir, encode, pop, CommandStore, BytesIO, get, write_bytes, SystemExit, _build_identity Export lever-runner commands as a .nail file.\n\nReturns a summary dict with count and path. behavior: output_path: str,\n    *,\n    chat_id: str = \"default\",",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_add_bytes_to_tar",
+    "module": "src.lever_runner.export_nail",
+    "input_text": "function: _add_bytes_to_tar signature: def _add_bytes_to_tar(tar, name, data) -> None called_by: src.lever_runner.export_nail.export_nail arg tar: tarfile.TarFile arg name: str arg data: bytes Add bytes as a file to a tar archive.",
+    "output_text": "returns: None calls: addfile, len, BytesIO, TarInfo Add bytes as a file to a tar archive. behavior: \"\"\"Add bytes as a file to a tar archive.\"\"\"\n    info = tarfile.TarInfo(name=name)\n    info.size = len(data)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "src.lever_runner.export_nail",
+    "input_text": "function: main signature: def main() -> int",
+    "output_text": "returns: int calls: parse_args, export_nail, print, ArgumentParser, add_argument behavior: p = argparse.ArgumentParser(\n        description=\"Export lever-runner commands as pincherOS .nail migration files.\",\n    )",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "src.lever_runner.benchmark",
+    "input_text": "function: main signature: def main() -> int",
+    "output_text": "returns: int calls: build, count, sum, CommandStore, get, enumerate, len, dirname, print, connect behavior: # Fresh log files for this run.\n    for p in (token_logger.LOG_PATH, token_logger.EMBED_LOG_PATH):\n        try:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "src.lever_runner.seed_export",
+    "input_text": "function: main signature: def main() -> int",
+    "output_text": "returns: int calls: write, parse_args, limit, print, CommandStore, search, ArgumentParser, dump, to_list, add_argument behavior: p = argparse.ArgumentParser(description=\"Export lever-runner commands to JSONL.\")\n    p.add_argument(\n        \"--min-trust\",",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_all_rows",
+    "module": "src.lever_runner.auto_promote",
+    "input_text": "function: _all_rows signature: def _all_rows(table) called_by: src.lever_runner.auto_promote.promote_winners, src.lever_runner.auto_promote.rewrite_losers Return every row as a list of dicts, dropping the schema seed.\nUses search().to_list() rather than to_pandas() to avoid the pandas\ndependency (lancedb's to_pandas() triggers a pyarrow pandas shim\nthat requires pandas to be importable).",
+    "output_text": "calls: to_list, limit, search Return every row as a list of dicts, dropping the schema seed.\nUses search().to_list() rather than to_pandas() to avoid the pandas\ndependency (lancedb's to_pandas() triggers a pyarrow pandas shim\nthat requires pandas to be importable). behavior: \"\"\"Return every row as a list of dicts, dropping the schema seed.\n    Uses search().to_list() rather than to_pandas() to avoid the pandas\n    dependency (lancedb's to_pandas() triggers a pyarrow pandas shim",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "promote_winners",
+    "module": "src.lever_runner.auto_promote",
+    "input_text": "function: promote_winners signature: def promote_winners(store) -> int called_by: tests.smoke.main, src.lever_runner.auto_promote.main arg store: CommandStore Bump trust for commands that have been used a lot and are still below 90.",
+    "output_text": "returns: int calls: _all_rows, update, min Bump trust for commands that have been used a lot and are still below 90. behavior: \"\"\"Bump trust for commands that have been used a lot and are still below 90.\"\"\"\n    rows = _all_rows(store.table)\n    n = 0",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "rewrite_with_remote_llm",
+    "module": "src.lever_runner.auto_promote",
+    "input_text": "function: rewrite_with_remote_llm signature: def rewrite_with_remote_llm(intent, old_command, failure_count) -> str | None called_by: src.lever_runner.auto_promote.rewrite_losers arg intent: str arg old_command: str arg failure_count: int Ask a remote LLM to propose a corrected command. Returns the command\nstring or None if no key is configured / call fails.",
+    "output_text": "returns: str | None calls: strip, splitlines, endswith, rstrip, json, print, post, getenv, raise_for_status Ask a remote LLM to propose a corrected command. Returns the command\nstring or None if no key is configured / call fails. behavior: \"\"\"Ask a remote LLM to propose a corrected command. Returns the command\n    string or None if no key is configured / call fails.\"\"\"\n    api_key = os.getenv(\"REMOTE_LLM_API_KEY\", \"\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "rewrite_losers",
+    "module": "src.lever_runner.auto_promote",
+    "input_text": "function: rewrite_losers signature: def rewrite_losers(store) -> int called_by: tests.smoke.main, src.lever_runner.auto_promote.main arg store: CommandStore Find low-trust failing commands, ask the remote LLM to fix them,\ninsert the fix at trust=TRUST_REWRITTEN, soft-delete the old one.",
+    "output_text": "returns: int calls: teach, len, _all_rows, print, rewrite_with_remote_llm, delete_command, getenv, int Find low-trust failing commands, ask the remote LLM to fix them,\ninsert the fix at trust=TRUST_REWRITTEN, soft-delete the old one. behavior: \"\"\"Find low-trust failing commands, ask the remote LLM to fix them,\n    insert the fix at trust=TRUST_REWRITTEN, soft-delete the old one.\"\"\"\n    rows = _all_rows(store.table)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_iter_chat_tables",
+    "module": "src.lever_runner.auto_promote",
+    "input_text": "function: _iter_chat_tables signature: def _iter_chat_tables() called_by: src.lever_runner.auto_promote.main Yield (chat_id, CommandStore) for every commands_* table in the DB.\n\nWith v0.2 per-chat isolation, a single global sweep no longer covers\nall chats. We discover tables at runtime by listing them in the\nLanceDB directory and instantiating a CommandStore for each. The\n'default' chat uses the legacy single-table name to preserve data\nacross upgrades (see store._migrate_legacy_table_if_needed).",
+    "output_text": "calls: startswith, len, Path, mkdir, sorted, list_tables, CommandStore, connect Yield (chat_id, CommandStore) for every commands_* table in the DB.\n\nWith v0.2 per-chat isolation, a single global sweep no longer covers\nall chats. We discover tables at runtime by listing them in the\nLanceDB directory and instantiating a CommandStore for each. The\n'default' chat uses the legacy single-table name to preserve data\nacross upgrades (see store._migrate_legacy_table_if_needed). behavior: \"\"\"Yield (chat_id, CommandStore) for every commands_* table in the DB.\n\n    With v0.2 per-chat isolation, a single global sweep no longer covers",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "src.lever_runner.auto_promote",
+    "input_text": "function: main signature: def main() -> int",
+    "output_text": "returns: int calls: rewrite_losers, count, print, _iter_chat_tables, promote_winners behavior: total_promoted = 0\n    total_rewritten = 0\n    for chat_id, store in _iter_chat_tables():",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_iter_jsonl",
+    "module": "src.lever_runner.seed_import",
+    "input_text": "function: _iter_jsonl signature: def _iter_jsonl(stream) -> Iterable[dict] called_by: src.lever_runner.seed_import.main",
+    "output_text": "returns: Iterable[dict] calls: enumerate, strip, startswith, loads, print behavior: for i, line in enumerate(stream, 1):\n        line = line.strip()\n        if not line or line.startswith(\"#\"):",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "src.lever_runner.seed_import",
+    "input_text": "function: main signature: def main() -> int",
+    "output_text": "returns: int calls: float, teach, _iter_jsonl, CommandStore, search, get, add_argument, list, len, print behavior: p = argparse.ArgumentParser(description=\"Import lever-runner commands from JSONL.\")\n    p.add_argument(\"file\", nargs=\"?\", default=\"-\", help=\"input file or '-' for stdin (default)\")\n    p.add_argument(",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "do",
+    "module": "src.lever_runner.orchestrator",
+    "input_text": "function: do signature: def do(user_request) -> DoResult called_by: tests.test_params.test_template_command_with_args, tests.test_params.test_template_command_without_args_fails, tests.test_params.test_non_template_command_unchanged, tests.test_params.test_template_with_invalid_arg_rejected, tests.smoke.main, src.lever_runner.cli.main, src.lever_runner.http_api.do_POST, src.lever_runner.benchmark.main arg user_request: str End-to-end: extract intent + args \u2192 embed \u2192 find best \u2192 substitute \u2192 optionally run.\n\nchat_id scopes the store to a per-chat table. Defaults to \"default\"\nfor CLI usage. The Telegram bot passes str(update.effective_chat.id).",
+    "output_text": "returns: DoResult calls: extract_intent, log_embed, float, find_best, run_command, min, log_intent, update_trust, substitute_args, getenv End-to-end: extract intent + args \u2192 embed \u2192 find best \u2192 substitute \u2192 optionally run.\n\nchat_id scopes the store to a per-chat table. Defaults to \"default\"\nfor CLI usage. The Telegram bot passes str(update.effective_chat.id). behavior: user_request: str,\n    *,\n    source: str = \"cli\",",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "teach",
+    "module": "src.lever_runner.orchestrator",
+    "input_text": "function: teach signature: def teach(intent_phrase, command) -> str arg intent_phrase: str arg command: str Insert a new command. ``trust`` overrides the default new-command\ntrust (TRUST_NEW_COMMAND, normally 50). Useful for \"I know this is\na good command, start it higher\" or \"this came from a less-trusted\nsource, start it lower\".\n\nSupports parameterized commands with {{param}} placeholders in both\nthe intent phrase and the command, e.g.:\n    teach(\"show logs for {{container}}\", \"docker logs --tail 100 {{container}}\")",
+    "output_text": "returns: str calls: teach, CommandStore Insert a new command. ``trust`` overrides the default new-command\ntrust (TRUST_NEW_COMMAND, normally 50). Useful for \"I know this is\na good command, start it higher\" or \"this came from a less-trusted\nsource, start it lower\".\n\nSupports parameterized commands with {{param}} placeholders in both\nthe intent phrase and the command, e.g.:\n    teach(\"show logs for {{container}}\", \"docker logs --tail 100 {{container}}\") behavior: intent_phrase: str,\n    command: str,\n    *,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "status",
+    "module": "src.lever_runner.orchestrator",
+    "input_text": "function: status signature: def status(chat_id) -> dict called_by: src.lever_runner.cli.main, src.lever_runner.http_api.do_GET arg chat_id: str",
+    "output_text": "returns: dict calls: count, CommandStore behavior: store = store or CommandStore(chat_id=chat_id)\n    return {\"command_count\": store.count(), \"chat_id\": chat_id}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "list_commands",
+    "module": "src.lever_runner.orchestrator",
+    "input_text": "function: list_commands signature: def list_commands(chat_id) -> dict called_by: tests.smoke.main, src.lever_runner.http_api.do_GET arg chat_id: str List commands in the table, sorted by trust desc. Returns a dict\nwith `commands` (list of dicts) and `total` (unfiltered count).",
+    "output_text": "returns: dict calls: list_all, count, CommandStore List commands in the table, sorted by trust desc. Returns a dict\nwith `commands` (list of dicts) and `total` (unfiltered count). behavior: chat_id: str = \"default\",\n    *,\n    limit: int = 20,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "total_tokens",
+    "module": "src.lever_runner.orchestrator",
+    "input_text": "function: total_tokens signature: def total_tokens(self) -> int",
+    "output_text": "returns: int behavior: return self.tokens_in + self.tokens_out",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_format_do",
+    "module": "src.lever_runner.bot",
+    "input_text": "function: _format_do signature: def _format_do(result) -> str called_by: tests.test_bot.test_format_do_basic_success, tests.test_bot.test_format_do_failed_command, tests.test_bot.test_format_do_no_match, tests.test_bot.test_format_do_error_without_match, tests.test_bot.test_format_do_no_run, tests.test_bot.test_format_do_stdout_truncation, tests.test_bot.test_format_do_stderr_truncation, tests.test_bot.test_format_do_empty_stdout_stderr",
+    "output_text": "returns: str calls: append, join, strip, len behavior: lines = []\n    lines.append(f\"intent: {result.intent!r}\")\n    if result.no_match:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_is_authorized",
+    "module": "src.lever_runner.bot",
+    "input_text": "function: _is_authorized signature: def _is_authorized(update) -> bool called_by: tests.test_bot.test_authorized_when_allowlist_empty, tests.test_bot.test_authorized_when_allowlist_matches, tests.test_bot.test_authorized_when_allowlist_does_not_match, tests.test_bot.test_authorized_handles_none_user, tests.smoke.main arg update: Update True if the message is from the allowed user (or no allowlist set).\n\nWhen ALLOWED_USER_ID is unset, the bot responds to anyone \u2014 useful for\ntesting. Set it in .env to a Telegram numeric user ID to lock down.",
+    "output_text": "returns: bool calls: str True if the message is from the allowed user (or no allowlist set).\n\nWhen ALLOWED_USER_ID is unset, the bot responds to anyone \u2014 useful for\ntesting. Set it in .env to a Telegram numeric user ID to lock down. behavior: \"\"\"True if the message is from the allowed user (or no allowlist set).\n\n    When ALLOWED_USER_ID is unset, the bot responds to anyone \u2014 useful for",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "src.lever_runner.bot",
+    "input_text": "function: main signature: def main() -> int called_by: tests.test_bot.test_main_raises_without_token, tests.test_bot.test_main_starts_with_token, tests.test_bot.test_main_registers_handlers",
+    "output_text": "returns: int calls: CommandHandler, token, build, add_handler, MessageHandler, info, builder, SystemExit, run_polling behavior: if not TELEGRAM_BOT_TOKEN:\n        raise SystemExit(\"TELEGRAM_BOT_TOKEN is empty. Set it in .env first.\")\n    log.info(\"starting Lever-Runner bot\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_timeout_sec",
+    "module": "src.lever_runner.intent_extractor",
+    "input_text": "function: _timeout_sec signature: def _timeout_sec() -> float called_by: src.lever_runner.intent_extractor._post_minimax_or_openai, src.lever_runner.intent_extractor._post_ollama Return the current LLM timeout from env (dynamic so tests can override at runtime).",
+    "output_text": "returns: float calls: float, getenv Return the current LLM timeout from env (dynamic so tests can override at runtime). behavior: \"\"\"Return the current LLM timeout from env (dynamic so tests can override at runtime).\"\"\"\n    return float(os.getenv(\"LLM_TIMEOUT_SEC\", \"5\"))",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_is_retryable_http_error",
+    "module": "src.lever_runner.intent_extractor",
+    "input_text": "function: _is_retryable_http_error signature: def _is_retryable_http_error(e) -> bool called_by: tests.smoke.main, src.lever_runner.intent_extractor.extract arg e: requests.exceptions.HTTPError True if the error's status code is a transient provider issue.",
+    "output_text": "returns: bool calls: getattr True if the error's status code is a transient provider issue. behavior: \"\"\"True if the error's status code is a transient provider issue.\"\"\"\n    code = getattr(e.response, \"status_code\", None)\n    return code in RETRYABLE_HTTP_STATUS",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_parse_args",
+    "module": "src.lever_runner.intent_extractor",
+    "input_text": "function: _parse_args signature: def _parse_args(raw) -> dict[str, str] called_by: tests.test_params.test_single_arg, tests.test_params.test_multiple_args, tests.test_params.test_no_equals, tests.test_params.test_with_spaces, tests.test_params.test_invalid_key_rejected, tests.test_params.test_empty_value_rejected, src.lever_runner.intent_extractor._normalize arg raw: str Parse key=value pairs from LLM output. Returns an empty dict if none found.",
+    "output_text": "returns: dict[str, str] calls: strip, splitlines, isidentifier, partition Parse key=value pairs from LLM output. Returns an empty dict if none found. behavior: \"\"\"Parse key=value pairs from LLM output. Returns an empty dict if none found.\"\"\"\n    args: dict[str, str] = {}\n    for line in raw.splitlines():",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_approx_tokens",
+    "module": "src.lever_runner.intent_extractor",
+    "input_text": "function: _approx_tokens signature: def _approx_tokens(text) -> int called_by: src.lever_runner.intent_extractor._try_one_backend, src.lever_runner.intent_extractor.extract arg text: str Crude but consistent: ~1 token per 4 chars of English.",
+    "output_text": "returns: int calls: max, len Crude but consistent: ~1 token per 4 chars of English. behavior: \"\"\"Crude but consistent: ~1 token per 4 chars of English.\"\"\"\n    return max(1, len(text) // 4)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_post_minimax_or_openai",
+    "module": "src.lever_runner.intent_extractor",
+    "input_text": "function: _post_minimax_or_openai signature: def _post_minimax_or_openai(base_url, api_key, model, system, user) -> str called_by: src.lever_runner.intent_extractor._try_one_backend arg base_url: str arg api_key: str arg model: str arg system: str arg user: str Call any Anthropic-compatible or OpenAI-compatible chat endpoint.",
+    "output_text": "returns: str calls: strip, str, endswith, rstrip, json, _timeout_sec, isinstance, post, get, ValueError Call any Anthropic-compatible or OpenAI-compatible chat endpoint. behavior: base_url: str,\n    api_key: str,\n    model: str,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_post_ollama",
+    "module": "src.lever_runner.intent_extractor",
+    "input_text": "function: _post_ollama signature: def _post_ollama(host, model, system, user) -> str called_by: src.lever_runner.intent_extractor._try_one_backend arg host: str arg model: str arg system: str arg user: str",
+    "output_text": "returns: str calls: strip, rstrip, json, _timeout_sec, post, raise_for_status behavior: host: str,\n    model: str,\n    system: str,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_normalize",
+    "module": "src.lever_runner.intent_extractor",
+    "input_text": "function: _normalize signature: def _normalize(raw) -> tuple[str, dict[str, str]] called_by: tests.test_params.test_empty_input, tests.test_params.test_phrase_only, tests.test_params.test_phrase_with_args, tests.test_params.test_multiline_args, tests.test_params.test_strips_punctuation, tests.test_params.test_truncates_long_phrase, src.lever_runner.intent_extractor._passthrough_fallback, src.lever_runner.intent_extractor.extract arg raw: str Tighten the LLM output to a clean phrase and extract key=value args.\n\nThe LLM outputs the intent phrase on the first line, optionally\nfollowed by key=value argument lines.\n\nReturns (phrase, args).",
+    "output_text": "returns: tuple[str, dict[str, str]] calls: strip, lower, splitlines, sub, len, join, _parse_args, split Tighten the LLM output to a clean phrase and extract key=value args.\n\nThe LLM outputs the intent phrase on the first line, optionally\nfollowed by key=value argument lines.\n\nReturns (phrase, args). behavior: \"\"\"Tighten the LLM output to a clean phrase and extract key=value args.\n\n    The LLM outputs the intent phrase on the first line, optionally",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_resolve_api_key",
+    "module": "src.lever_runner.intent_extractor",
+    "input_text": "function: _resolve_api_key signature: def _resolve_api_key(backend, explicit) -> tuple[str, list[str]] called_by: src.lever_runner.intent_extractor._try_one_backend arg backend: str arg explicit: str | None Return (api_key, key_env_list) for the given backend.",
+    "output_text": "returns: tuple[str, list[str]] calls: strip, get, getenv, split Return (api_key, key_env_list) for the given backend. behavior: \"\"\"Return (api_key, key_env_list) for the given backend.\"\"\"\n    defaults = BACKEND_DEFAULTS.get(backend, BACKEND_DEFAULTS[\"minimax\"])\n    key_env_list = [e.strip() for e in defaults[\"key_envs\"].split(\",\") if e.strip()]",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_try_one_backend",
+    "module": "src.lever_runner.intent_extractor",
+    "input_text": "function: _try_one_backend signature: def _try_one_backend(backend, system, user) -> _CallResult called_by: src.lever_runner.intent_extractor.extract arg backend: str arg system: str arg user: str Make one LLM call to one backend. Returns the raw response text\nplus estimated input tokens. Raises on any HTTP / connection error.",
+    "output_text": "returns: _CallResult calls: lower, RuntimeError, _CallResult, _resolve_api_key, _post_ollama, getenv, _post_minimax_or_openai, ValueError, _approx_tokens, upper Make one LLM call to one backend. Returns the raw response text\nplus estimated input tokens. Raises on any HTTP / connection error. behavior: backend: str,\n    system: str,\n    user: str,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_passthrough_fallback",
+    "module": "src.lever_runner.intent_extractor",
+    "input_text": "function: _passthrough_fallback signature: def _passthrough_fallback(user_request) -> Extraction called_by: src.lever_runner.intent_extractor.extract arg user_request: str Final fallback: the user's raw request is the intent phrase.",
+    "output_text": "returns: Extraction calls: Extraction, _normalize Final fallback: the user's raw request is the intent phrase. behavior: \"\"\"Final fallback: the user's raw request is the intent phrase.\"\"\"\n    phrase, args = _normalize(user_request)\n    return Extraction(",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_resolve_fallback_chain",
+    "module": "src.lever_runner.intent_extractor",
+    "input_text": "function: _resolve_fallback_chain signature: def _resolve_fallback_chain(primary) -> list[str] called_by: tests.smoke.main, src.lever_runner.intent_extractor.extract arg primary: str Read LLM_FALLBACKS and return a list of fallback backends.",
+    "output_text": "returns: list[str] calls: strip, lower, append, getenv, set, keys, split, warning Read LLM_FALLBACKS and return a list of fallback backends. behavior: \"\"\"Read LLM_FALLBACKS and return a list of fallback backends.\"\"\"\n    raw = os.getenv(\"LLM_FALLBACKS\", DEFAULT_FALLBACKS)\n    chain = [b.strip().lower() for b in raw.split(\",\") if b.strip()]",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "extract",
+    "module": "src.lever_runner.intent_extractor",
+    "input_text": "function: extract signature: def extract(user_request) -> Extraction called_by: tests.test_params.test_passthrough_extracts_phrase, tests.test_params.test_passthrough_empty_request, tests.smoke.main arg user_request: str Return a clean intent phrase, extracted args, plus token accounting.\n\nCalls the primary LLM_BACKEND first; on a retryable error (timeout,\nconnection refused, 429, 5xx) it tries each entry in LLM_FALLBACKS\nin order. The last entry is always 'passthrough' so a complete\nprovider outage degrades to using the raw user request as the\nintent (rather than hanging or 5xxing the user).",
+    "output_text": "returns: Extraction calls: strip, lower, enumerate, Extraction, len, getattr, _normalize, error, _is_retryable_http_error, _resolve_fallback_chain Return a clean intent phrase, extracted args, plus token accounting.\n\nCalls the primary LLM_BACKEND first; on a retryable error (timeout,\nconnection refused, 429, 5xx) it tries each entry in LLM_FALLBACKS\nin order. The last entry is always 'passthrough' so a complete\nprovider outage degrades to using the raw user request as the\nintent (rather than hanging or 5xxing the user). behavior: user_request: str,\n    *,\n    backend: str | None = None,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_table_name_for",
+    "module": "src.lever_runner.store",
+    "input_text": "function: _table_name_for signature: def _table_name_for(chat_id) -> str called_by: src.lever_runner.store.__init__ arg chat_id: str Return a safe LanceDB table name for the given chat id.\n\nThe legacy single-table layout used the bare name 'commands' with\nno suffix, so we treat chat_id == 'default' (or the empty string)\nas a request for the legacy table to preserve data across upgrades.",
+    "output_text": "returns: str calls: str, sub Return a safe LanceDB table name for the given chat id.\n\nThe legacy single-table layout used the bare name 'commands' with\nno suffix, so we treat chat_id == 'default' (or the empty string)\nas a request for the legacy table to preserve data across upgrades. behavior: \"\"\"Return a safe LanceDB table name for the given chat id.\n\n    The legacy single-table layout used the bare name 'commands' with",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_migrate_legacy_table_if_needed",
+    "module": "src.lever_runner.store",
+    "input_text": "function: _migrate_legacy_table_if_needed signature: def _migrate_legacy_table_if_needed(db) -> None called_by: src.lever_runner.store.__init__ arg db: lancedb.DBConnection If a v0.1.x 'commands' table exists with real data and no\n'commands_default' table yet, rename it. Idempotent.",
+    "output_text": "returns: None calls: open_table, drop_table, limit, create_table, list_tables, set, search, to_list If a v0.1.x 'commands' table exists with real data and no\n'commands_default' table yet, rename it. Idempotent. behavior: \"\"\"If a v0.1.x 'commands' table exists with real data and no\n    'commands_default' table yet, rename it. Idempotent.\n    \"\"\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_get_embedder",
+    "module": "src.lever_runner.store",
+    "input_text": "function: _get_embedder signature: def _get_embedder() called_by: src.lever_runner.store.embedder",
+    "output_text": "calls: SentenceTransformer behavior: from sentence_transformers import SentenceTransformer\n\n    return SentenceTransformer(EMBEDDING_MODEL)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "has_placeholders",
+    "module": "src.lever_runner.store",
+    "input_text": "function: has_placeholders signature: def has_placeholders(text) -> bool called_by: tests.test_params.test_simple_placeholder, tests.test_params.test_multiple_placeholders, tests.test_params.test_empty_string, tests.test_params.test_partial_braces, tests.test_params.test_command_with_placeholder, src.lever_runner.orchestrator.do arg text: str True if the text contains {{param}} placeholders.",
+    "output_text": "returns: bool calls: bool, search True if the text contains {{param}} placeholders. behavior: \"\"\"True if the text contains {{param}} placeholders.\"\"\"\n    return bool(_PLACEHOLDER_RE.search(text))",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "get_placeholders",
+    "module": "src.lever_runner.store",
+    "input_text": "function: get_placeholders signature: def get_placeholders(text) -> list[str] called_by: tests.test_params.test_single_placeholder, tests.test_params.test_multiple_unique, tests.test_params.test_duplicate_placeholder, tests.test_params.test_order_preserved, src.lever_runner.orchestrator.do, src.lever_runner.store.substitute_args arg text: str Return a list of unique placeholder names in order of appearance.",
+    "output_text": "returns: list[str] calls: list, fromkeys, findall Return a list of unique placeholder names in order of appearance. behavior: \"\"\"Return a list of unique placeholder names in order of appearance.\"\"\"\n    return list(dict.fromkeys(_PLACEHOLDER_RE.findall(text)))",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "strip_placeholders",
+    "module": "src.lever_runner.store",
+    "input_text": "function: strip_placeholders signature: def strip_placeholders(text) -> str called_by: tests.test_params.test_no_placeholders, tests.test_params.test_strip_single, tests.test_params.test_strip_multiple, tests.test_params.test_only_placeholder, src.lever_runner.store.find_best, src.lever_runner.store.teach arg text: str Remove {{param}} placeholders for embedding/matching purposes.\n\nThis produces a clean phrase suitable for embedding without the\ntemplate syntax, e.g. \"show logs for {{container}}\" \u2192 \"show logs for\".",
+    "output_text": "returns: str calls: strip, sub Remove {{param}} placeholders for embedding/matching purposes.\n\nThis produces a clean phrase suitable for embedding without the\ntemplate syntax, e.g. \"show logs for {{container}}\" \u2192 \"show logs for\". behavior: \"\"\"Remove {{param}} placeholders for embedding/matching purposes.\n\n    This produces a clean phrase suitable for embedding without the",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "validate_arg",
+    "module": "src.lever_runner.store",
+    "input_text": "function: validate_arg signature: def validate_arg(name, value) -> str called_by: tests.test_params.test_alphanumeric, tests.test_params.test_with_dashes, tests.test_params.test_with_underscores, tests.test_params.test_with_dots, tests.test_params.test_with_numbers, tests.test_params.test_complex_name, tests.test_params.test_reject_semicolon, tests.test_params.test_reject_pipe, tests.test_params.test_reject_backticks, tests.test_params.test_reject_dollar_sign arg name: str arg value: str Validate a single argument value. Only allows alphanumeric, dash,\nunderscore, and dot. Returns the value if valid, raises ValueError otherwise.\n\nThis prevents shell injection through parameterized commands.",
+    "output_text": "returns: str calls: match, ValueError Validate a single argument value. Only allows alphanumeric, dash,\nunderscore, and dot. Returns the value if valid, raises ValueError otherwise.\n\nThis prevents shell injection through parameterized commands. behavior: \"\"\"Validate a single argument value. Only allows alphanumeric, dash,\n    underscore, and dot. Returns the value if valid, raises ValueError otherwise.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "substitute_args",
+    "module": "src.lever_runner.store",
+    "input_text": "function: substitute_args signature: def substitute_args(template, args) -> str called_by: tests.test_params.test_arg_in_middle, tests.test_params.test_missing_arg_raises, tests.test_params.test_invalid_arg_raises, tests.test_params.test_no_placeholders_no_args, tests.test_params.test_extra_args_ignored, src.lever_runner.orchestrator.do arg template: str arg args: dict[str, str] Substitute {{param}} placeholders in a template with validated args.\n\nAll placeholders in the template must have a corresponding arg value.\nAll arg values are validated against the safe-character set.\n\nReturns the substituted string.",
+    "output_text": "returns: str calls: items, get_placeholders, join, ValueError, validate_arg, replace Substitute {{param}} placeholders in a template with validated args.\n\nAll placeholders in the template must have a corresponding arg value.\nAll arg values are validated against the safe-character set.\n\nReturns the substituted string. behavior: \"\"\"Substitute {{param}} placeholders in a template with validated args.\n\n    All placeholders in the template must have a corresponding arg value.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "src.lever_runner.store",
+    "input_text": "function: __init__ signature: def __init__(self, chat_id) -> None arg chat_id: str",
+    "output_text": "returns: None calls: float, str, _seed_from_init_db, open_table, Path, Lock, _table_name_for, mkdir, _migrate_legacy_table_if_needed, create_table behavior: self.chat_id = str(chat_id)\n        self.table_name = _table_name_for(self.chat_id)\n        Path(LANCEDB_PATH).mkdir(parents=True, exist_ok=True)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_seed_from_init_db",
+    "module": "src.lever_runner.store",
+    "input_text": "function: _seed_from_init_db signature: def _seed_from_init_db(self) -> None called_by: src.lever_runner.store.__init__ Bulk-import SEED_COMMANDS into this chat's table.\n\nCalled once per chat, on first construction. Encodes all intent\nphrases in a single batch for speed (~0.5s for 66 phrases vs\n~3s one-at-a-time).",
+    "output_text": "returns: None calls: str, uuid4, zip, append, tolist, encode, add Bulk-import SEED_COMMANDS into this chat's table.\n\nCalled once per chat, on first construction. Encodes all intent\nphrases in a single batch for speed (~0.5s for 66 phrases vs\n~3s one-at-a-time). behavior: \"\"\"Bulk-import SEED_COMMANDS into this chat's table.\n\n        Called once per chat, on first construction. Encodes all intent",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "embedder",
+    "module": "src.lever_runner.store",
+    "input_text": "function: embedder signature: def embedder(self)",
+    "output_text": "calls: _get_embedder behavior: if self._embedder is None:\n            self._embedder = _get_embedder()\n        return self._embedder",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_embed",
+    "module": "src.lever_runner.store",
+    "input_text": "function: _embed signature: def _embed(self, phrase) -> list[float] called_by: src.lever_runner.store.find_best, src.lever_runner.store.teach arg phrase: str",
+    "output_text": "returns: list[float] calls: tolist, encode behavior: v = self.embedder.encode(phrase, normalize_embeddings=True, show_progress_bar=False)\n        return v.tolist()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "count",
+    "module": "src.lever_runner.store",
+    "input_text": "function: count signature: def count(self) -> int called_by: tests.smoke.main, src.lever_runner.doctor.check_smoke, src.lever_runner.benchmark.main, src.lever_runner.auto_promote.main, src.lever_runner.orchestrator.status, src.lever_runner.orchestrator.list_commands",
+    "output_text": "returns: int calls: len, limit, search, count_rows, to_list, where behavior: n = self.table.count_rows()\n        rows = self.table.search().limit(1).where(\"id = '__schema_seed__'\").to_list()\n        return n - len(rows)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "list_all",
+    "module": "src.lever_runner.store",
+    "input_text": "function: list_all signature: def list_all(self) -> list[dict] called_by: tests.smoke.main, src.lever_runner.orchestrator.list_commands Return up to `limit` commands, skipping soft-deleted rows and the\nschema seed. `min_trust` filters out low-trust entries. Sorted by\n`trust_score` descending so the most-trusted commands come first.\n\n`offset` is implemented as a Python-side slice because lancedb's\n.to_pandas() / .search() pagination semantics vary by version; the\ntables we're listing from are O(hundreds) rows so this is fine.",
+    "output_text": "returns: list[dict] calls: sort_values, max, to_dict, to_pandas Return up to `limit` commands, skipping soft-deleted rows and the\nschema seed. `min_trust` filters out low-trust entries. Sorted by\n`trust_score` descending so the most-trusted commands come first.\n\n`offset` is implemented as a Python-side slice because lancedb's\n.to_pandas() / .search() pagination semantics vary by version; the\ntables we're listing from are O(hundreds) rows so this is fine. behavior: self,\n        *,\n        limit: int = 50,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "get_by_id",
+    "module": "src.lever_runner.store",
+    "input_text": "function: get_by_id signature: def get_by_id(self, row_id) -> dict | None arg row_id: str Return one row by id, or None. Includes all metadata fields.",
+    "output_text": "returns: dict | None calls: to_dict, to_pandas Return one row by id, or None. Includes all metadata fields. behavior: \"\"\"Return one row by id, or None. Includes all metadata fields.\"\"\"\n        df = self.table.to_pandas()\n        df = df[df[\"id\"] == row_id]",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "find_best",
+    "module": "src.lever_runner.store",
+    "input_text": "function: find_best signature: def find_best(self, intent_phrase, top_k) -> list[Match] called_by: tests.smoke.main, src.lever_runner.orchestrator.do arg intent_phrase: str arg top_k: int Return top-k matches sorted by ascending L2 distance (best first),\ndropping the schema seed.\n\nFor template commands with {{param}} placeholders, the intent_phrase\ncolumn stores the template (e.g. \"show logs for {{container}}\"), but\nthe embedding is computed on the stripped version (\"show logs for\")\nso the search works correctly regardless of the actual argument value.",
+    "output_text": "returns: list[Match] calls: float, Match, len, _embed, max, limit, append, strip_placeholders, sort, search Return top-k matches sorted by ascending L2 distance (best first),\ndropping the schema seed.\n\nFor template commands with {{param}} placeholders, the intent_phrase\ncolumn stores the template (e.g. \"show logs for {{container}}\"), but\nthe embedding is computed on the stripped version (\"show logs for\")\nso the search works correctly regardless of the actual argument value. behavior: \"\"\"Return top-k matches sorted by ascending L2 distance (best first),\n        dropping the schema seed.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "teach",
+    "module": "src.lever_runner.store",
+    "input_text": "function: teach signature: def teach(self, intent_phrase, command, trust) -> str called_by: tests.test_params.test_teach_stores_template, tests.test_params.test_teach_regular_command, tests.smoke.main, src.lever_runner.cli.main, src.lever_runner.http_api.do_POST, src.lever_runner.auto_promote.rewrite_losers, src.lever_runner.seed_import.main, src.lever_runner.orchestrator.teach arg intent_phrase: str arg command: str arg trust: float | None Insert a new command. Returns its id.\n\nFor parameterized commands (containing {{param}} placeholders),\nthe intent_phrase is stored as-is but the embedding is computed\nfrom the stripped version so matching works correctly.",
+    "output_text": "returns: str calls: strip, float, str, uuid4, _embed, strip_placeholders, add Insert a new command. Returns its id.\n\nFor parameterized commands (containing {{param}} placeholders),\nthe intent_phrase is stored as-is but the embedding is computed\nfrom the stripped version so matching works correctly. behavior: \"\"\"Insert a new command. Returns its id.\n\n        For parameterized commands (containing {{param}} placeholders),",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "update_trust",
+    "module": "src.lever_runner.store",
+    "input_text": "function: update_trust signature: def update_trust(self, row_id) -> None called_by: src.lever_runner.orchestrator.do arg row_id: str Apply a small trust adjustment + bump the appropriate counter.\n\nUses a per-store lock to serialize concurrent updates to the same\nrow, preventing lost updates when two requests race on the same\ncommand (classic TOCTOU on the read-modify-write cycle).",
+    "output_text": "returns: None calls: float, update, min, max, limit, search, to_list, where, int Apply a small trust adjustment + bump the appropriate counter.\n\nUses a per-store lock to serialize concurrent updates to the same\nrow, preventing lost updates when two requests race on the same\ncommand (classic TOCTOU on the read-modify-write cycle). behavior: self, row_id: str, *, success: bool, trust_bump: float = 1.5, trust_penalty: float = 4.0\n    ) -> None:\n        \"\"\"Apply a small trust adjustment + bump the appropriate counter.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "delete_command",
+    "module": "src.lever_runner.store",
+    "input_text": "function: delete_command signature: def delete_command(self, row_id) -> None called_by: tests.smoke.main, src.lever_runner.auto_promote.rewrite_losers arg row_id: str Permanently remove a command from the table by id.",
+    "output_text": "returns: None calls: delete Permanently remove a command from the table by id. behavior: \"\"\"Permanently remove a command from the table by id.\"\"\"\n        self.table.delete(f\"id = '{row_id}'\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  }
+]

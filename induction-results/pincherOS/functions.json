@@ -1,0 +1,2829 @@
+[
+  {
+    "name": "remaining_usd",
+    "module": "tools.model_router",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/model_router.py",
+    "line_start": 125,
+    "line_end": 127,
+    "signature": "def remaining_usd(self) -> float",
+    "docstring": "Remaining budget in USD.",
+    "decorators": [
+      "property"
+    ],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "float",
+    "calls": [
+      "max"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "is_exhausted",
+    "module": "tools.model_router",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/model_router.py",
+    "line_start": 130,
+    "line_end": 132,
+    "signature": "def is_exhausted(self) -> bool",
+    "docstring": "Whether the budget has been exceeded.",
+    "decorators": [
+      "property"
+    ],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "bool",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "record_spend",
+    "module": "tools.model_router",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/model_router.py",
+    "line_start": 134,
+    "line_end": 155,
+    "signature": "def record_spend(self, amount_usd) -> bool",
+    "docstring": "Record a spend and return whether it fits within budget.\n\nArgs:\n    amount_usd: The cost to record.\n\nReturns:\n    ``True`` if the spend was recorded (within budget),\n    ``False`` if it would exceed the budget.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "amount_usd"
+    ],
+    "arg_types": {
+      "amount_usd": "float"
+    },
+    "return_type": "bool",
+    "calls": [
+      "warning"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "tools.model_router",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/model_router.py",
+    "line_start": 200,
+    "line_end": 214,
+    "signature": "def __init__(self, client, patterns, default_budget_usd, similarity_threshold) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "client",
+      "patterns",
+      "default_budget_usd",
+      "similarity_threshold"
+    ],
+    "arg_types": {
+      "client": "DeepInfraClient",
+      "patterns": "Optional[list[ComplexityPattern]]",
+      "default_budget_usd": "float",
+      "similarity_threshold": "float"
+    },
+    "return_type": "None",
+    "calls": [
+      "Lock"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "create_session",
+    "module": "tools.model_router",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/model_router.py",
+    "line_start": 218,
+    "line_end": 242,
+    "signature": "def create_session(self, session_id, budget_usd) -> SessionBudget",
+    "docstring": "Create a new session with a budget.\n\nArgs:\n    session_id: Unique identifier for the session.\n    budget_usd: Budget in USD.  Uses the default if not specified.\n\nReturns:\n    The created :class:`SessionBudget`.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "session_id",
+      "budget_usd"
+    ],
+    "arg_types": {
+      "session_id": "str",
+      "budget_usd": "Optional[float]"
+    },
+    "return_type": "SessionBudget",
+    "calls": [
+      "info",
+      "SessionBudget"
+    ],
+    "called_by": [
+      "tools.model_router.get_or_create_session"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "get_session",
+    "module": "tools.model_router",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/model_router.py",
+    "line_start": 244,
+    "line_end": 253,
+    "signature": "def get_session(self, session_id) -> Optional[SessionBudget]",
+    "docstring": "Retrieve a session by ID.\n\nArgs:\n    session_id: The session identifier.\n\nReturns:\n    The :class:`SessionBudget` if it exists, else ``None``.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "session_id"
+    ],
+    "arg_types": {
+      "session_id": "str"
+    },
+    "return_type": "Optional[SessionBudget]",
+    "calls": [
+      "get"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "get_or_create_session",
+    "module": "tools.model_router",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/model_router.py",
+    "line_start": 255,
+    "line_end": 271,
+    "signature": "def get_or_create_session(self, session_id, budget_usd) -> SessionBudget",
+    "docstring": "Get an existing session or create a new one.\n\nArgs:\n    session_id: The session identifier.\n    budget_usd: Budget for a new session (ignored if session exists).\n\nReturns:\n    The :class:`SessionBudget`.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "session_id",
+      "budget_usd"
+    ],
+    "arg_types": {
+      "session_id": "str",
+      "budget_usd": "Optional[float]"
+    },
+    "return_type": "SessionBudget",
+    "calls": [
+      "create_session"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_cosine_similarity",
+    "module": "tools.model_router",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/model_router.py",
+    "line_start": 313,
+    "line_end": 330,
+    "signature": "def _cosine_similarity(a, b) -> float",
+    "docstring": "Compute cosine similarity between two vectors.\n\nArgs:\n    a: First vector.\n    b: Second vector.\n\nReturns:\n    Cosine similarity in ``[-1.0, 1.0]``.",
+    "decorators": [
+      "staticmethod"
+    ],
+    "arg_names": [
+      "a",
+      "b"
+    ],
+    "arg_types": {
+      "a": "list[float]",
+      "b": "list[float]"
+    },
+    "return_type": "float",
+    "calls": [
+      "sum",
+      "sqrt",
+      "len",
+      "zip"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_heuristic_classify",
+    "module": "tools.model_router",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/model_router.py",
+    "line_start": 385,
+    "line_end": 425,
+    "signature": "def _heuristic_classify(intent) -> Complexity",
+    "docstring": "Classify complexity using simple heuristic rules.\n\nUsed as a fallback when embeddings are unavailable.\n\nArgs:\n    intent: The user's intent text.\n\nReturns:\n    The estimated :class:`Complexity`.",
+    "decorators": [
+      "staticmethod"
+    ],
+    "arg_names": [
+      "intent"
+    ],
+    "arg_types": {
+      "intent": "str"
+    },
+    "return_type": "Complexity",
+    "calls": [
+      "lower",
+      "len"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "session_summary",
+    "module": "tools.model_router",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/model_router.py",
+    "line_start": 591,
+    "line_end": 610,
+    "signature": "def session_summary(self, session_id) -> Optional[dict[str, Any]]",
+    "docstring": "Generate a summary of a session's routing activity.\n\nArgs:\n    session_id: The session to summarize.\n\nReturns:\n    A dict with session stats, or ``None`` if the session doesn't exist.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "session_id"
+    ],
+    "arg_types": {
+      "session_id": "str"
+    },
+    "return_type": "Optional[dict[str, Any]]",
+    "calls": [
+      "get",
+      "round"
+    ],
+    "called_by": [
+      "tools.model_router.all_sessions_summary"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "all_sessions_summary",
+    "module": "tools.model_router",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/model_router.py",
+    "line_start": 612,
+    "line_end": 622,
+    "signature": "def all_sessions_summary(self) -> list[dict[str, Any]]",
+    "docstring": "Generate summaries for all sessions.\n\nReturns:\n    A list of session summary dicts.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "list[dict[str, Any]]",
+    "calls": [
+      "session_summary"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "tools.deepinfra_client",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/deepinfra_client.py",
+    "line_start": 232,
+    "line_end": 237,
+    "signature": "def __init__(self, max_tokens, refill_rate) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "max_tokens",
+      "refill_rate"
+    ],
+    "arg_types": {
+      "max_tokens": "int",
+      "refill_rate": "float"
+    },
+    "return_type": "None",
+    "calls": [
+      "float",
+      "Lock",
+      "monotonic"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_refill",
+    "module": "tools.deepinfra_client",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/deepinfra_client.py",
+    "line_start": 239,
+    "line_end": 247,
+    "signature": "def _refill(self) -> None",
+    "docstring": "Refill tokens based on elapsed time.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "min",
+      "monotonic"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "tools.deepinfra_client",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/deepinfra_client.py",
+    "line_start": 283,
+    "line_end": 307,
+    "signature": "def __init__(self, api_key, base_url, models, max_retries, retry_base_delay, rate_limit_max, rate_limit_refill) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "api_key",
+      "base_url",
+      "models",
+      "max_retries",
+      "retry_base_delay",
+      "rate_limit_max",
+      "rate_limit_refill"
+    ],
+    "arg_types": {
+      "api_key": "Optional[str]",
+      "base_url": "str",
+      "models": "Optional[list[ModelInfo]]",
+      "max_retries": "int",
+      "retry_base_delay": "float",
+      "rate_limit_max": "int",
+      "rate_limit_refill": "float"
+    },
+    "return_type": "None",
+    "calls": [
+      "rstrip",
+      "get",
+      "RateLimiter"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "get_model",
+    "module": "tools.deepinfra_client",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/deepinfra_client.py",
+    "line_start": 340,
+    "line_end": 349,
+    "signature": "def get_model(self, model_id) -> Optional[ModelInfo]",
+    "docstring": "Look up a model by its identifier.\n\nArgs:\n    model_id: The DeepInfra model identifier.\n\nReturns:\n    The :class:`ModelInfo` if found, otherwise ``None``.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "model_id"
+    ],
+    "arg_types": {
+      "model_id": "str"
+    },
+    "return_type": "Optional[ModelInfo]",
+    "calls": [
+      "get"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "get_models_by_tier",
+    "module": "tools.deepinfra_client",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/deepinfra_client.py",
+    "line_start": 351,
+    "line_end": 360,
+    "signature": "def get_models_by_tier(self, tier) -> list[ModelInfo]",
+    "docstring": "Return all models in a given cost tier.\n\nArgs:\n    tier: The cost tier to filter by.\n\nReturns:\n    List of :class:`ModelInfo` objects in the requested tier.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "tier"
+    ],
+    "arg_types": {
+      "tier": "CostTier"
+    },
+    "return_type": "list[ModelInfo]",
+    "calls": [
+      "values"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "get_cheapest_chat_model",
+    "module": "tools.deepinfra_client",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/deepinfra_client.py",
+    "line_start": 362,
+    "line_end": 377,
+    "signature": "def get_cheapest_chat_model(self, tier) -> Optional[ModelInfo]",
+    "docstring": "Find the cheapest chat model in the given tier.\n\nArgs:\n    tier: Cost tier to search within.\n\nReturns:\n    The cheapest :class:`ModelInfo` for chat, or ``None``.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "tier"
+    ],
+    "arg_types": {
+      "tier": "CostTier"
+    },
+    "return_type": "Optional[ModelInfo]",
+    "calls": [
+      "values",
+      "min"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "get_embedding_model",
+    "module": "tools.deepinfra_client",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/deepinfra_client.py",
+    "line_start": 379,
+    "line_end": 391,
+    "signature": "def get_embedding_model(self) -> Optional[ModelInfo]",
+    "docstring": "Find the cheapest embedding model.\n\nReturns:\n    The cheapest embedding :class:`ModelInfo`, or ``None``.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "Optional[ModelInfo]",
+    "calls": [
+      "values",
+      "min"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "register_model",
+    "module": "tools.deepinfra_client",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/deepinfra_client.py",
+    "line_start": 393,
+    "line_end": 400,
+    "signature": "def register_model(self, model) -> None",
+    "docstring": "Add or update a model in the registry.\n\nArgs:\n    model: The :class:`ModelInfo` to register.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "model"
+    ],
+    "arg_types": {
+      "model": "ModelInfo"
+    },
+    "return_type": "None",
+    "calls": [
+      "info"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "total_cost_usd",
+    "module": "tools.deepinfra_client",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/deepinfra_client.py",
+    "line_start": 405,
+    "line_end": 407,
+    "signature": "def total_cost_usd(self) -> float",
+    "docstring": "Cumulative cost in USD across all requests.",
+    "decorators": [
+      "property"
+    ],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "float",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_estimate_cost",
+    "module": "tools.deepinfra_client",
+    "file_path": "/home/phoenix/repos/pincherOS/tools/deepinfra_client.py",
+    "line_start": 409,
+    "line_end": 430,
+    "signature": "def _estimate_cost(self, model_info, input_tokens, output_tokens) -> float",
+    "docstring": "Estimate the cost of a request in USD.\n\nArgs:\n    model_info: The model used.\n    input_tokens: Number of input tokens consumed.\n    output_tokens: Number of output tokens produced.\n\nReturns:\n    Estimated cost in USD.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "model_info",
+      "input_tokens",
+      "output_tokens"
+    ],
+    "arg_types": {
+      "model_info": "ModelInfo",
+      "input_tokens": "int",
+      "output_tokens": "int"
+    },
+    "return_type": "float",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "pincher-infer.pincher_infer.distiller",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/distiller.py",
+    "line_start": 43,
+    "line_end": 45,
+    "signature": "def __init__(self, llm, embedder)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "llm",
+      "embedder"
+    ],
+    "arg_types": {
+      "llm": "Optional[LLMInterface]",
+      "embedder": "Optional[Embedder]"
+    },
+    "return_type": null,
+    "calls": [
+      "StubLLM",
+      "Embedder"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "distill",
+    "module": "pincher-infer.pincher_infer.distiller",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/distiller.py",
+    "line_start": 47,
+    "line_end": 75,
+    "signature": "def distill(self, user_input, action, result) -> Dict[str, Any]",
+    "docstring": "Distill a reflex from a user interaction.\n\nArgs:\n    user_input: What the user said/asked\n    action: What action was taken\n    result: What the result was\n\nReturns:\n    A reflex definition dict",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "user_input",
+      "action",
+      "result"
+    ],
+    "arg_types": {
+      "user_input": "str",
+      "action": "str",
+      "result": "str"
+    },
+    "return_type": "Dict[str, Any]",
+    "calls": [
+      "infer",
+      "format",
+      "tolist",
+      "_parse_response",
+      "embed"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_parse_response",
+    "module": "pincher-infer.pincher_infer.distiller",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/distiller.py",
+    "line_start": 77,
+    "line_end": 100,
+    "signature": "def _parse_response(self, response, user_input, action) -> Dict[str, Any]",
+    "docstring": "Parse the LLM response into a reflex definition.\n\nFalls back to heuristic distillation if parsing fails.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "response",
+      "user_input",
+      "action"
+    ],
+    "arg_types": {
+      "response": "str",
+      "user_input": "str",
+      "action": "str"
+    },
+    "return_type": "Dict[str, Any]",
+    "calls": [
+      "group",
+      "loads",
+      "_heuristic_distill",
+      "search",
+      "get"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.distiller.distill"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_heuristic_distill",
+    "module": "pincher-infer.pincher_infer.distiller",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/distiller.py",
+    "line_start": 102,
+    "line_end": 119,
+    "signature": "def _heuristic_distill(self, user_input, action) -> Dict[str, Any]",
+    "docstring": "Heuristic reflex distillation when LLM is unavailable.\n\nThis creates a simple reflex that matches similar user inputs\nand replays the same action.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "user_input",
+      "action"
+    ],
+    "arg_types": {
+      "user_input": "str",
+      "action": "str"
+    },
+    "return_type": "Dict[str, Any]",
+    "calls": [
+      "lower",
+      "join",
+      "_infer_capabilities",
+      "findall"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.distiller._parse_response"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_infer_capabilities",
+    "module": "pincher-infer.pincher_infer.distiller",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/distiller.py",
+    "line_start": 121,
+    "line_end": 137,
+    "signature": "def _infer_capabilities(self, action) -> list",
+    "docstring": "Infer required capabilities from an action template.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "action"
+    ],
+    "arg_types": {
+      "action": "str"
+    },
+    "return_type": "list",
+    "calls": [
+      "append",
+      "any"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.distiller._heuristic_distill"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_match_template",
+    "module": "pincher-infer.pincher_infer.distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/distill.py",
+    "line_start": 247,
+    "line_end": 265,
+    "signature": "def _match_template(intent) -> Optional[DistillationResult]",
+    "docstring": "Try to match *intent* against the built-in template patterns.\n\nReturns a :class:`DistillationResult` on success, or ``None`` if no\npattern matches.",
+    "decorators": [],
+    "arg_names": [
+      "intent"
+    ],
+    "arg_types": {
+      "intent": "str"
+    },
+    "return_type": "Optional[DistillationResult]",
+    "calls": [
+      "strip",
+      "match",
+      "float",
+      "items",
+      "list",
+      "groupdict",
+      "DistillationResult",
+      "get"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.distill._compile_via_template",
+      "pincher-infer.tests.test_distill.test_list_files",
+      "pincher-infer.tests.test_distill.test_remove_file",
+      "pincher-infer.tests.test_distill.test_copy_file",
+      "pincher-infer.tests.test_distill.test_move_file",
+      "pincher-infer.tests.test_distill.test_create_directory",
+      "pincher-infer.tests.test_distill.test_show_contents",
+      "pincher-infer.tests.test_distill.test_kill_process",
+      "pincher-infer.tests.test_distill.test_git_status",
+      "pincher-infer.tests.test_distill.test_docker_ps",
+      "pincher-infer.tests.test_distill.test_ping",
+      "pincher-infer.tests.test_distill.test_no_match_returns_none"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "__init__",
+    "module": "pincher-infer.pincher_infer.distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/distill.py",
+    "line_start": 279,
+    "line_end": 283,
+    "signature": "def __init__(self, config) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "config"
+    ],
+    "arg_types": {
+      "config": "Optional[InferConfig]"
+    },
+    "return_type": "None",
+    "calls": [
+      "InferConfig",
+      "OpenAI"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "compile_intent",
+    "module": "pincher-infer.pincher_infer.distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/distill.py",
+    "line_start": 287,
+    "line_end": 301,
+    "signature": "def compile_intent(self, intent, context) -> DistillationResult",
+    "docstring": "Compile a natural-language *intent* into a :class:`DistillationResult`.\n\nStrategy:\n  1. If an OpenAI key is configured, ask the LLM.\n  2. Otherwise, fall back to built-in template matching.\n  3. If neither produces a result, return a generic placeholder.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "intent",
+      "context"
+    ],
+    "arg_types": {
+      "intent": "str",
+      "context": "Optional[dict[str, Any]]"
+    },
+    "return_type": "DistillationResult",
+    "calls": [
+      "_compile_via_template",
+      "_compile_via_llm"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.server.distill",
+      "pincher-infer.tests.test_distill.test_compile_known_intent",
+      "pincher-infer.tests.test_distill.test_compile_unknown_intent_falls_back",
+      "pincher-infer.tests.test_distill.test_compile_intent_via_llm",
+      "pincher-infer.tests.test_distill.test_compile_intent_llm_returns_markdown_wrapped_json",
+      "pincher-infer.tests.test_distill.test_compile_intent_llm_returns_invalid_json_falls_back",
+      "pincher-infer.tests.test_distill.test_compile_intent_llm_empty_content"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "refine_action",
+    "module": "pincher-infer.pincher_infer.distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/distill.py",
+    "line_start": 303,
+    "line_end": 320,
+    "signature": "def refine_action(self, action, feedback) -> str",
+    "docstring": "Use the LLM to refine an existing *action* given *feedback*.\n\nIf no LLM key is available the original *action* is returned unchanged.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "action",
+      "feedback"
+    ],
+    "arg_types": {
+      "action": "str",
+      "feedback": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "create",
+      "strip"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.server.refine",
+      "pincher-infer.tests.test_distill.test_refine_without_api_key_returns_unchanged",
+      "pincher-infer.tests.test_distill.test_refine_action",
+      "pincher-infer.tests.test_distill.test_refine_empty_llm_response_returns_original"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "explain",
+    "module": "pincher-infer.pincher_infer.distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/distill.py",
+    "line_start": 322,
+    "line_end": 339,
+    "signature": "def explain(self, action) -> str",
+    "docstring": "Generate a human-readable explanation of *action*.\n\nFalls back to a generic stub if no LLM key is configured.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "action"
+    ],
+    "arg_types": {
+      "action": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "create",
+      "strip"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "_compile_via_llm",
+    "module": "pincher-infer.pincher_infer.distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/distill.py",
+    "line_start": 343,
+    "line_end": 381,
+    "signature": "def _compile_via_llm(self, intent, context) -> DistillationResult",
+    "docstring": "Send *intent* to the LLM and parse the structured JSON response.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "intent",
+      "context"
+    ],
+    "arg_types": {
+      "intent": "str",
+      "context": "dict[str, Any]"
+    },
+    "return_type": "DistillationResult",
+    "calls": [
+      "float",
+      "list",
+      "sub",
+      "dumps",
+      "create",
+      "DistillationResult",
+      "_compile_via_template",
+      "loads",
+      "append",
+      "join",
+      "get"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.distill.compile_intent"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_compile_via_template",
+    "module": "pincher-infer.pincher_infer.distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/distill.py",
+    "line_start": 384,
+    "line_end": 395,
+    "signature": "def _compile_via_template(intent) -> DistillationResult",
+    "docstring": "Match *intent* against built-in templates as a fallback.",
+    "decorators": [
+      "staticmethod"
+    ],
+    "arg_names": [
+      "intent"
+    ],
+    "arg_types": {
+      "intent": "str"
+    },
+    "return_type": "DistillationResult",
+    "calls": [
+      "DistillationResult",
+      "_match_template"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.distill.compile_intent",
+      "pincher-infer.pincher_infer.distill._compile_via_llm"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "create_llm",
+    "module": "pincher-infer.pincher_infer.llm",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/llm.py",
+    "line_start": 107,
+    "line_end": 124,
+    "signature": "def create_llm(backend) -> Optional[LLMInterface]",
+    "docstring": "Factory function to create an LLM interface.\n\nArgs:\n    backend: \"ollama\", \"llama.cpp\", \"stub\", or \"none\"\n    **kwargs: Additional arguments for the LLM backend\n\nReturns:\n    An LLMInterface instance, or None if no LLM is available",
+    "decorators": [],
+    "arg_names": [
+      "backend"
+    ],
+    "arg_types": {
+      "backend": "str"
+    },
+    "return_type": "Optional[LLMInterface]",
+    "calls": [
+      "StubLLM",
+      "OllamaInterface",
+      "LlamaCppInterface"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.__main__.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "infer",
+    "module": "pincher-infer.pincher_infer.llm",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/llm.py",
+    "line_start": 17,
+    "line_end": 27,
+    "signature": "def infer(self, prompt, context) -> str",
+    "docstring": "Run inference on the LLM.\n\nArgs:\n    prompt: The user's prompt\n    context: Additional context (previous turns, etc.)\n\nReturns:\n    The LLM's response text",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "prompt",
+      "context"
+    ],
+    "arg_types": {
+      "prompt": "str",
+      "context": "str"
+    },
+    "return_type": "str",
+    "calls": [],
+    "called_by": [
+      "pincher-infer.pincher_infer.distiller.distill"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "pincher-infer.pincher_infer.llm",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/llm.py",
+    "line_start": 33,
+    "line_end": 35,
+    "signature": "def __init__(self, model, host)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "model",
+      "host"
+    ],
+    "arg_types": {
+      "model": "str",
+      "host": "str"
+    },
+    "return_type": null,
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "infer",
+    "module": "pincher-infer.pincher_infer.llm",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/llm.py",
+    "line_start": 37,
+    "line_end": 47,
+    "signature": "def infer(self, prompt, context) -> str",
+    "docstring": "Run inference via Ollama API.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "prompt",
+      "context"
+    ],
+    "arg_types": {
+      "prompt": "str",
+      "context": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "get",
+      "generate",
+      "Client",
+      "_infer_cli"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.distiller.distill"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_infer_cli",
+    "module": "pincher-infer.pincher_infer.llm",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/llm.py",
+    "line_start": 49,
+    "line_end": 61,
+    "signature": "def _infer_cli(self, prompt, context) -> str",
+    "docstring": "Run inference via ollama CLI.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "prompt",
+      "context"
+    ],
+    "arg_types": {
+      "prompt": "str",
+      "context": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "strip",
+      "run"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "pincher-infer.pincher_infer.llm",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/llm.py",
+    "line_start": 67,
+    "line_end": 70,
+    "signature": "def __init__(self, model_path, n_ctx)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "model_path",
+      "n_ctx"
+    ],
+    "arg_types": {
+      "model_path": "Optional[str]",
+      "n_ctx": "int"
+    },
+    "return_type": null,
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_ensure_loaded",
+    "module": "pincher-infer.pincher_infer.llm",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/llm.py",
+    "line_start": 72,
+    "line_end": 85,
+    "signature": "def _ensure_loaded(self)",
+    "docstring": "Lazy-load the model.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "RuntimeError",
+      "Llama"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "infer",
+    "module": "pincher-infer.pincher_infer.llm",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/llm.py",
+    "line_start": 87,
+    "line_end": 97,
+    "signature": "def infer(self, prompt, context) -> str",
+    "docstring": "Run inference via llama.cpp.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "prompt",
+      "context"
+    ],
+    "arg_types": {
+      "prompt": "str",
+      "context": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "_ensure_loaded",
+      "_llm",
+      "strip"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.distiller.distill"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "infer",
+    "module": "pincher-infer.pincher_infer.llm",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/llm.py",
+    "line_start": 103,
+    "line_end": 104,
+    "signature": "def infer(self, prompt, context) -> str",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "prompt",
+      "context"
+    ],
+    "arg_types": {
+      "prompt": "str",
+      "context": "str"
+    },
+    "return_type": "str",
+    "calls": [],
+    "called_by": [
+      "pincher-infer.pincher_infer.distiller.distill"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/embedder.py",
+    "line_start": 16,
+    "line_end": 19,
+    "signature": "def __init__(self, model_name)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "model_name"
+    ],
+    "arg_types": {
+      "model_name": "str"
+    },
+    "return_type": null,
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_ensure_loaded",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/embedder.py",
+    "line_start": 21,
+    "line_end": 35,
+    "signature": "def _ensure_loaded(self)",
+    "docstring": "Lazy-load the model on first use.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "__import__",
+      "SentenceTransformer",
+      "print",
+      "get_sentence_embedding_dimension"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.embedder.embed",
+      "pincher-infer.pincher_infer.embedder.embed_batch"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "embed",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/embedder.py",
+    "line_start": 37,
+    "line_end": 50,
+    "signature": "def embed(self, text) -> np.ndarray",
+    "docstring": "Embed a single text string.\n\nReturns:\n    numpy array of shape (384,) with float32 values",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "text"
+    ],
+    "arg_types": {
+      "text": "str"
+    },
+    "return_type": "np.ndarray",
+    "calls": [
+      "_ensure_loaded",
+      "astype",
+      "_pseudo_embed",
+      "encode"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "embed_batch",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/embedder.py",
+    "line_start": 52,
+    "line_end": 64,
+    "signature": "def embed_batch(self, texts) -> np.ndarray",
+    "docstring": "Embed multiple text strings.\n\nReturns:\n    numpy array of shape (N, 384) with float32 values",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "texts"
+    ],
+    "arg_types": {
+      "texts": "List[str]"
+    },
+    "return_type": "np.ndarray",
+    "calls": [
+      "_pseudo_embed",
+      "array",
+      "astype",
+      "encode",
+      "_ensure_loaded"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_pseudo_embed",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/embedder.py",
+    "line_start": 66,
+    "line_end": 79,
+    "signature": "def _pseudo_embed(self, text) -> np.ndarray",
+    "docstring": "Generate a deterministic pseudo-embedding from text.\n\nThis is used when the actual model is not available.\nThe embedding is based on character n-gram hashing.\nNOT suitable for production \u2014 only for development/testing.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "text"
+    ],
+    "arg_types": {
+      "text": "str"
+    },
+    "return_type": "np.ndarray",
+    "calls": [
+      "norm",
+      "astype",
+      "hash",
+      "RandomState",
+      "randn"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.embedder.embed",
+      "pincher-infer.pincher_infer.embedder.embed_batch"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "dimension",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/embedder.py",
+    "line_start": 82,
+    "line_end": 84,
+    "signature": "def dimension(self) -> int",
+    "docstring": "Return the embedding dimension.",
+    "decorators": [
+      "property"
+    ],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "is_ready",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/embedder.py",
+    "line_start": 86,
+    "line_end": 88,
+    "signature": "def is_ready(self) -> bool",
+    "docstring": "Check if the embedder is ready (model loaded or pseudo-embed available).",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "bool",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_setup_logging",
+    "module": "pincher-infer.pincher_infer.__main__",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/__main__.py",
+    "line_start": 21,
+    "line_end": 31,
+    "signature": "def _setup_logging(verbose) -> None",
+    "docstring": "Configure logging for the server process.",
+    "decorators": [],
+    "arg_names": [
+      "verbose"
+    ],
+    "arg_types": {
+      "verbose": "bool"
+    },
+    "return_type": "None",
+    "calls": [
+      "basicConfig",
+      "setLevel",
+      "getLogger"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.__main__.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_parse_args",
+    "module": "pincher-infer.pincher_infer.__main__",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/__main__.py",
+    "line_start": 34,
+    "line_end": 66,
+    "signature": "def _parse_args() -> argparse.Namespace",
+    "docstring": "Parse command-line arguments.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "argparse.Namespace",
+    "calls": [
+      "ArgumentParser",
+      "parse_args",
+      "add_argument"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.__main__.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "main",
+    "module": "pincher-infer.pincher_infer.__main__",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/__main__.py",
+    "line_start": 69,
+    "line_end": 111,
+    "signature": "def main() -> None",
+    "docstring": "Main entry point.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "_setup_logging",
+      "getLogger",
+      "Embedder",
+      "from_env",
+      "start",
+      "critical",
+      "_parse_args",
+      "create_llm",
+      "stop",
+      "exit",
+      "info",
+      "ReflexDistiller",
+      "JsonRpcServer"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "_read_toml",
+    "module": "pincher-infer.pincher_infer.config",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/config.py",
+    "line_start": 51,
+    "line_end": 61,
+    "signature": "def _read_toml(path) -> dict",
+    "docstring": "Read a TOML file, returning an empty dict on failure.",
+    "decorators": [],
+    "arg_names": [
+      "path"
+    ],
+    "arg_types": {
+      "path": "Path"
+    },
+    "return_type": "dict",
+    "calls": [
+      "is_file",
+      "load",
+      "open"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.config.load_config"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "load_config",
+    "module": "pincher-infer.pincher_infer.config",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/config.py",
+    "line_start": 64,
+    "line_end": 109,
+    "signature": "def load_config() -> InferConfig",
+    "docstring": "Load configuration from env vars and ``~/.pincher/infer.toml``.\n\nPriority (highest \u2192 lowest):\n  1. Environment variables\n  2. ``~/.pincher/infer.toml``\n  3. Built-in defaults",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "InferConfig",
+    "calls": [
+      "float",
+      "InferConfig",
+      "_read_toml",
+      "get",
+      "int"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.server.main",
+      "pincher-infer.pincher_infer.server.__init__"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_get_model",
+    "module": "pincher-infer.pincher_infer.embed",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/embed.py",
+    "line_start": 29,
+    "line_end": 48,
+    "signature": "def _get_model() -> object",
+    "docstring": "Lazily load and cache the sentence-transformers model.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "object",
+    "calls": [
+      "info",
+      "SentenceTransformer",
+      "warning",
+      "error"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.embed.embed",
+      "pincher-infer.pincher_infer.embed.batch_embed"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "pincher-infer.pincher_infer.embed",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/embed.py",
+    "line_start": 65,
+    "line_end": 71,
+    "signature": "def __init__(self, rpc_call, dimension) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "rpc_call",
+      "dimension"
+    ],
+    "arg_types": {
+      "rpc_call": "Optional[object]",
+      "dimension": "int"
+    },
+    "return_type": "None",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "embed",
+    "module": "pincher-infer.pincher_infer.embed",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/embed.py",
+    "line_start": 75,
+    "line_end": 97,
+    "signature": "def embed(self, text) -> list[float]",
+    "docstring": "Return a float-vector embedding for *text*.\n\nStrategy:\n  1. Try sentence-transformers (local, fast).\n  2. Fall back to pincher-core RPC.\n  3. Ultimate fallback: zero-vector (better than crashing).",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "text"
+    ],
+    "arg_types": {
+      "text": "str"
+    },
+    "return_type": "list[float]",
+    "calls": [
+      "_get_model",
+      "isinstance",
+      "_rpc_call",
+      "tolist",
+      "encode",
+      "warning"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "batch_embed",
+    "module": "pincher-infer.pincher_infer.embed",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/embed.py",
+    "line_start": 99,
+    "line_end": 119,
+    "signature": "def batch_embed(self, texts) -> list[list[float]]",
+    "docstring": "Embed a batch of texts.\n\nUses the model's native batch encoding when available for better\nthroughput; otherwise falls back to sequential :meth:`embed` calls.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "texts"
+    ],
+    "arg_types": {
+      "texts": "list[str]"
+    },
+    "return_type": "list[list[float]]",
+    "calls": [
+      "_get_model",
+      "isinstance",
+      "_rpc_call",
+      "tolist",
+      "encode",
+      "embed",
+      "warning"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "cosine_similarity",
+    "module": "pincher-infer.pincher_infer.embed",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/embed.py",
+    "line_start": 122,
+    "line_end": 135,
+    "signature": "def cosine_similarity(a, b) -> float",
+    "docstring": "Compute cosine similarity between two float vectors.\n\nReturns a value in ``[-1.0, 1.0]``.  Returns ``0.0`` if either\nvector has zero magnitude.",
+    "decorators": [
+      "staticmethod"
+    ],
+    "arg_names": [
+      "a",
+      "b"
+    ],
+    "arg_types": {
+      "a": "list[float]",
+      "b": "list[float]"
+    },
+    "return_type": "float",
+    "calls": [
+      "float",
+      "dot",
+      "asarray",
+      "norm"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_build_parser",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 236,
+    "line_end": 274,
+    "signature": "def _build_parser() -> argparse.ArgumentParser",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "argparse.ArgumentParser",
+    "calls": [
+      "ArgumentParser",
+      "add_argument"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.server.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "main",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 277,
+    "line_end": 327,
+    "signature": "def main() -> None",
+    "docstring": "CLI entry-point for ``pincher-infer``.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "shutdown",
+      "signal",
+      "replace",
+      "bool",
+      "parse_args",
+      "_build_parser",
+      "start",
+      "basicConfig",
+      "load_config",
+      "PincherInferServer",
+      "exit",
+      "info"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "__init__",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 49,
+    "line_end": 50,
+    "signature": "def __init__(self, socket_path) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "socket_path"
+    ],
+    "arg_types": {
+      "socket_path": "str"
+    },
+    "return_type": "None",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "call",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 52,
+    "line_end": 92,
+    "signature": "def call(self, method, params) -> Any",
+    "docstring": "Send a JSON-RPC request to pincher-core and return the result.\n\nUses a fresh socket connection for each call (simple, no connection\nmanagement needed for the low request volume expected).",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "method",
+      "params"
+    ],
+    "arg_types": {
+      "method": "str",
+      "params": "Optional[list[Any]]"
+    },
+    "return_type": "Any",
+    "calls": [
+      "strip",
+      "dumps",
+      "recv",
+      "RuntimeError",
+      "loads",
+      "socket",
+      "error",
+      "sendall",
+      "encode",
+      "connect",
+      "get",
+      "settimeout",
+      "warning"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.server.refine",
+      "pincher-infer.pincher_infer.server.explain"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 106,
+    "line_end": 111,
+    "signature": "def __init__(self, config) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "config"
+    ],
+    "arg_types": {
+      "config": "Optional[InferConfig]"
+    },
+    "return_type": "None",
+    "calls": [
+      "EmbedService",
+      "load_config",
+      "Distiller"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "distill",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 115,
+    "line_end": 127,
+    "signature": "def distill(self, intent) -> dict[str, Any]",
+    "docstring": "Compile a natural-language *intent* into a structured action.\n\nReturns a dict matching :class:`DistillationResult` fields.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "intent"
+    ],
+    "arg_types": {
+      "intent": "str"
+    },
+    "return_type": "dict[str, Any]",
+    "calls": [
+      "info",
+      "compile_intent"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "refine",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 129,
+    "line_end": 151,
+    "signature": "def refine(self, reflex_id, feedback) -> str",
+    "docstring": "Refine an existing reflex's action using LLM feedback.\n\nFetches the current action from pincher-core, asks the LLM to\nrefine it, and returns the revised action string.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "reflex_id",
+      "feedback"
+    ],
+    "arg_types": {
+      "reflex_id": "str",
+      "feedback": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "_ensure_core",
+      "refine_action",
+      "isinstance",
+      "call",
+      "error",
+      "get",
+      "info"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "explain",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 153,
+    "line_end": 169,
+    "signature": "def explain(self, reflex_id) -> str",
+    "docstring": "Generate a human-readable explanation for a reflex.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "reflex_id"
+    ],
+    "arg_types": {
+      "reflex_id": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "_ensure_core",
+      "explain",
+      "isinstance",
+      "call",
+      "error",
+      "get",
+      "info"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.server.explain",
+      "pincher-infer.tests.test_distill.test_explain_without_api_key_returns_stub",
+      "pincher-infer.tests.test_distill.test_explain",
+      "pincher-infer.tests.test_distill.test_explain_empty_llm_response_returns_stub"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "embed",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 171,
+    "line_end": 174,
+    "signature": "def embed(self, text) -> list[float]",
+    "docstring": "Compute an embedding vector for *text*.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "text"
+    ],
+    "arg_types": {
+      "text": "str"
+    },
+    "return_type": "list[float]",
+    "calls": [
+      "debug",
+      "embed"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.distiller.distill",
+      "pincher-infer.pincher_infer.embed.batch_embed",
+      "pincher-infer.pincher_infer.server.embed"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "batch_embed",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 176,
+    "line_end": 179,
+    "signature": "def batch_embed(self, texts) -> list[list[float]]",
+    "docstring": "Compute embedding vectors for a batch of texts.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "texts"
+    ],
+    "arg_types": {
+      "texts": "list[str]"
+    },
+    "return_type": "list[list[float]]",
+    "calls": [
+      "batch_embed",
+      "debug",
+      "len"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.server.batch_embed"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "cosine_similarity",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 181,
+    "line_end": 183,
+    "signature": "def cosine_similarity(self, a, b) -> float",
+    "docstring": "Compute cosine similarity between two vectors.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "a",
+      "b"
+    ],
+    "arg_types": {
+      "a": "list[float]",
+      "b": "list[float]"
+    },
+    "return_type": "float",
+    "calls": [
+      "cosine_similarity"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.server.cosine_similarity"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "start",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 187,
+    "line_end": 215,
+    "signature": "def start(self, host, port) -> None",
+    "docstring": "Start the JSON-RPC server.\n\nWhen *port* is 0 the server listens on the Unix domain socket\nderived from the config's ``socket_path`` (appending ``-infer``).",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "host",
+      "port"
+    ],
+    "arg_types": {
+      "host": "str",
+      "port": "int"
+    },
+    "return_type": "None",
+    "calls": [
+      "exists",
+      "unlink",
+      "CoreBridge",
+      "serve_forever",
+      "register_function",
+      "info",
+      "SimpleJSONRPCServer"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.__main__.main",
+      "pincher-infer.pincher_infer.server.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "shutdown",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 217,
+    "line_end": 221,
+    "signature": "def shutdown(self) -> None",
+    "docstring": "Gracefully shut down the RPC server.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "shutdown",
+      "info"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.server.main",
+      "pincher-infer.pincher_infer.server.shutdown",
+      "pincher-infer.pincher_infer.server._signal_handler"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_ensure_core",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 225,
+    "line_end": 229,
+    "signature": "def _ensure_core(self) -> Optional[CoreBridge]",
+    "docstring": "Lazily initialise the core bridge.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "Optional[CoreBridge]",
+    "calls": [
+      "CoreBridge"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.server.refine",
+      "pincher-infer.pincher_infer.server.explain"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_signal_handler",
+    "module": "pincher-infer.pincher_infer.server",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/server.py",
+    "line_start": 313,
+    "line_end": 316,
+    "signature": "def _signal_handler(signum, _frame) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "signum",
+      "_frame"
+    ],
+    "arg_types": {
+      "signum": "int",
+      "_frame": "Any"
+    },
+    "return_type": "None",
+    "calls": [
+      "shutdown",
+      "info",
+      "exit"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/models.py",
+    "line_start": 29,
+    "line_end": 30,
+    "signature": "def to_dict(self) -> dict[str, str]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "dict[str, str]",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "from_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/models.py",
+    "line_start": 33,
+    "line_end": 34,
+    "signature": "def from_dict(cls, d) -> Capability",
+    "docstring": null,
+    "decorators": [
+      "classmethod"
+    ],
+    "arg_names": [
+      "cls",
+      "d"
+    ],
+    "arg_types": {
+      "d": "dict[str, str]"
+    },
+    "return_type": "Capability",
+    "calls": [
+      "cls"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.models.from_dict"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/models.py",
+    "line_start": 44,
+    "line_end": 48,
+    "signature": "def to_dict(self) -> dict[str, Any]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "dict[str, Any]",
+    "calls": [
+      "to_dict"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "from_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/models.py",
+    "line_start": 51,
+    "line_end": 53,
+    "signature": "def from_dict(cls, d) -> CapabilityManifest",
+    "docstring": null,
+    "decorators": [
+      "classmethod"
+    ],
+    "arg_names": [
+      "cls",
+      "d"
+    ],
+    "arg_types": {
+      "d": "dict[str, Any]"
+    },
+    "return_type": "CapabilityManifest",
+    "calls": [
+      "from_dict",
+      "get",
+      "cls"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.models.from_dict"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/models.py",
+    "line_start": 71,
+    "line_end": 78,
+    "signature": "def to_dict(self) -> dict[str, Any]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "dict[str, Any]",
+    "calls": [
+      "to_dict",
+      "round"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "from_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/models.py",
+    "line_start": 81,
+    "line_end": 91,
+    "signature": "def from_dict(cls, d) -> ReflexCandidate",
+    "docstring": null,
+    "decorators": [
+      "classmethod"
+    ],
+    "arg_names": [
+      "cls",
+      "d"
+    ],
+    "arg_types": {
+      "d": "dict[str, Any]"
+    },
+    "return_type": "ReflexCandidate",
+    "calls": [
+      "from_dict",
+      "get",
+      "cls",
+      "float"
+    ],
+    "called_by": [
+      "pincher-infer.pincher_infer.models.from_dict"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/models.py",
+    "line_start": 106,
+    "line_end": 107,
+    "signature": "def to_dict(self) -> dict[str, Any]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "dict[str, Any]",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/models.py",
+    "line_start": 118,
+    "line_end": 123,
+    "signature": "def to_dict(self) -> dict[str, Any]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "dict[str, Any]",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/models.py",
+    "line_start": 136,
+    "line_end": 143,
+    "signature": "def to_dict(self) -> dict[str, Any]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "dict[str, Any]",
+    "calls": [
+      "round"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/pincher_infer/models.py",
+    "line_start": 169,
+    "line_end": 173,
+    "signature": "def to_dict(self) -> dict[str, Any]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "dict[str, Any]",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_mock_openai_response",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 20,
+    "line_end": 28,
+    "signature": "def _mock_openai_response(content) -> MagicMock",
+    "docstring": "Create a mock that mimics ``openai.ChatCompletion.create()`` return.",
+    "decorators": [],
+    "arg_names": [
+      "content"
+    ],
+    "arg_types": {
+      "content": "str"
+    },
+    "return_type": "MagicMock",
+    "calls": [
+      "MagicMock"
+    ],
+    "called_by": [
+      "pincher-infer.tests.test_distill.test_compile_intent_via_llm",
+      "pincher-infer.tests.test_distill.test_compile_intent_llm_returns_markdown_wrapped_json",
+      "pincher-infer.tests.test_distill.test_compile_intent_llm_returns_invalid_json_falls_back",
+      "pincher-infer.tests.test_distill.test_compile_intent_llm_empty_content",
+      "pincher-infer.tests.test_distill.test_refine_action",
+      "pincher-infer.tests.test_distill.test_explain",
+      "pincher-infer.tests.test_distill.test_refine_empty_llm_response_returns_original",
+      "pincher-infer.tests.test_distill.test_explain_empty_llm_response_returns_stub"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "test_list_files",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 38,
+    "line_end": 45,
+    "signature": "def test_list_files(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertEqual",
+      "assertIsNotNone",
+      "assertIn",
+      "_match_template",
+      "assertGreater"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_remove_file",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 47,
+    "line_end": 53,
+    "signature": "def test_remove_file(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertIn",
+      "assertEqual",
+      "_match_template",
+      "assertIsNotNone"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_copy_file",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 55,
+    "line_end": 60,
+    "signature": "def test_copy_file(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertEqual",
+      "_match_template",
+      "assertIsNotNone"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_move_file",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 62,
+    "line_end": 66,
+    "signature": "def test_move_file(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertEqual",
+      "_match_template",
+      "assertIsNotNone"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_create_directory",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 68,
+    "line_end": 73,
+    "signature": "def test_create_directory(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertEqual",
+      "_match_template",
+      "assertIsNotNone"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_show_contents",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 75,
+    "line_end": 80,
+    "signature": "def test_show_contents(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertEqual",
+      "_match_template",
+      "assertIsNotNone"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_kill_process",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 82,
+    "line_end": 87,
+    "signature": "def test_kill_process(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertEqual",
+      "_match_template",
+      "assertIsNotNone"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_git_status",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 89,
+    "line_end": 93,
+    "signature": "def test_git_status(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertIn",
+      "_match_template",
+      "assertIsNotNone"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_docker_ps",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 95,
+    "line_end": 99,
+    "signature": "def test_docker_ps(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertIn",
+      "_match_template",
+      "assertIsNotNone"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_ping",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 101,
+    "line_end": 106,
+    "signature": "def test_ping(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertEqual",
+      "_match_template",
+      "assertIsNotNone"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_no_match_returns_none",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 108,
+    "line_end": 110,
+    "signature": "def test_no_match_returns_none(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertIsNone",
+      "_match_template"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "setUp",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 120,
+    "line_end": 122,
+    "signature": "def setUp(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "InferConfig",
+      "Distiller"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "test_compile_known_intent",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 124,
+    "line_end": 127,
+    "signature": "def test_compile_known_intent(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertEqual",
+      "compile_intent"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_compile_unknown_intent_falls_back",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 129,
+    "line_end": 134,
+    "signature": "def test_compile_unknown_intent_falls_back(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertIn",
+      "assertEqual",
+      "compile_intent"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_refine_without_api_key_returns_unchanged",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 136,
+    "line_end": 140,
+    "signature": "def test_refine_without_api_key_returns_unchanged(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "refine_action",
+      "assertEqual"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_explain_without_api_key_returns_stub",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 142,
+    "line_end": 144,
+    "signature": "def test_explain_without_api_key_returns_stub(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertIn",
+      "explain"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "setUp",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 154,
+    "line_end": 156,
+    "signature": "def setUp(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "InferConfig",
+      "Distiller"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "test_compile_intent_via_llm",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 158,
+    "line_end": 174,
+    "signature": "def test_compile_intent_via_llm(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "dumps",
+      "assertEqual",
+      "_mock_openai_response",
+      "compile_intent",
+      "assertIn",
+      "object",
+      "assertAlmostEqual"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_compile_intent_llm_returns_markdown_wrapped_json",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 176,
+    "line_end": 191,
+    "signature": "def test_compile_intent_llm_returns_markdown_wrapped_json(self) -> None",
+    "docstring": "LLM sometimes wraps JSON in ```json ... ``` fences.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "dumps",
+      "assertEqual",
+      "compile_intent",
+      "_mock_openai_response",
+      "object"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_compile_intent_llm_returns_invalid_json_falls_back",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 193,
+    "line_end": 203,
+    "signature": "def test_compile_intent_llm_returns_invalid_json_falls_back(self) -> None",
+    "docstring": "Invalid LLM output should fall back to template matching.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "_mock_openai_response",
+      "compile_intent",
+      "assertEqual",
+      "assertIn",
+      "object"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_compile_intent_llm_empty_content",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 205,
+    "line_end": 213,
+    "signature": "def test_compile_intent_llm_empty_content(self) -> None",
+    "docstring": "Empty LLM response should fall back to template matching.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "object",
+      "_mock_openai_response",
+      "compile_intent",
+      "assertEqual"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_refine_action",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 215,
+    "line_end": 224,
+    "signature": "def test_refine_action(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "object",
+      "_mock_openai_response",
+      "refine_action",
+      "assertEqual"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_explain",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 226,
+    "line_end": 235,
+    "signature": "def test_explain(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "object",
+      "_mock_openai_response",
+      "assertEqual",
+      "explain"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_refine_empty_llm_response_returns_original",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 237,
+    "line_end": 244,
+    "signature": "def test_refine_empty_llm_response_returns_original(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "object",
+      "_mock_openai_response",
+      "refine_action",
+      "assertEqual"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_explain_empty_llm_response_returns_stub",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 246,
+    "line_end": 253,
+    "signature": "def test_explain_empty_llm_response_returns_stub(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "assertIn",
+      "_mock_openai_response",
+      "object",
+      "explain"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_default_values",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 263,
+    "line_end": 268,
+    "signature": "def test_default_values(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "DistillationResult",
+      "assertEqual"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_frozen",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 270,
+    "line_end": 273,
+    "signature": "def test_frozen(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "DistillationResult",
+      "assertRaises"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_full_construction",
+    "module": "pincher-infer.tests.test_distill",
+    "file_path": "/home/phoenix/repos/pincherOS/pincher-infer/tests/test_distill.py",
+    "line_start": 275,
+    "line_end": 283,
+    "signature": "def test_full_construction(self) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "DistillationResult",
+      "len",
+      "assertEqual"
+    ],
+    "called_by": [],
+    "has_tests": true
+  }
+]

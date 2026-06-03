@@ -1,0 +1,906 @@
+[
+  {
+    "function_name": "remaining_usd",
+    "module": "tools.model_router",
+    "input_text": "function: remaining_usd signature: def remaining_usd(self) -> float Remaining budget in USD.",
+    "output_text": "returns: float calls: max Remaining budget in USD. behavior: \"\"\"Remaining budget in USD.\"\"\"\n        return max(0.0, self.max_budget_usd - self.spent_usd)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "is_exhausted",
+    "module": "tools.model_router",
+    "input_text": "function: is_exhausted signature: def is_exhausted(self) -> bool Whether the budget has been exceeded.",
+    "output_text": "returns: bool Whether the budget has been exceeded. behavior: \"\"\"Whether the budget has been exceeded.\"\"\"\n        return self.spent_usd >= self.max_budget_usd",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "record_spend",
+    "module": "tools.model_router",
+    "input_text": "function: record_spend signature: def record_spend(self, amount_usd) -> bool arg amount_usd: float Record a spend and return whether it fits within budget.\n\nArgs:\n    amount_usd: The cost to record.\n\nReturns:\n    ``True`` if the spend was recorded (within budget),\n    ``False`` if it would exceed the budget.",
+    "output_text": "returns: bool calls: warning Record a spend and return whether it fits within budget.\n\nArgs:\n    amount_usd: The cost to record.\n\nReturns:\n    ``True`` if the spend was recorded (within budget),\n    ``False`` if it would exceed the budget. behavior: \"\"\"Record a spend and return whether it fits within budget.\n\n        Args:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "tools.model_router",
+    "input_text": "function: __init__ signature: def __init__(self, client, patterns, default_budget_usd, similarity_threshold) -> None arg client: DeepInfraClient arg patterns: Optional[list[ComplexityPattern]] arg default_budget_usd: float arg similarity_threshold: float",
+    "output_text": "returns: None calls: Lock behavior: self,\n        client: DeepInfraClient,\n        patterns: Optional[list[ComplexityPattern]] = None,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "create_session",
+    "module": "tools.model_router",
+    "input_text": "function: create_session signature: def create_session(self, session_id, budget_usd) -> SessionBudget called_by: tools.model_router.get_or_create_session arg session_id: str arg budget_usd: Optional[float] Create a new session with a budget.\n\nArgs:\n    session_id: Unique identifier for the session.\n    budget_usd: Budget in USD.  Uses the default if not specified.\n\nReturns:\n    The created :class:`SessionBudget`.",
+    "output_text": "returns: SessionBudget calls: info, SessionBudget Create a new session with a budget.\n\nArgs:\n    session_id: Unique identifier for the session.\n    budget_usd: Budget in USD.  Uses the default if not specified.\n\nReturns:\n    The created :class:`SessionBudget`. behavior: self,\n        session_id: str,\n        budget_usd: Optional[float] = None,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "get_session",
+    "module": "tools.model_router",
+    "input_text": "function: get_session signature: def get_session(self, session_id) -> Optional[SessionBudget] arg session_id: str Retrieve a session by ID.\n\nArgs:\n    session_id: The session identifier.\n\nReturns:\n    The :class:`SessionBudget` if it exists, else ``None``.",
+    "output_text": "returns: Optional[SessionBudget] calls: get Retrieve a session by ID.\n\nArgs:\n    session_id: The session identifier.\n\nReturns:\n    The :class:`SessionBudget` if it exists, else ``None``. behavior: \"\"\"Retrieve a session by ID.\n\n        Args:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "get_or_create_session",
+    "module": "tools.model_router",
+    "input_text": "function: get_or_create_session signature: def get_or_create_session(self, session_id, budget_usd) -> SessionBudget arg session_id: str arg budget_usd: Optional[float] Get an existing session or create a new one.\n\nArgs:\n    session_id: The session identifier.\n    budget_usd: Budget for a new session (ignored if session exists).\n\nReturns:\n    The :class:`SessionBudget`.",
+    "output_text": "returns: SessionBudget calls: create_session Get an existing session or create a new one.\n\nArgs:\n    session_id: The session identifier.\n    budget_usd: Budget for a new session (ignored if session exists).\n\nReturns:\n    The :class:`SessionBudget`. behavior: self,\n        session_id: str,\n        budget_usd: Optional[float] = None,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_cosine_similarity",
+    "module": "tools.model_router",
+    "input_text": "function: _cosine_similarity signature: def _cosine_similarity(a, b) -> float arg a: list[float] arg b: list[float] Compute cosine similarity between two vectors.\n\nArgs:\n    a: First vector.\n    b: Second vector.\n\nReturns:\n    Cosine similarity in ``[-1.0, 1.0]``.",
+    "output_text": "returns: float calls: sum, sqrt, len, zip Compute cosine similarity between two vectors.\n\nArgs:\n    a: First vector.\n    b: Second vector.\n\nReturns:\n    Cosine similarity in ``[-1.0, 1.0]``. behavior: \"\"\"Compute cosine similarity between two vectors.\n\n        Args:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_heuristic_classify",
+    "module": "tools.model_router",
+    "input_text": "function: _heuristic_classify signature: def _heuristic_classify(intent) -> Complexity arg intent: str Classify complexity using simple heuristic rules.\n\nUsed as a fallback when embeddings are unavailable.\n\nArgs:\n    intent: The user's intent text.\n\nReturns:\n    The estimated :class:`Complexity`.",
+    "output_text": "returns: Complexity calls: lower, len Classify complexity using simple heuristic rules.\n\nUsed as a fallback when embeddings are unavailable.\n\nArgs:\n    intent: The user's intent text.\n\nReturns:\n    The estimated :class:`Complexity`. behavior: \"\"\"Classify complexity using simple heuristic rules.\n\n        Used as a fallback when embeddings are unavailable.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "session_summary",
+    "module": "tools.model_router",
+    "input_text": "function: session_summary signature: def session_summary(self, session_id) -> Optional[dict[str, Any]] called_by: tools.model_router.all_sessions_summary arg session_id: str Generate a summary of a session's routing activity.\n\nArgs:\n    session_id: The session to summarize.\n\nReturns:\n    A dict with session stats, or ``None`` if the session doesn't exist.",
+    "output_text": "returns: Optional[dict[str, Any]] calls: get, round Generate a summary of a session's routing activity.\n\nArgs:\n    session_id: The session to summarize.\n\nReturns:\n    A dict with session stats, or ``None`` if the session doesn't exist. behavior: \"\"\"Generate a summary of a session's routing activity.\n\n        Args:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "all_sessions_summary",
+    "module": "tools.model_router",
+    "input_text": "function: all_sessions_summary signature: def all_sessions_summary(self) -> list[dict[str, Any]] Generate summaries for all sessions.\n\nReturns:\n    A list of session summary dicts.",
+    "output_text": "returns: list[dict[str, Any]] calls: session_summary Generate summaries for all sessions.\n\nReturns:\n    A list of session summary dicts. behavior: \"\"\"Generate summaries for all sessions.\n\n        Returns:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "tools.deepinfra_client",
+    "input_text": "function: __init__ signature: def __init__(self, max_tokens, refill_rate) -> None arg max_tokens: int arg refill_rate: float",
+    "output_text": "returns: None calls: float, Lock, monotonic behavior: self._max_tokens = max_tokens\n        self._refill_rate = refill_rate\n        self._tokens: float = float(max_tokens)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_refill",
+    "module": "tools.deepinfra_client",
+    "input_text": "function: _refill signature: def _refill(self) -> None Refill tokens based on elapsed time.",
+    "output_text": "returns: None calls: min, monotonic Refill tokens based on elapsed time. behavior: \"\"\"Refill tokens based on elapsed time.\"\"\"\n        now = time.monotonic()\n        elapsed = now - self._last_refill",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "tools.deepinfra_client",
+    "input_text": "function: __init__ signature: def __init__(self, api_key, base_url, models, max_retries, retry_base_delay, rate_limit_max, rate_limit_refill) -> None arg api_key: Optional[str] arg base_url: str arg models: Optional[list[ModelInfo]] arg max_retries: int arg retry_base_delay: float arg rate_limit_max: int arg rate_limit_refill: float",
+    "output_text": "returns: None calls: rstrip, get, RateLimiter behavior: self,\n        api_key: Optional[str] = None,\n        base_url: str = \"https://api.deepinfra.com/v1/openai\",",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "get_model",
+    "module": "tools.deepinfra_client",
+    "input_text": "function: get_model signature: def get_model(self, model_id) -> Optional[ModelInfo] arg model_id: str Look up a model by its identifier.\n\nArgs:\n    model_id: The DeepInfra model identifier.\n\nReturns:\n    The :class:`ModelInfo` if found, otherwise ``None``.",
+    "output_text": "returns: Optional[ModelInfo] calls: get Look up a model by its identifier.\n\nArgs:\n    model_id: The DeepInfra model identifier.\n\nReturns:\n    The :class:`ModelInfo` if found, otherwise ``None``. behavior: \"\"\"Look up a model by its identifier.\n\n        Args:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "get_models_by_tier",
+    "module": "tools.deepinfra_client",
+    "input_text": "function: get_models_by_tier signature: def get_models_by_tier(self, tier) -> list[ModelInfo] arg tier: CostTier Return all models in a given cost tier.\n\nArgs:\n    tier: The cost tier to filter by.\n\nReturns:\n    List of :class:`ModelInfo` objects in the requested tier.",
+    "output_text": "returns: list[ModelInfo] calls: values Return all models in a given cost tier.\n\nArgs:\n    tier: The cost tier to filter by.\n\nReturns:\n    List of :class:`ModelInfo` objects in the requested tier. behavior: \"\"\"Return all models in a given cost tier.\n\n        Args:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "get_cheapest_chat_model",
+    "module": "tools.deepinfra_client",
+    "input_text": "function: get_cheapest_chat_model signature: def get_cheapest_chat_model(self, tier) -> Optional[ModelInfo] arg tier: CostTier Find the cheapest chat model in the given tier.\n\nArgs:\n    tier: Cost tier to search within.\n\nReturns:\n    The cheapest :class:`ModelInfo` for chat, or ``None``.",
+    "output_text": "returns: Optional[ModelInfo] calls: values, min Find the cheapest chat model in the given tier.\n\nArgs:\n    tier: Cost tier to search within.\n\nReturns:\n    The cheapest :class:`ModelInfo` for chat, or ``None``. behavior: \"\"\"Find the cheapest chat model in the given tier.\n\n        Args:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "get_embedding_model",
+    "module": "tools.deepinfra_client",
+    "input_text": "function: get_embedding_model signature: def get_embedding_model(self) -> Optional[ModelInfo] Find the cheapest embedding model.\n\nReturns:\n    The cheapest embedding :class:`ModelInfo`, or ``None``.",
+    "output_text": "returns: Optional[ModelInfo] calls: values, min Find the cheapest embedding model.\n\nReturns:\n    The cheapest embedding :class:`ModelInfo`, or ``None``. behavior: \"\"\"Find the cheapest embedding model.\n\n        Returns:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "register_model",
+    "module": "tools.deepinfra_client",
+    "input_text": "function: register_model signature: def register_model(self, model) -> None arg model: ModelInfo Add or update a model in the registry.\n\nArgs:\n    model: The :class:`ModelInfo` to register.",
+    "output_text": "returns: None calls: info Add or update a model in the registry.\n\nArgs:\n    model: The :class:`ModelInfo` to register. behavior: \"\"\"Add or update a model in the registry.\n\n        Args:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "total_cost_usd",
+    "module": "tools.deepinfra_client",
+    "input_text": "function: total_cost_usd signature: def total_cost_usd(self) -> float Cumulative cost in USD across all requests.",
+    "output_text": "returns: float Cumulative cost in USD across all requests. behavior: \"\"\"Cumulative cost in USD across all requests.\"\"\"\n        return self._total_cost_usd",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_estimate_cost",
+    "module": "tools.deepinfra_client",
+    "input_text": "function: _estimate_cost signature: def _estimate_cost(self, model_info, input_tokens, output_tokens) -> float arg model_info: ModelInfo arg input_tokens: int arg output_tokens: int Estimate the cost of a request in USD.\n\nArgs:\n    model_info: The model used.\n    input_tokens: Number of input tokens consumed.\n    output_tokens: Number of output tokens produced.\n\nReturns:\n    Estimated cost in USD.",
+    "output_text": "returns: float Estimate the cost of a request in USD.\n\nArgs:\n    model_info: The model used.\n    input_tokens: Number of input tokens consumed.\n    output_tokens: Number of output tokens produced.\n\nReturns:\n    Estimated cost in USD. behavior: self,\n        model_info: ModelInfo,\n        input_tokens: int,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "pincher-infer.pincher_infer.distiller",
+    "input_text": "function: __init__ signature: def __init__(self, llm, embedder) arg llm: Optional[LLMInterface] arg embedder: Optional[Embedder]",
+    "output_text": "calls: StubLLM, Embedder behavior: self.llm = llm or StubLLM()\n        self.embedder = embedder or Embedder()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "distill",
+    "module": "pincher-infer.pincher_infer.distiller",
+    "input_text": "function: distill signature: def distill(self, user_input, action, result) -> Dict[str, Any] arg user_input: str arg action: str arg result: str Distill a reflex from a user interaction.\n\nArgs:\n    user_input: What the user said/asked\n    action: What action was taken\n    result: What the result was\n\nReturns:\n    A reflex definition dict",
+    "output_text": "returns: Dict[str, Any] calls: infer, format, tolist, _parse_response, embed Distill a reflex from a user interaction.\n\nArgs:\n    user_input: What the user said/asked\n    action: What action was taken\n    result: What the result was\n\nReturns:\n    A reflex definition dict behavior: \"\"\"Distill a reflex from a user interaction.\n\n        Args:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_parse_response",
+    "module": "pincher-infer.pincher_infer.distiller",
+    "input_text": "function: _parse_response signature: def _parse_response(self, response, user_input, action) -> Dict[str, Any] called_by: pincher-infer.pincher_infer.distiller.distill arg response: str arg user_input: str arg action: str Parse the LLM response into a reflex definition.\n\nFalls back to heuristic distillation if parsing fails.",
+    "output_text": "returns: Dict[str, Any] calls: group, loads, _heuristic_distill, search, get Parse the LLM response into a reflex definition.\n\nFalls back to heuristic distillation if parsing fails. behavior: \"\"\"Parse the LLM response into a reflex definition.\n\n        Falls back to heuristic distillation if parsing fails.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_heuristic_distill",
+    "module": "pincher-infer.pincher_infer.distiller",
+    "input_text": "function: _heuristic_distill signature: def _heuristic_distill(self, user_input, action) -> Dict[str, Any] called_by: pincher-infer.pincher_infer.distiller._parse_response arg user_input: str arg action: str Heuristic reflex distillation when LLM is unavailable.\n\nThis creates a simple reflex that matches similar user inputs\nand replays the same action.",
+    "output_text": "returns: Dict[str, Any] calls: lower, join, _infer_capabilities, findall Heuristic reflex distillation when LLM is unavailable.\n\nThis creates a simple reflex that matches similar user inputs\nand replays the same action. behavior: \"\"\"Heuristic reflex distillation when LLM is unavailable.\n\n        This creates a simple reflex that matches similar user inputs",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_infer_capabilities",
+    "module": "pincher-infer.pincher_infer.distiller",
+    "input_text": "function: _infer_capabilities signature: def _infer_capabilities(self, action) -> list called_by: pincher-infer.pincher_infer.distiller._heuristic_distill arg action: str Infer required capabilities from an action template.",
+    "output_text": "returns: list calls: append, any Infer required capabilities from an action template. behavior: \"\"\"Infer required capabilities from an action template.\"\"\"\n        capabilities = []",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_match_template",
+    "module": "pincher-infer.pincher_infer.distill",
+    "input_text": "function: _match_template signature: def _match_template(intent) -> Optional[DistillationResult] called_by: pincher-infer.pincher_infer.distill._compile_via_template, pincher-infer.tests.test_distill.test_list_files, pincher-infer.tests.test_distill.test_remove_file, pincher-infer.tests.test_distill.test_copy_file, pincher-infer.tests.test_distill.test_move_file, pincher-infer.tests.test_distill.test_create_directory, pincher-infer.tests.test_distill.test_show_contents, pincher-infer.tests.test_distill.test_kill_process, pincher-infer.tests.test_distill.test_git_status, pincher-infer.tests.test_distill.test_docker_ps arg intent: str Try to match *intent* against the built-in template patterns.\n\nReturns a :class:`DistillationResult` on success, or ``None`` if no\npattern matches.",
+    "output_text": "returns: Optional[DistillationResult] calls: strip, match, float, items, list, groupdict, DistillationResult, get Try to match *intent* against the built-in template patterns.\n\nReturns a :class:`DistillationResult` on success, or ``None`` if no\npattern matches. behavior: \"\"\"Try to match *intent* against the built-in template patterns.\n\n    Returns a :class:`DistillationResult` on success, or ``None`` if no",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "pincher-infer.pincher_infer.distill",
+    "input_text": "function: __init__ signature: def __init__(self, config) -> None arg config: Optional[InferConfig]",
+    "output_text": "returns: None calls: InferConfig, OpenAI behavior: self._config = config or InferConfig()\n        self._client: Optional[OpenAI] = None\n        if self._config.api_key:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "compile_intent",
+    "module": "pincher-infer.pincher_infer.distill",
+    "input_text": "function: compile_intent signature: def compile_intent(self, intent, context) -> DistillationResult called_by: pincher-infer.pincher_infer.server.distill, pincher-infer.tests.test_distill.test_compile_known_intent, pincher-infer.tests.test_distill.test_compile_unknown_intent_falls_back, pincher-infer.tests.test_distill.test_compile_intent_via_llm, pincher-infer.tests.test_distill.test_compile_intent_llm_returns_markdown_wrapped_json, pincher-infer.tests.test_distill.test_compile_intent_llm_returns_invalid_json_falls_back, pincher-infer.tests.test_distill.test_compile_intent_llm_empty_content arg intent: str arg context: Optional[dict[str, Any]] Compile a natural-language *intent* into a :class:`DistillationResult`.\n\nStrategy:\n  1. If an OpenAI key is configured, ask the LLM.\n  2. Otherwise, fall back to built-in template matching.\n  3. If neither produces a result, return a generic placeholder.",
+    "output_text": "returns: DistillationResult calls: _compile_via_template, _compile_via_llm Compile a natural-language *intent* into a :class:`DistillationResult`.\n\nStrategy:\n  1. If an OpenAI key is configured, ask the LLM.\n  2. Otherwise, fall back to built-in template matching.\n  3. If neither produces a result, return a generic placeholder. behavior: self,\n        intent: str,\n        context: Optional[dict[str, Any]] = None,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "refine_action",
+    "module": "pincher-infer.pincher_infer.distill",
+    "input_text": "function: refine_action signature: def refine_action(self, action, feedback) -> str called_by: pincher-infer.pincher_infer.server.refine, pincher-infer.tests.test_distill.test_refine_without_api_key_returns_unchanged, pincher-infer.tests.test_distill.test_refine_action, pincher-infer.tests.test_distill.test_refine_empty_llm_response_returns_original arg action: str arg feedback: str Use the LLM to refine an existing *action* given *feedback*.\n\nIf no LLM key is available the original *action* is returned unchanged.",
+    "output_text": "returns: str calls: create, strip Use the LLM to refine an existing *action* given *feedback*.\n\nIf no LLM key is available the original *action* is returned unchanged. behavior: \"\"\"Use the LLM to refine an existing *action* given *feedback*.\n\n        If no LLM key is available the original *action* is returned unchanged.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "explain",
+    "module": "pincher-infer.pincher_infer.distill",
+    "input_text": "function: explain signature: def explain(self, action) -> str arg action: str Generate a human-readable explanation of *action*.\n\nFalls back to a generic stub if no LLM key is configured.",
+    "output_text": "returns: str calls: create, strip Generate a human-readable explanation of *action*.\n\nFalls back to a generic stub if no LLM key is configured. behavior: \"\"\"Generate a human-readable explanation of *action*.\n\n        Falls back to a generic stub if no LLM key is configured.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_compile_via_llm",
+    "module": "pincher-infer.pincher_infer.distill",
+    "input_text": "function: _compile_via_llm signature: def _compile_via_llm(self, intent, context) -> DistillationResult called_by: pincher-infer.pincher_infer.distill.compile_intent arg intent: str arg context: dict[str, Any] Send *intent* to the LLM and parse the structured JSON response.",
+    "output_text": "returns: DistillationResult calls: float, list, sub, dumps, create, DistillationResult, _compile_via_template, loads, append, join Send *intent* to the LLM and parse the structured JSON response. behavior: self,\n        intent: str,\n        context: dict[str, Any],",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_compile_via_template",
+    "module": "pincher-infer.pincher_infer.distill",
+    "input_text": "function: _compile_via_template signature: def _compile_via_template(intent) -> DistillationResult called_by: pincher-infer.pincher_infer.distill.compile_intent, pincher-infer.pincher_infer.distill._compile_via_llm arg intent: str Match *intent* against built-in templates as a fallback.",
+    "output_text": "returns: DistillationResult calls: DistillationResult, _match_template Match *intent* against built-in templates as a fallback. behavior: \"\"\"Match *intent* against built-in templates as a fallback.\"\"\"\n        result = _match_template(intent)\n        if result is not None:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "create_llm",
+    "module": "pincher-infer.pincher_infer.llm",
+    "input_text": "function: create_llm signature: def create_llm(backend) -> Optional[LLMInterface] called_by: pincher-infer.pincher_infer.__main__.main arg backend: str Factory function to create an LLM interface.\n\nArgs:\n    backend: \"ollama\", \"llama.cpp\", \"stub\", or \"none\"\n    **kwargs: Additional arguments for the LLM backend\n\nReturns:\n    An LLMInterface instance, or None if no LLM is available",
+    "output_text": "returns: Optional[LLMInterface] calls: StubLLM, OllamaInterface, LlamaCppInterface Factory function to create an LLM interface.\n\nArgs:\n    backend: \"ollama\", \"llama.cpp\", \"stub\", or \"none\"\n    **kwargs: Additional arguments for the LLM backend\n\nReturns:\n    An LLMInterface instance, or None if no LLM is available behavior: \"\"\"Factory function to create an LLM interface.\n\n    Args:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "infer",
+    "module": "pincher-infer.pincher_infer.llm",
+    "input_text": "function: infer signature: def infer(self, prompt, context) -> str called_by: pincher-infer.pincher_infer.distiller.distill arg prompt: str arg context: str Run inference on the LLM.\n\nArgs:\n    prompt: The user's prompt\n    context: Additional context (previous turns, etc.)\n\nReturns:\n    The LLM's response text",
+    "output_text": "returns: str Run inference on the LLM.\n\nArgs:\n    prompt: The user's prompt\n    context: Additional context (previous turns, etc.)\n\nReturns:\n    The LLM's response text behavior: \"\"\"Run inference on the LLM.\n\n        Args:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "pincher-infer.pincher_infer.llm",
+    "input_text": "function: __init__ signature: def __init__(self, model, host) arg model: str arg host: str",
+    "output_text": "behavior: self.model = model\n        self.host = host",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "infer",
+    "module": "pincher-infer.pincher_infer.llm",
+    "input_text": "function: infer signature: def infer(self, prompt, context) -> str called_by: pincher-infer.pincher_infer.distiller.distill arg prompt: str arg context: str Run inference via Ollama API.",
+    "output_text": "returns: str calls: get, generate, Client, _infer_cli Run inference via Ollama API. behavior: \"\"\"Run inference via Ollama API.\"\"\"\n        try:\n            import ollama",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_infer_cli",
+    "module": "pincher-infer.pincher_infer.llm",
+    "input_text": "function: _infer_cli signature: def _infer_cli(self, prompt, context) -> str arg prompt: str arg context: str Run inference via ollama CLI.",
+    "output_text": "returns: str calls: strip, run Run inference via ollama CLI. behavior: \"\"\"Run inference via ollama CLI.\"\"\"\n        full_prompt = f\"{context}\\n\\n{prompt}\" if context else prompt\n        try:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "pincher-infer.pincher_infer.llm",
+    "input_text": "function: __init__ signature: def __init__(self, model_path, n_ctx) arg model_path: Optional[str] arg n_ctx: int",
+    "output_text": "behavior: self.model_path = model_path\n        self.n_ctx = n_ctx\n        self._llm = None",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_ensure_loaded",
+    "module": "pincher-infer.pincher_infer.llm",
+    "input_text": "function: _ensure_loaded signature: def _ensure_loaded(self) Lazy-load the model.",
+    "output_text": "calls: RuntimeError, Llama Lazy-load the model. behavior: \"\"\"Lazy-load the model.\"\"\"\n        if self._llm is not None:\n            return",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "infer",
+    "module": "pincher-infer.pincher_infer.llm",
+    "input_text": "function: infer signature: def infer(self, prompt, context) -> str called_by: pincher-infer.pincher_infer.distiller.distill arg prompt: str arg context: str Run inference via llama.cpp.",
+    "output_text": "returns: str calls: _ensure_loaded, _llm, strip Run inference via llama.cpp. behavior: \"\"\"Run inference via llama.cpp.\"\"\"\n        self._ensure_loaded()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "infer",
+    "module": "pincher-infer.pincher_infer.llm",
+    "input_text": "function: infer signature: def infer(self, prompt, context) -> str called_by: pincher-infer.pincher_infer.distiller.distill arg prompt: str arg context: str",
+    "output_text": "returns: str behavior: return f\"[stub] Received prompt: {prompt[:100]}...\"",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "input_text": "function: __init__ signature: def __init__(self, model_name) arg model_name: str",
+    "output_text": "behavior: self.model_name = model_name\n        self._model = None\n        self._dimension = 384  # MiniLM-L6 output dimension",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_ensure_loaded",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "input_text": "function: _ensure_loaded signature: def _ensure_loaded(self) called_by: pincher-infer.pincher_infer.embedder.embed, pincher-infer.pincher_infer.embedder.embed_batch Lazy-load the model on first use.",
+    "output_text": "calls: __import__, SentenceTransformer, print, get_sentence_embedding_dimension Lazy-load the model on first use. behavior: \"\"\"Lazy-load the model on first use.\"\"\"\n        if self._model is not None:\n            return",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "embed",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "input_text": "function: embed signature: def embed(self, text) -> np.ndarray arg text: str Embed a single text string.\n\nReturns:\n    numpy array of shape (384,) with float32 values",
+    "output_text": "returns: np.ndarray calls: _ensure_loaded, astype, _pseudo_embed, encode Embed a single text string.\n\nReturns:\n    numpy array of shape (384,) with float32 values behavior: \"\"\"Embed a single text string.\n\n        Returns:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "embed_batch",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "input_text": "function: embed_batch signature: def embed_batch(self, texts) -> np.ndarray arg texts: List[str] Embed multiple text strings.\n\nReturns:\n    numpy array of shape (N, 384) with float32 values",
+    "output_text": "returns: np.ndarray calls: _pseudo_embed, array, astype, encode, _ensure_loaded Embed multiple text strings.\n\nReturns:\n    numpy array of shape (N, 384) with float32 values behavior: \"\"\"Embed multiple text strings.\n\n        Returns:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_pseudo_embed",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "input_text": "function: _pseudo_embed signature: def _pseudo_embed(self, text) -> np.ndarray called_by: pincher-infer.pincher_infer.embedder.embed, pincher-infer.pincher_infer.embedder.embed_batch arg text: str Generate a deterministic pseudo-embedding from text.\n\nThis is used when the actual model is not available.\nThe embedding is based on character n-gram hashing.\nNOT suitable for production \u2014 only for development/testing.",
+    "output_text": "returns: np.ndarray calls: norm, astype, hash, RandomState, randn Generate a deterministic pseudo-embedding from text.\n\nThis is used when the actual model is not available.\nThe embedding is based on character n-gram hashing.\nNOT suitable for production \u2014 only for development/testing. behavior: \"\"\"Generate a deterministic pseudo-embedding from text.\n\n        This is used when the actual model is not available.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "dimension",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "input_text": "function: dimension signature: def dimension(self) -> int Return the embedding dimension.",
+    "output_text": "returns: int Return the embedding dimension. behavior: \"\"\"Return the embedding dimension.\"\"\"\n        return self._dimension",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "is_ready",
+    "module": "pincher-infer.pincher_infer.embedder",
+    "input_text": "function: is_ready signature: def is_ready(self) -> bool Check if the embedder is ready (model loaded or pseudo-embed available).",
+    "output_text": "returns: bool Check if the embedder is ready (model loaded or pseudo-embed available). behavior: \"\"\"Check if the embedder is ready (model loaded or pseudo-embed available).\"\"\"\n        return True  # Pseudo-embed is always available",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_setup_logging",
+    "module": "pincher-infer.pincher_infer.__main__",
+    "input_text": "function: _setup_logging signature: def _setup_logging(verbose) -> None called_by: pincher-infer.pincher_infer.__main__.main arg verbose: bool Configure logging for the server process.",
+    "output_text": "returns: None calls: basicConfig, setLevel, getLogger Configure logging for the server process. behavior: \"\"\"Configure logging for the server process.\"\"\"\n    level = logging.DEBUG if verbose else logging.INFO\n    logging.basicConfig(",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_parse_args",
+    "module": "pincher-infer.pincher_infer.__main__",
+    "input_text": "function: _parse_args signature: def _parse_args() -> argparse.Namespace called_by: pincher-infer.pincher_infer.__main__.main Parse command-line arguments.",
+    "output_text": "returns: argparse.Namespace calls: ArgumentParser, parse_args, add_argument Parse command-line arguments. behavior: \"\"\"Parse command-line arguments.\"\"\"\n    parser = argparse.ArgumentParser(\n        prog=\"pincher-infer\",",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "pincher-infer.pincher_infer.__main__",
+    "input_text": "function: main signature: def main() -> None Main entry point.",
+    "output_text": "returns: None calls: _setup_logging, getLogger, Embedder, from_env, start, critical, _parse_args, create_llm, stop, exit Main entry point. behavior: \"\"\"Main entry point.\"\"\"\n    args = _parse_args()\n    _setup_logging(verbose=args.verbose)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_read_toml",
+    "module": "pincher-infer.pincher_infer.config",
+    "input_text": "function: _read_toml signature: def _read_toml(path) -> dict called_by: pincher-infer.pincher_infer.config.load_config arg path: Path Read a TOML file, returning an empty dict on failure.",
+    "output_text": "returns: dict calls: is_file, load, open Read a TOML file, returning an empty dict on failure. behavior: \"\"\"Read a TOML file, returning an empty dict on failure.\"\"\"\n    if tomllib is None:\n        return {}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "load_config",
+    "module": "pincher-infer.pincher_infer.config",
+    "input_text": "function: load_config signature: def load_config() -> InferConfig called_by: pincher-infer.pincher_infer.server.main, pincher-infer.pincher_infer.server.__init__ Load configuration from env vars and ``~/.pincher/infer.toml``.\n\nPriority (highest \u2192 lowest):\n  1. Environment variables\n  2. ``~/.pincher/infer.toml``\n  3. Built-in defaults",
+    "output_text": "returns: InferConfig calls: float, InferConfig, _read_toml, get, int Load configuration from env vars and ``~/.pincher/infer.toml``.\n\nPriority (highest \u2192 lowest):\n  1. Environment variables\n  2. ``~/.pincher/infer.toml``\n  3. Built-in defaults behavior: \"\"\"Load configuration from env vars and ``~/.pincher/infer.toml``.\n\n    Priority (highest \u2192 lowest):",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_get_model",
+    "module": "pincher-infer.pincher_infer.embed",
+    "input_text": "function: _get_model signature: def _get_model() -> object called_by: pincher-infer.pincher_infer.embed.embed, pincher-infer.pincher_infer.embed.batch_embed Lazily load and cache the sentence-transformers model.",
+    "output_text": "returns: object calls: info, SentenceTransformer, warning, error Lazily load and cache the sentence-transformers model. behavior: \"\"\"Lazily load and cache the sentence-transformers model.\"\"\"\n    global _model  # noqa: PLW0603\n    if _model is not None:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "pincher-infer.pincher_infer.embed",
+    "input_text": "function: __init__ signature: def __init__(self, rpc_call, dimension) -> None arg rpc_call: Optional[object] arg dimension: int",
+    "output_text": "returns: None behavior: self,\n        rpc_call: Optional[object] = None,\n        dimension: int = 384,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "embed",
+    "module": "pincher-infer.pincher_infer.embed",
+    "input_text": "function: embed signature: def embed(self, text) -> list[float] arg text: str Return a float-vector embedding for *text*.\n\nStrategy:\n  1. Try sentence-transformers (local, fast).\n  2. Fall back to pincher-core RPC.\n  3. Ultimate fallback: zero-vector (better than crashing).",
+    "output_text": "returns: list[float] calls: _get_model, isinstance, _rpc_call, tolist, encode, warning Return a float-vector embedding for *text*.\n\nStrategy:\n  1. Try sentence-transformers (local, fast).\n  2. Fall back to pincher-core RPC.\n  3. Ultimate fallback: zero-vector (better than crashing). behavior: \"\"\"Return a float-vector embedding for *text*.\n\n        Strategy:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "batch_embed",
+    "module": "pincher-infer.pincher_infer.embed",
+    "input_text": "function: batch_embed signature: def batch_embed(self, texts) -> list[list[float]] arg texts: list[str] Embed a batch of texts.\n\nUses the model's native batch encoding when available for better\nthroughput; otherwise falls back to sequential :meth:`embed` calls.",
+    "output_text": "returns: list[list[float]] calls: _get_model, isinstance, _rpc_call, tolist, encode, embed, warning Embed a batch of texts.\n\nUses the model's native batch encoding when available for better\nthroughput; otherwise falls back to sequential :meth:`embed` calls. behavior: \"\"\"Embed a batch of texts.\n\n        Uses the model's native batch encoding when available for better",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "cosine_similarity",
+    "module": "pincher-infer.pincher_infer.embed",
+    "input_text": "function: cosine_similarity signature: def cosine_similarity(a, b) -> float arg a: list[float] arg b: list[float] Compute cosine similarity between two float vectors.\n\nReturns a value in ``[-1.0, 1.0]``.  Returns ``0.0`` if either\nvector has zero magnitude.",
+    "output_text": "returns: float calls: float, dot, asarray, norm Compute cosine similarity between two float vectors.\n\nReturns a value in ``[-1.0, 1.0]``.  Returns ``0.0`` if either\nvector has zero magnitude. behavior: \"\"\"Compute cosine similarity between two float vectors.\n\n        Returns a value in ``[-1.0, 1.0]``.  Returns ``0.0`` if either",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_build_parser",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: _build_parser signature: def _build_parser() -> argparse.ArgumentParser called_by: pincher-infer.pincher_infer.server.main",
+    "output_text": "returns: argparse.ArgumentParser calls: ArgumentParser, add_argument behavior: parser = argparse.ArgumentParser(\n        prog=\"pincher-infer\",\n        description=\"PincherOS inference sidecar \u2014 stateless LLM bridge\",",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "main",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: main signature: def main() -> None CLI entry-point for ``pincher-infer``.",
+    "output_text": "returns: None calls: shutdown, signal, replace, bool, parse_args, _build_parser, start, basicConfig, load_config, PincherInferServer CLI entry-point for ``pincher-infer``. behavior: \"\"\"CLI entry-point for ``pincher-infer``.\"\"\"\n    parser = _build_parser()\n    args = parser.parse_args()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: __init__ signature: def __init__(self, socket_path) -> None arg socket_path: str",
+    "output_text": "returns: None behavior: self._socket_path = socket_path",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "call",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: call signature: def call(self, method, params) -> Any called_by: pincher-infer.pincher_infer.server.refine, pincher-infer.pincher_infer.server.explain arg method: str arg params: Optional[list[Any]] Send a JSON-RPC request to pincher-core and return the result.\n\nUses a fresh socket connection for each call (simple, no connection\nmanagement needed for the low request volume expected).",
+    "output_text": "returns: Any calls: strip, dumps, recv, RuntimeError, loads, socket, error, sendall, encode, connect Send a JSON-RPC request to pincher-core and return the result.\n\nUses a fresh socket connection for each call (simple, no connection\nmanagement needed for the low request volume expected). behavior: \"\"\"Send a JSON-RPC request to pincher-core and return the result.\n\n        Uses a fresh socket connection for each call (simple, no connection",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "__init__",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: __init__ signature: def __init__(self, config) -> None arg config: Optional[InferConfig]",
+    "output_text": "returns: None calls: EmbedService, load_config, Distiller behavior: self._config = config or load_config()\n        self._distiller = Distiller(self._config)\n        self._embed = EmbedService()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "distill",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: distill signature: def distill(self, intent) -> dict[str, Any] arg intent: str Compile a natural-language *intent* into a structured action.\n\nReturns a dict matching :class:`DistillationResult` fields.",
+    "output_text": "returns: dict[str, Any] calls: info, compile_intent Compile a natural-language *intent* into a structured action.\n\nReturns a dict matching :class:`DistillationResult` fields. behavior: \"\"\"Compile a natural-language *intent* into a structured action.\n\n        Returns a dict matching :class:`DistillationResult` fields.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "refine",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: refine signature: def refine(self, reflex_id, feedback) -> str arg reflex_id: str arg feedback: str Refine an existing reflex's action using LLM feedback.\n\nFetches the current action from pincher-core, asks the LLM to\nrefine it, and returns the revised action string.",
+    "output_text": "returns: str calls: _ensure_core, refine_action, isinstance, call, error, get, info Refine an existing reflex's action using LLM feedback.\n\nFetches the current action from pincher-core, asks the LLM to\nrefine it, and returns the revised action string. behavior: \"\"\"Refine an existing reflex's action using LLM feedback.\n\n        Fetches the current action from pincher-core, asks the LLM to",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "explain",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: explain signature: def explain(self, reflex_id) -> str called_by: pincher-infer.pincher_infer.server.explain, pincher-infer.tests.test_distill.test_explain_without_api_key_returns_stub, pincher-infer.tests.test_distill.test_explain, pincher-infer.tests.test_distill.test_explain_empty_llm_response_returns_stub arg reflex_id: str Generate a human-readable explanation for a reflex.",
+    "output_text": "returns: str calls: _ensure_core, explain, isinstance, call, error, get, info Generate a human-readable explanation for a reflex. behavior: \"\"\"Generate a human-readable explanation for a reflex.\"\"\"\n        logger.info(\"explain(%s)\", reflex_id)\n        core = self._ensure_core()",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "embed",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: embed signature: def embed(self, text) -> list[float] called_by: pincher-infer.pincher_infer.distiller.distill, pincher-infer.pincher_infer.embed.batch_embed, pincher-infer.pincher_infer.server.embed arg text: str Compute an embedding vector for *text*.",
+    "output_text": "returns: list[float] calls: debug, embed Compute an embedding vector for *text*. behavior: \"\"\"Compute an embedding vector for *text*.\"\"\"\n        logger.debug(\"embed(%s)\", text[:60])\n        return self._embed.embed(text)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "batch_embed",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: batch_embed signature: def batch_embed(self, texts) -> list[list[float]] called_by: pincher-infer.pincher_infer.server.batch_embed arg texts: list[str] Compute embedding vectors for a batch of texts.",
+    "output_text": "returns: list[list[float]] calls: batch_embed, debug, len Compute embedding vectors for a batch of texts. behavior: \"\"\"Compute embedding vectors for a batch of texts.\"\"\"\n        logger.debug(\"batch_embed(%d texts)\", len(texts))\n        return self._embed.batch_embed(texts)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "cosine_similarity",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: cosine_similarity signature: def cosine_similarity(self, a, b) -> float called_by: pincher-infer.pincher_infer.server.cosine_similarity arg a: list[float] arg b: list[float] Compute cosine similarity between two vectors.",
+    "output_text": "returns: float calls: cosine_similarity Compute cosine similarity between two vectors. behavior: \"\"\"Compute cosine similarity between two vectors.\"\"\"\n        return EmbedService.cosine_similarity(a, b)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "start",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: start signature: def start(self, host, port) -> None called_by: pincher-infer.pincher_infer.__main__.main, pincher-infer.pincher_infer.server.main arg host: str arg port: int Start the JSON-RPC server.\n\nWhen *port* is 0 the server listens on the Unix domain socket\nderived from the config's ``socket_path`` (appending ``-infer``).",
+    "output_text": "returns: None calls: exists, unlink, CoreBridge, serve_forever, register_function, info, SimpleJSONRPCServer Start the JSON-RPC server.\n\nWhen *port* is 0 the server listens on the Unix domain socket\nderived from the config's ``socket_path`` (appending ``-infer``). behavior: \"\"\"Start the JSON-RPC server.\n\n        When *port* is 0 the server listens on the Unix domain socket",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "shutdown",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: shutdown signature: def shutdown(self) -> None called_by: pincher-infer.pincher_infer.server.main, pincher-infer.pincher_infer.server.shutdown, pincher-infer.pincher_infer.server._signal_handler Gracefully shut down the RPC server.",
+    "output_text": "returns: None calls: shutdown, info Gracefully shut down the RPC server. behavior: \"\"\"Gracefully shut down the RPC server.\"\"\"\n        if self._rpc_server is not None:\n            logger.info(\"Shutting down PincherInferServer\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_ensure_core",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: _ensure_core signature: def _ensure_core(self) -> Optional[CoreBridge] called_by: pincher-infer.pincher_infer.server.refine, pincher-infer.pincher_infer.server.explain Lazily initialise the core bridge.",
+    "output_text": "returns: Optional[CoreBridge] calls: CoreBridge Lazily initialise the core bridge. behavior: \"\"\"Lazily initialise the core bridge.\"\"\"\n        if self._core is None:\n            self._core = CoreBridge(self._config.socket_path)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_signal_handler",
+    "module": "pincher-infer.pincher_infer.server",
+    "input_text": "function: _signal_handler signature: def _signal_handler(signum, _frame) -> None arg signum: int arg _frame: Any",
+    "output_text": "returns: None calls: shutdown, info, exit behavior: logger.info(\"Received signal %d, shutting down\u2026\", signum)\n        server.shutdown()\n        sys.exit(0)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "input_text": "function: to_dict signature: def to_dict(self) -> dict[str, str]",
+    "output_text": "returns: dict[str, str] behavior: return {\"kind\": self.kind, \"target\": self.target}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "from_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "input_text": "function: from_dict signature: def from_dict(cls, d) -> Capability called_by: pincher-infer.pincher_infer.models.from_dict arg d: dict[str, str]",
+    "output_text": "returns: Capability calls: cls behavior: return cls(kind=d[\"kind\"], target=d[\"target\"])",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "input_text": "function: to_dict signature: def to_dict(self) -> dict[str, Any]",
+    "output_text": "returns: dict[str, Any] calls: to_dict behavior: return {\n            \"capabilities\": [c.to_dict() for c in self.capabilities],\n            \"network_scope\": self.network_scope,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "from_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "input_text": "function: from_dict signature: def from_dict(cls, d) -> CapabilityManifest called_by: pincher-infer.pincher_infer.models.from_dict arg d: dict[str, Any]",
+    "output_text": "returns: CapabilityManifest calls: from_dict, get, cls behavior: caps = [Capability.from_dict(c) for c in d.get(\"capabilities\", [])]\n        return cls(capabilities=caps, network_scope=d.get(\"network_scope\", \"none\"))",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "input_text": "function: to_dict signature: def to_dict(self) -> dict[str, Any]",
+    "output_text": "returns: dict[str, Any] calls: to_dict, round behavior: return {\n            \"trigger_pattern\": self.trigger_pattern,\n            \"action_template\": self.action_template,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "from_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "input_text": "function: from_dict signature: def from_dict(cls, d) -> ReflexCandidate called_by: pincher-infer.pincher_infer.models.from_dict arg d: dict[str, Any]",
+    "output_text": "returns: ReflexCandidate calls: from_dict, get, cls, float behavior: manifest = CapabilityManifest.from_dict(\n            d.get(\"capability_manifest\", {})\n        )",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "input_text": "function: to_dict signature: def to_dict(self) -> dict[str, Any]",
+    "output_text": "returns: dict[str, Any] behavior: return {\"embedding\": self.embedding, \"dim\": self.dim}",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "input_text": "function: to_dict signature: def to_dict(self) -> dict[str, Any]",
+    "output_text": "returns: dict[str, Any] behavior: return {\n            \"text\": self.text,\n            \"tokens_used\": self.tokens_used,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "input_text": "function: to_dict signature: def to_dict(self) -> dict[str, Any]",
+    "output_text": "returns: dict[str, Any] calls: round behavior: return {\n            \"status\": self.status,\n            \"embedding_model\": self.embedding_model,",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "to_dict",
+    "module": "pincher-infer.pincher_infer.models",
+    "input_text": "function: to_dict signature: def to_dict(self) -> dict[str, Any]",
+    "output_text": "returns: dict[str, Any] behavior: d: dict[str, Any] = {\"code\": self.code, \"message\": self.message}\n        if self.data is not None:\n            d[\"data\"] = self.data",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "_mock_openai_response",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: _mock_openai_response signature: def _mock_openai_response(content) -> MagicMock called_by: pincher-infer.tests.test_distill.test_compile_intent_via_llm, pincher-infer.tests.test_distill.test_compile_intent_llm_returns_markdown_wrapped_json, pincher-infer.tests.test_distill.test_compile_intent_llm_returns_invalid_json_falls_back, pincher-infer.tests.test_distill.test_compile_intent_llm_empty_content, pincher-infer.tests.test_distill.test_refine_action, pincher-infer.tests.test_distill.test_explain, pincher-infer.tests.test_distill.test_refine_empty_llm_response_returns_original, pincher-infer.tests.test_distill.test_explain_empty_llm_response_returns_stub arg content: str Create a mock that mimics ``openai.ChatCompletion.create()`` return.",
+    "output_text": "returns: MagicMock calls: MagicMock Create a mock that mimics ``openai.ChatCompletion.create()`` return. behavior: \"\"\"Create a mock that mimics ``openai.ChatCompletion.create()`` return.\"\"\"\n    mock_message = MagicMock()\n    mock_message.content = content",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_list_files",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_list_files signature: def test_list_files(self) -> None",
+    "output_text": "returns: None calls: assertEqual, assertIsNotNone, assertIn, _match_template, assertGreater behavior: result = _match_template(\"list files in /tmp\")\n        self.assertIsNotNone(result)\n        assert result is not None  # for type checker",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_remove_file",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_remove_file signature: def test_remove_file(self) -> None",
+    "output_text": "returns: None calls: assertIn, assertEqual, _match_template, assertIsNotNone behavior: result = _match_template(\"remove file /var/log/app.log\")\n        self.assertIsNotNone(result)\n        assert result is not None",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_copy_file",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_copy_file signature: def test_copy_file(self) -> None",
+    "output_text": "returns: None calls: assertEqual, _match_template, assertIsNotNone behavior: result = _match_template(\"copy /etc/hosts to /tmp/hosts\")\n        self.assertIsNotNone(result)\n        assert result is not None",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_move_file",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_move_file signature: def test_move_file(self) -> None",
+    "output_text": "returns: None calls: assertEqual, _match_template, assertIsNotNone behavior: result = _match_template(\"move /tmp/old to /tmp/new\")\n        self.assertIsNotNone(result)\n        assert result is not None",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_create_directory",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_create_directory signature: def test_create_directory(self) -> None",
+    "output_text": "returns: None calls: assertEqual, _match_template, assertIsNotNone behavior: result = _match_template(\"create directory /opt/myapp\")\n        self.assertIsNotNone(result)\n        assert result is not None",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_show_contents",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_show_contents signature: def test_show_contents(self) -> None",
+    "output_text": "returns: None calls: assertEqual, _match_template, assertIsNotNone behavior: result = _match_template(\"show contents of /etc/hostname\")\n        self.assertIsNotNone(result)\n        assert result is not None",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_kill_process",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_kill_process signature: def test_kill_process(self) -> None",
+    "output_text": "returns: None calls: assertEqual, _match_template, assertIsNotNone behavior: result = _match_template(\"kill process 12345\")\n        self.assertIsNotNone(result)\n        assert result is not None",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_git_status",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_git_status signature: def test_git_status(self) -> None",
+    "output_text": "returns: None calls: assertIn, _match_template, assertIsNotNone behavior: result = _match_template(\"git status\")\n        self.assertIsNotNone(result)\n        assert result is not None",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_docker_ps",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_docker_ps signature: def test_docker_ps(self) -> None",
+    "output_text": "returns: None calls: assertIn, _match_template, assertIsNotNone behavior: result = _match_template(\"docker ps\")\n        self.assertIsNotNone(result)\n        assert result is not None",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_ping",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_ping signature: def test_ping(self) -> None",
+    "output_text": "returns: None calls: assertEqual, _match_template, assertIsNotNone behavior: result = _match_template(\"ping google.com\")\n        self.assertIsNotNone(result)\n        assert result is not None",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_no_match_returns_none",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_no_match_returns_none signature: def test_no_match_returns_none(self) -> None",
+    "output_text": "returns: None calls: assertIsNone, _match_template behavior: result = _match_template(\"do something completely unexpected and weird\")\n        self.assertIsNone(result)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "setUp",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: setUp signature: def setUp(self) -> None",
+    "output_text": "returns: None calls: InferConfig, Distiller behavior: self.config = InferConfig(api_key=None)\n        self.distiller = Distiller(self.config)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_compile_known_intent",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_compile_known_intent signature: def test_compile_known_intent(self) -> None",
+    "output_text": "returns: None calls: assertEqual, compile_intent behavior: result = self.distiller.compile_intent(\"list files in /home\")\n        self.assertEqual(result.action_template, \"ls -la {{dir}}\")\n        self.assertEqual(result.parameters, {\"dir\": \"/home\"})",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_compile_unknown_intent_falls_back",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_compile_unknown_intent_falls_back signature: def test_compile_unknown_intent_falls_back(self) -> None",
+    "output_text": "returns: None calls: assertIn, assertEqual, compile_intent behavior: result = self.distiller.compile_intent(\"deploy to production\")\n        # Should get the generic fallback template.\n        self.assertIn(\"{{intent}}\", result.action_template)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_refine_without_api_key_returns_unchanged",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_refine_without_api_key_returns_unchanged signature: def test_refine_without_api_key_returns_unchanged(self) -> None",
+    "output_text": "returns: None calls: refine_action, assertEqual behavior: original = \"ls -la {{dir}}\"\n        result = self.distiller.refine_action(original, \"show hidden files too\")\n        # Without API key, the action should be returned unchanged.",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_explain_without_api_key_returns_stub",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_explain_without_api_key_returns_stub signature: def test_explain_without_api_key_returns_stub(self) -> None",
+    "output_text": "returns: None calls: assertIn, explain behavior: result = self.distiller.explain(\"ls -la {{dir}}\")\n        self.assertIn(\"ls -la\", result)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "setUp",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: setUp signature: def setUp(self) -> None",
+    "output_text": "returns: None calls: InferConfig, Distiller behavior: self.config = InferConfig(api_key=\"test-key\", model_name=\"gpt-4o-mini\")\n        self.distiller = Distiller(self.config)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_compile_intent_via_llm",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_compile_intent_via_llm signature: def test_compile_intent_via_llm(self) -> None",
+    "output_text": "returns: None calls: dumps, assertEqual, _mock_openai_response, compile_intent, assertIn, object, assertAlmostEqual behavior: llm_response = json.dumps({\n            \"action_template\": \"git log --oneline -n {{count}}\",\n            \"parameters\": {\"count\": \"10\"},",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_compile_intent_llm_returns_markdown_wrapped_json",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_compile_intent_llm_returns_markdown_wrapped_json signature: def test_compile_intent_llm_returns_markdown_wrapped_json(self) -> None LLM sometimes wraps JSON in ```json ... ``` fences.",
+    "output_text": "returns: None calls: dumps, assertEqual, compile_intent, _mock_openai_response, object LLM sometimes wraps JSON in ```json ... ``` fences. behavior: \"\"\"LLM sometimes wraps JSON in ```json ... ``` fences.\"\"\"\n        raw_json = json.dumps({\n            \"action_template\": \"docker build -t {{tag}} .\",",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_compile_intent_llm_returns_invalid_json_falls_back",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_compile_intent_llm_returns_invalid_json_falls_back signature: def test_compile_intent_llm_returns_invalid_json_falls_back(self) -> None Invalid LLM output should fall back to template matching.",
+    "output_text": "returns: None calls: _mock_openai_response, compile_intent, assertEqual, assertIn, object Invalid LLM output should fall back to template matching. behavior: \"\"\"Invalid LLM output should fall back to template matching.\"\"\"\n        mock_resp = _mock_openai_response(\"This is not JSON at all!\")",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_compile_intent_llm_empty_content",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_compile_intent_llm_empty_content signature: def test_compile_intent_llm_empty_content(self) -> None Empty LLM response should fall back to template matching.",
+    "output_text": "returns: None calls: object, _mock_openai_response, compile_intent, assertEqual Empty LLM response should fall back to template matching. behavior: \"\"\"Empty LLM response should fall back to template matching.\"\"\"\n        mock_resp = _mock_openai_response(None)",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_refine_action",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_refine_action signature: def test_refine_action(self) -> None",
+    "output_text": "returns: None calls: object, _mock_openai_response, refine_action, assertEqual behavior: mock_resp = _mock_openai_response(\"ls -la {{dir}} --color=auto\")\n\n        with patch.object(self.distiller, \"_client\") as mock_client:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_explain",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_explain signature: def test_explain(self) -> None",
+    "output_text": "returns: None calls: object, _mock_openai_response, assertEqual, explain behavior: mock_resp = _mock_openai_response(\n            \"Lists all files in the specified directory with details.\"\n        )",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_refine_empty_llm_response_returns_original",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_refine_empty_llm_response_returns_original signature: def test_refine_empty_llm_response_returns_original(self) -> None",
+    "output_text": "returns: None calls: object, _mock_openai_response, refine_action, assertEqual behavior: mock_resp = _mock_openai_response(None)\n\n        with patch.object(self.distiller, \"_client\") as mock_client:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_explain_empty_llm_response_returns_stub",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_explain_empty_llm_response_returns_stub signature: def test_explain_empty_llm_response_returns_stub(self) -> None",
+    "output_text": "returns: None calls: assertIn, _mock_openai_response, object, explain behavior: mock_resp = _mock_openai_response(None)\n\n        with patch.object(self.distiller, \"_client\") as mock_client:",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_default_values",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_default_values signature: def test_default_values(self) -> None",
+    "output_text": "returns: None calls: DistillationResult, assertEqual behavior: result = DistillationResult(action_template=\"echo hello\")\n        self.assertEqual(result.action_template, \"echo hello\")\n        self.assertEqual(result.parameters, {})",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_frozen",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_frozen signature: def test_frozen(self) -> None",
+    "output_text": "returns: None calls: DistillationResult, assertRaises behavior: result = DistillationResult(action_template=\"echo hello\")\n        with self.assertRaises(AttributeError):\n            result.action_template = \"echo world\"  # type: ignore[misc]",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  },
+  {
+    "function_name": "test_full_construction",
+    "module": "pincher-infer.tests.test_distill",
+    "input_text": "function: test_full_construction signature: def test_full_construction(self) -> None",
+    "output_text": "returns: None calls: DistillationResult, len, assertEqual behavior: result = DistillationResult(\n            action_template=\"rm {{path}}\",\n            parameters={\"path\": \"/tmp/test\"},",
+    "input_vector_dim": 128,
+    "output_vector_dim": 128
+  }
+]

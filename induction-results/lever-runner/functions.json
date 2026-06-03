@@ -1,0 +1,5604 @@
+[
+  {
+    "name": "get_embedder",
+    "module": "init_db",
+    "file_path": "/home/phoenix/repos/lever-runner/init_db.py",
+    "line_start": 134,
+    "line_end": 137,
+    "signature": "def get_embedder()",
+    "docstring": "Lazy-load the sentence-transformers model so import time stays fast.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "SentenceTransformer"
+    ],
+    "called_by": [
+      "init_db.main",
+      "tests.smoke.main",
+      "src.lever_runner.benchmark.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "embed",
+    "module": "init_db",
+    "file_path": "/home/phoenix/repos/lever-runner/init_db.py",
+    "line_start": 140,
+    "line_end": 143,
+    "signature": "def embed(embedder, phrases) -> List[List[float]]",
+    "docstring": "Encode a batch of phrases. Returns Python lists (LanceDB-friendly).",
+    "decorators": [],
+    "arg_names": [
+      "embedder",
+      "phrases"
+    ],
+    "arg_types": {
+      "phrases": "List[str]"
+    },
+    "return_type": "List[List[float]]",
+    "calls": [
+      "tolist",
+      "encode"
+    ],
+    "called_by": [
+      "init_db.build"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "get_table",
+    "module": "init_db",
+    "file_path": "/home/phoenix/repos/lever-runner/init_db.py",
+    "line_start": 150,
+    "line_end": 173,
+    "signature": "def get_table(db)",
+    "docstring": "Open the table, or create it empty if missing and create=True.",
+    "decorators": [],
+    "arg_names": [
+      "db"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "create_table",
+      "open_table",
+      "list_tables",
+      "FileNotFoundError"
+    ],
+    "called_by": [
+      "init_db.build"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "table_is_empty",
+    "module": "init_db",
+    "file_path": "/home/phoenix/repos/lever-runner/init_db.py",
+    "line_start": 176,
+    "line_end": 184,
+    "signature": "def table_is_empty(table) -> bool",
+    "docstring": "True if the only row is the schema seed we used to create the table.",
+    "decorators": [],
+    "arg_names": [
+      "table"
+    ],
+    "arg_types": {},
+    "return_type": "bool",
+    "calls": [
+      "limit",
+      "search",
+      "count_rows",
+      "to_list",
+      "where"
+    ],
+    "called_by": [
+      "init_db.build"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "build",
+    "module": "init_db",
+    "file_path": "/home/phoenix/repos/lever-runner/init_db.py",
+    "line_start": 191,
+    "line_end": 230,
+    "signature": "def build(embedder) -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "embedder"
+    ],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "zip",
+      "mkdir",
+      "search",
+      "delete",
+      "len",
+      "print",
+      "embed",
+      "connect",
+      "to_list",
+      "get_table",
+      "drop_table",
+      "Path",
+      "limit",
+      "list_tables",
+      "where",
+      "table_is_empty",
+      "add",
+      "str",
+      "uuid4",
+      "append",
+      "count_rows"
+    ],
+    "called_by": [
+      "init_db.main",
+      "tests.smoke.main",
+      "src.lever_runner.benchmark.main",
+      "src.lever_runner.bot.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "main",
+    "module": "init_db",
+    "file_path": "/home/phoenix/repos/lever-runner/init_db.py",
+    "line_start": 237,
+    "line_end": 263,
+    "signature": "def main() -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "build",
+      "parse_args",
+      "print",
+      "ArgumentParser",
+      "get_embedder",
+      "add_argument"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "mock_message",
+    "module": "tests.conftest",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/conftest.py",
+    "line_start": 22,
+    "line_end": 28,
+    "signature": "def mock_message() -> MagicMock",
+    "docstring": "A MagicMock that acts like telegram.Message.",
+    "decorators": [
+      "pytest.fixture"
+    ],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "MagicMock",
+    "calls": [
+      "AsyncMock",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "mock_update",
+    "module": "tests.conftest",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/conftest.py",
+    "line_start": 32,
+    "line_end": 38,
+    "signature": "def mock_update(mock_message) -> MagicMock",
+    "docstring": "A MagicMock that acts like telegram.Update.",
+    "decorators": [
+      "pytest.fixture"
+    ],
+    "arg_names": [
+      "mock_message"
+    ],
+    "arg_types": {
+      "mock_message": "MagicMock"
+    },
+    "return_type": "MagicMock",
+    "calls": [
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "mock_context",
+    "module": "tests.conftest",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/conftest.py",
+    "line_start": 42,
+    "line_end": 50,
+    "signature": "def mock_context() -> MagicMock",
+    "docstring": "A MagicMock that acts like telegram.ext.CallbackContext.\n\nctx.args holds list of command arguments (everything after /cmd).",
+    "decorators": [
+      "pytest.fixture"
+    ],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "MagicMock",
+    "calls": [
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "mock_unauthorized_update",
+    "module": "tests.conftest",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/conftest.py",
+    "line_start": 54,
+    "line_end": 60,
+    "signature": "def mock_unauthorized_update(mock_message) -> MagicMock",
+    "docstring": "An update from a user NOT on the allowlist.",
+    "decorators": [
+      "pytest.fixture"
+    ],
+    "arg_names": [
+      "mock_message"
+    ],
+    "arg_types": {
+      "mock_message": "MagicMock"
+    },
+    "return_type": "MagicMock",
+    "calls": [
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "_clean_env",
+    "module": "tests.conftest",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/conftest.py",
+    "line_start": 69,
+    "line_end": 102,
+    "signature": "def _clean_env() -> None",
+    "docstring": "Reset env vars before each test so tests are hermetic.\n\nWe patch the os.getenv calls that bot.py reads at import time\nby setting/clearing ALLOWED_USER_ID per test, and ensure the\nimportant env vars are clean.",
+    "decorators": [
+      "pytest.fixture(autouse=True)"
+    ],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "fixture",
+      "pop"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "_fake_rows",
+    "module": "tests.test_export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_export_nail.py",
+    "line_start": 25,
+    "line_end": 46,
+    "signature": "def _fake_rows()",
+    "docstring": "Return fake lever-runner rows matching LanceDB schema.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [
+      "tests.test_export_nail.test_pack_rows_creates_valid_db",
+      "tests.test_export_nail.test_export_creates_valid_nail",
+      "tests.test_export_nail.test_export_with_min_trust",
+      "tests.test_export_nail.test_export_no_embeddings",
+      "tests.test_export_nail.test_filter_by_existing_pack"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "test_clamp_confidence",
+    "module": "tests.test_export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_export_nail.py",
+    "line_start": 52,
+    "line_end": 59,
+    "signature": "def test_clamp_confidence(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_clamp_confidence"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_build_identity",
+    "module": "tests.test_export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_export_nail.py",
+    "line_start": 61,
+    "line_end": 67,
+    "signature": "def test_build_identity(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_build_identity"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_build_config",
+    "module": "tests.test_export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_export_nail.py",
+    "line_start": 69,
+    "line_end": 74,
+    "signature": "def test_build_config(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_build_config"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_build_manifest",
+    "module": "tests.test_export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_export_nail.py",
+    "line_start": 76,
+    "line_end": 83,
+    "signature": "def test_build_manifest(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_build_manifest"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_pack_rows_creates_valid_db",
+    "module": "tests.test_export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_export_nail.py",
+    "line_start": 89,
+    "line_end": 111,
+    "signature": "def test_pack_rows_creates_valid_db(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "fetchone",
+      "NamedTemporaryFile",
+      "write",
+      "close",
+      "_fake_rows",
+      "unlink",
+      "abs",
+      "execute",
+      "connect",
+      "_pack_rows_into_sqlite"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_pack_rows_empty",
+    "module": "tests.test_export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_export_nail.py",
+    "line_start": 113,
+    "line_end": 127,
+    "signature": "def test_pack_rows_empty(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "fetchone",
+      "NamedTemporaryFile",
+      "close",
+      "write",
+      "unlink",
+      "execute",
+      "connect",
+      "_pack_rows_into_sqlite"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_export_creates_valid_nail",
+    "module": "tests.test_export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_export_nail.py",
+    "line_start": 133,
+    "line_end": 179,
+    "signature": "def test_export_creates_valid_nail(self, tmp_path)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "tmp_path"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "NamedTemporaryFile",
+      "export_nail",
+      "_fake_rows",
+      "unlink",
+      "BytesIO",
+      "getnames",
+      "patch",
+      "write",
+      "close",
+      "read",
+      "DataFrame",
+      "extractfile",
+      "connect",
+      "MagicMock",
+      "exists",
+      "read_bytes",
+      "Path",
+      "execute",
+      "ZstdDecompressor",
+      "fetchone",
+      "str",
+      "loads",
+      "decompress",
+      "__import__",
+      "open"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_export_with_min_trust",
+    "module": "tests.test_export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_export_nail.py",
+    "line_start": 181,
+    "line_end": 195,
+    "signature": "def test_export_with_min_trust(self, tmp_path)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "tmp_path"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "str",
+      "export_nail",
+      "_fake_rows",
+      "DataFrame",
+      "patch",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_export_no_embeddings",
+    "module": "tests.test_export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_export_nail.py",
+    "line_start": 197,
+    "line_end": 210,
+    "signature": "def test_export_no_embeddings(self, tmp_path)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "tmp_path"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "str",
+      "export_nail",
+      "_fake_rows",
+      "DataFrame",
+      "patch",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_filter_by_existing_pack",
+    "module": "tests.test_export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_export_nail.py",
+    "line_start": 216,
+    "line_end": 246,
+    "signature": "def test_filter_by_existing_pack(self, tmp_path)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "tmp_path"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "str",
+      "_filter_by_pack",
+      "len",
+      "_fake_rows",
+      "mkdir",
+      "write_text",
+      "patch",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_blake3_hex_produces_hex_string",
+    "module": "tests.test_export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_export_nail.py",
+    "line_start": 252,
+    "line_end": 259,
+    "signature": "def test_blake3_hex_produces_hex_string(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_blake3_hex",
+      "isinstance",
+      "len",
+      "int"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_simple_placeholder",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 44,
+    "line_end": 45,
+    "signature": "def test_simple_placeholder(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "has_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_multiple_placeholders",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 47,
+    "line_end": 48,
+    "signature": "def test_multiple_placeholders(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "has_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_no_placeholders",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 50,
+    "line_end": 51,
+    "signature": "def test_no_placeholders(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "has_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_empty_string",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 53,
+    "line_end": 54,
+    "signature": "def test_empty_string(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "has_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_partial_braces",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 56,
+    "line_end": 57,
+    "signature": "def test_partial_braces(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "has_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_command_with_placeholder",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 59,
+    "line_end": 60,
+    "signature": "def test_command_with_placeholder(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "has_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_single_placeholder",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 64,
+    "line_end": 65,
+    "signature": "def test_single_placeholder(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "get_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_multiple_unique",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 67,
+    "line_end": 68,
+    "signature": "def test_multiple_unique(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "get_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_duplicate_placeholder",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 70,
+    "line_end": 73,
+    "signature": "def test_duplicate_placeholder(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "get_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_no_placeholders",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 75,
+    "line_end": 76,
+    "signature": "def test_no_placeholders(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "get_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_order_preserved",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 78,
+    "line_end": 80,
+    "signature": "def test_order_preserved(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "get_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_strip_single",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 84,
+    "line_end": 85,
+    "signature": "def test_strip_single(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "strip_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_strip_multiple",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 87,
+    "line_end": 91,
+    "signature": "def test_strip_multiple(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "strip_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_no_placeholders",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 93,
+    "line_end": 94,
+    "signature": "def test_no_placeholders(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "strip_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_only_placeholder",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 96,
+    "line_end": 98,
+    "signature": "def test_only_placeholder(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "strip_placeholders"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_alphanumeric",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 107,
+    "line_end": 108,
+    "signature": "def test_alphanumeric(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_with_dashes",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 110,
+    "line_end": 111,
+    "signature": "def test_with_dashes(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_with_underscores",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 113,
+    "line_end": 114,
+    "signature": "def test_with_underscores(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_with_dots",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 116,
+    "line_end": 117,
+    "signature": "def test_with_dots(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_with_numbers",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 119,
+    "line_end": 120,
+    "signature": "def test_with_numbers(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_complex_name",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 122,
+    "line_end": 124,
+    "signature": "def test_complex_name(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_reject_semicolon",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 126,
+    "line_end": 128,
+    "signature": "def test_reject_semicolon(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "raises",
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_reject_pipe",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 130,
+    "line_end": 132,
+    "signature": "def test_reject_pipe(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "raises",
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_reject_backticks",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 134,
+    "line_end": 136,
+    "signature": "def test_reject_backticks(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "raises",
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_reject_dollar_sign",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 138,
+    "line_end": 140,
+    "signature": "def test_reject_dollar_sign(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "raises",
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_reject_ampersand",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 142,
+    "line_end": 144,
+    "signature": "def test_reject_ampersand(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "raises",
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_reject_spaces",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 146,
+    "line_end": 148,
+    "signature": "def test_reject_spaces(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "raises",
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_reject_empty",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 150,
+    "line_end": 152,
+    "signature": "def test_reject_empty(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "raises",
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_reject_redirect",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 154,
+    "line_end": 156,
+    "signature": "def test_reject_redirect(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "raises",
+      "validate_arg"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_single_arg",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 165,
+    "line_end": 167,
+    "signature": "def test_single_arg(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "substitute_args"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_multiple_args",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 169,
+    "line_end": 174,
+    "signature": "def test_multiple_args(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "substitute_args"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_arg_in_middle",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 176,
+    "line_end": 181,
+    "signature": "def test_arg_in_middle(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "substitute_args"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_missing_arg_raises",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 183,
+    "line_end": 185,
+    "signature": "def test_missing_arg_raises(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "substitute_args",
+      "raises"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_invalid_arg_raises",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 187,
+    "line_end": 189,
+    "signature": "def test_invalid_arg_raises(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "substitute_args",
+      "raises"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_no_placeholders_no_args",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 191,
+    "line_end": 193,
+    "signature": "def test_no_placeholders_no_args(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "substitute_args"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_extra_args_ignored",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 195,
+    "line_end": 198,
+    "signature": "def test_extra_args_ignored(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "substitute_args"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_single_arg",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 207,
+    "line_end": 208,
+    "signature": "def test_single_arg(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_parse_args"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_multiple_args",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 210,
+    "line_end": 212,
+    "signature": "def test_multiple_args(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_parse_args"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_empty_input",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 214,
+    "line_end": 215,
+    "signature": "def test_empty_input(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_parse_args"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_no_equals",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 217,
+    "line_end": 218,
+    "signature": "def test_no_equals(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_parse_args"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_with_spaces",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 220,
+    "line_end": 221,
+    "signature": "def test_with_spaces(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_parse_args"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_invalid_key_rejected",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 223,
+    "line_end": 225,
+    "signature": "def test_invalid_key_rejected(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_parse_args"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_empty_value_rejected",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 227,
+    "line_end": 228,
+    "signature": "def test_empty_value_rejected(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_parse_args"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_phrase_only",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 237,
+    "line_end": 240,
+    "signature": "def test_phrase_only(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_normalize"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_phrase_with_args",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 242,
+    "line_end": 245,
+    "signature": "def test_phrase_with_args(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_normalize"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_multiline_args",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 247,
+    "line_end": 250,
+    "signature": "def test_multiline_args(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_normalize"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_empty_input",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 252,
+    "line_end": 255,
+    "signature": "def test_empty_input(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_normalize"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_strips_punctuation",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 257,
+    "line_end": 259,
+    "signature": "def test_strips_punctuation(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_normalize"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_truncates_long_phrase",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 261,
+    "line_end": 263,
+    "signature": "def test_truncates_long_phrase(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "join",
+      "len",
+      "split",
+      "_normalize"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_default_args_is_none",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 272,
+    "line_end": 274,
+    "signature": "def test_default_args_is_none(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "Extraction"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_args_stored",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 276,
+    "line_end": 284,
+    "signature": "def test_args_stored(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "Extraction"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_passthrough_extracts_phrase",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 295,
+    "line_end": 302,
+    "signature": "def test_passthrough_extracts_phrase(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "extract"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_passthrough_empty_request",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 304,
+    "line_end": 309,
+    "signature": "def test_passthrough_empty_request(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "extract"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_template_command_with_args",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 320,
+    "line_end": 366,
+    "signature": "def test_template_command_with_args(self)",
+    "docstring": "When a template command is matched and args are extracted,\nthe command should be substituted before execution.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "Match",
+      "patch",
+      "do",
+      "assert_called_once_with",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_template_command_without_args_fails",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 368,
+    "line_end": 406,
+    "signature": "def test_template_command_without_args_fails(self)",
+    "docstring": "When a template command is matched but no args are extracted,\nthe result should be an error.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "patch",
+      "Match",
+      "do",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_non_template_command_unchanged",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 408,
+    "line_end": 448,
+    "signature": "def test_non_template_command_unchanged(self)",
+    "docstring": "When a non-template command is matched, it should run as-is.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "Match",
+      "patch",
+      "do",
+      "assert_called_once_with",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_template_with_invalid_arg_rejected",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 450,
+    "line_end": 485,
+    "signature": "def test_template_with_invalid_arg_rejected(self)",
+    "docstring": "When extracted args contain shell metacharacters, the substitution\nshould fail with a validation error.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "patch",
+      "Match",
+      "do",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_teach_stores_template",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 496,
+    "line_end": 513,
+    "signature": "def test_teach_stores_template(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "teach",
+      "assert_called_once_with",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_teach_regular_command",
+    "module": "tests.test_params",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_params.py",
+    "line_start": 515,
+    "line_end": 528,
+    "signature": "def test_teach_regular_command(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "teach",
+      "assert_called_once_with",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "_authorized",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 39,
+    "line_end": 42,
+    "signature": "def _authorized() -> Iterator[None]",
+    "docstring": "Context manager: patch ALLOWED_USER_ID to match mock_update.",
+    "decorators": [
+      "contextmanager"
+    ],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "Iterator[None]",
+    "calls": [
+      "object"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_authorized_when_allowlist_empty",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 53,
+    "line_end": 62,
+    "signature": "def test_authorized_when_allowlist_empty(self)",
+    "docstring": "When ALLOWED_USER_ID is unset, everyone is authorized.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "object",
+      "_is_authorized",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_authorized_when_allowlist_matches",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 64,
+    "line_end": 69,
+    "signature": "def test_authorized_when_allowlist_matches(self)",
+    "docstring": "When ALLOWED_USER_ID is set and user id matches.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "object",
+      "_is_authorized",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_authorized_when_allowlist_does_not_match",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 71,
+    "line_end": 76,
+    "signature": "def test_authorized_when_allowlist_does_not_match(self)",
+    "docstring": "When ALLOWED_USER_ID is set and user id differs.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "object",
+      "_is_authorized",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_authorized_handles_none_user",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 78,
+    "line_end": 82,
+    "signature": "def test_authorized_handles_none_user(self)",
+    "docstring": "When effective_user is None (e.g. channel post), deny.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_is_authorized",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_deny_sends_expected_message",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 84,
+    "line_end": 94,
+    "signature": "def test_deny_sends_expected_message(self)",
+    "docstring": "_deny sends the correct 'not authorized' reply.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "AsyncMock",
+      "run",
+      "_deny",
+      "assert_awaited_once_with",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_format_do_basic_success",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 105,
+    "line_end": 114,
+    "signature": "def test_format_do_basic_success(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_format_do",
+      "FakeDoResult"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_format_do_failed_command",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 116,
+    "line_end": 123,
+    "signature": "def test_format_do_failed_command(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_format_do",
+      "FakeRunResult",
+      "FakeDoResult"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_format_do_no_match",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 125,
+    "line_end": 130,
+    "signature": "def test_format_do_no_match(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_format_do",
+      "FakeDoResult"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_format_do_error_without_match",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 132,
+    "line_end": 135,
+    "signature": "def test_format_do_error_without_match(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_format_do",
+      "FakeDoResult"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_format_do_no_run",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 137,
+    "line_end": 143,
+    "signature": "def test_format_do_no_run(self)",
+    "docstring": "When result.run is None, skip stdout/stderr section.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_format_do",
+      "FakeDoResult"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_format_do_stdout_truncation",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 145,
+    "line_end": 150,
+    "signature": "def test_format_do_stdout_truncation(self)",
+    "docstring": "stdout > 3000 chars gets truncated.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_format_do",
+      "FakeRunResult",
+      "FakeDoResult"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_format_do_stderr_truncation",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 152,
+    "line_end": 160,
+    "signature": "def test_format_do_stderr_truncation(self)",
+    "docstring": "stderr > 1500 chars gets truncated.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_format_do",
+      "FakeRunResult",
+      "FakeDoResult"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_format_do_empty_stdout_stderr",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 162,
+    "line_end": 167,
+    "signature": "def test_format_do_empty_stdout_stderr(self)",
+    "docstring": "No stdout/stderr sections when both are empty.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_format_do",
+      "FakeRunResult",
+      "FakeDoResult"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_main_raises_without_token",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 640,
+    "line_end": 647,
+    "signature": "def test_main_raises_without_token(self)",
+    "docstring": "main() raises SystemExit when TELEGRAM_BOT_TOKEN is empty.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "object",
+      "main",
+      "raises",
+      "patch"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_main_starts_with_token",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 649,
+    "line_end": 666,
+    "signature": "def test_main_starts_with_token(self)",
+    "docstring": "main() builds the Application and returns 0.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "main",
+      "object",
+      "assert_called_once_with",
+      "assert_called_once",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_main_registers_handlers",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 668,
+    "line_end": 683,
+    "signature": "def test_main_registers_handlers(self)",
+    "docstring": "main() registers 8 handlers via add_handler.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "object",
+      "main",
+      "MagicMock"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_healthz_success_shape",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 799,
+    "line_end": 811,
+    "signature": "def test_healthz_success_shape(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "isinstance"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_healthz_failure_shape",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 813,
+    "line_end": 821,
+    "signature": "def test_healthz_failure_shape(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "test_do_result_has_token_counts",
+    "module": "tests.test_bot",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/test_bot.py",
+    "line_start": 832,
+    "line_end": 836,
+    "signature": "def test_do_result_has_token_counts(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "FakeDoResult"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "total_tokens",
+    "module": "tests.helpers",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/helpers.py",
+    "line_start": 56,
+    "line_end": 57,
+    "signature": "def total_tokens(self) -> int",
+    "docstring": null,
+    "decorators": [
+      "property"
+    ],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "check",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 56,
+    "line_end": 59,
+    "signature": "def check(name, cond, detail) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "name",
+      "cond",
+      "detail"
+    ],
+    "arg_types": {
+      "name": "str",
+      "cond": "bool",
+      "detail": "str"
+    },
+    "return_type": "None",
+    "calls": [
+      "append",
+      "print"
+    ],
+    "called_by": [
+      "tests.smoke.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "main",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 62,
+    "line_end": 675,
+    "signature": "def main() -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "teach",
+      "items",
+      "endswith",
+      "run_until_complete",
+      "cmd_teach",
+      "_is_authorized",
+      "build",
+      "glob",
+      "count",
+      "unlink",
+      "_StubResp",
+      "_Chat",
+      "sum",
+      "pop",
+      "CommandStore",
+      "BytesIO",
+      "get",
+      "decode",
+      "cmd_do",
+      "get_event_loop",
+      "update",
+      "delete",
+      "find_best",
+      "len",
+      "rewrite_losers",
+      "write",
+      "cmd_commands",
+      "check",
+      "list",
+      "print",
+      "run",
+      "promote_winners",
+      "_resolve_fallback_chain",
+      "abs",
+      "set",
+      "keys",
+      "_Ctx",
+      "strip",
+      "_Msg",
+      "bool",
+      "exists",
+      "_rotate_if_needed",
+      "HTTPError",
+      "drop_table",
+      "Path",
+      "do",
+      "all",
+      "_Fake",
+      "cmd_stats",
+      "extract",
+      "list_all",
+      "rmdir",
+      "orch_teach",
+      "get_embedder",
+      "mkdtemp",
+      "split",
+      "open",
+      "str",
+      "uuid4",
+      "stat",
+      "loads",
+      "_Update",
+      "getvalue",
+      "cmd_status",
+      "_is_retryable_http_error",
+      "append",
+      "delete_command",
+      "write_text",
+      "Response",
+      "_User",
+      "replace",
+      "do_GET",
+      "list_commands"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "run",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 482,
+    "line_end": 483,
+    "signature": "def run(coro)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "coro"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "get_event_loop",
+      "run",
+      "run_until_complete"
+    ],
+    "called_by": [
+      "tests.test_bot.test_deny_sends_expected_message",
+      "tests.smoke.main",
+      "tests.smoke.run"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "__init__",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 287,
+    "line_end": 289,
+    "signature": "def __init__(self, path)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "path"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "BytesIO"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "send_response",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 290,
+    "line_end": 290,
+    "signature": "def send_response(self, c)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "c"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [
+      "src.lever_runner.http_api._send",
+      "src.lever_runner.http_api._serve_file"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "send_header",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 291,
+    "line_end": 291,
+    "signature": "def send_header(self, k, v)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "k",
+      "v"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [
+      "src.lever_runner.http_api._send",
+      "src.lever_runner.http_api._serve_file"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "end_headers",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 292,
+    "line_end": 292,
+    "signature": "def end_headers(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [
+      "src.lever_runner.http_api._send",
+      "src.lever_runner.http_api._serve_file"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "setup",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 293,
+    "line_end": 293,
+    "signature": "def setup(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "raise_for_status",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 327,
+    "line_end": 327,
+    "signature": "def raise_for_status(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [
+      "src.lever_runner.doctor.check_llm_backend",
+      "src.lever_runner.auto_promote.rewrite_with_remote_llm",
+      "src.lever_runner.intent_extractor._post_minimax_or_openai",
+      "src.lever_runner.intent_extractor._post_ollama"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "json",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 328,
+    "line_end": 329,
+    "signature": "def json(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [
+      "src.lever_runner.auto_promote.rewrite_with_remote_llm",
+      "src.lever_runner.intent_extractor._post_minimax_or_openai",
+      "src.lever_runner.intent_extractor._post_ollama"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "post",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 332,
+    "line_end": 345,
+    "signature": "def post(self, url)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "url"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "get",
+      "replace",
+      "len",
+      "_StubResp"
+    ],
+    "called_by": [
+      "src.lever_runner.auto_promote.rewrite_with_remote_llm",
+      "src.lever_runner.intent_extractor._post_minimax_or_openai",
+      "src.lever_runner.intent_extractor._post_ollama"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 453,
+    "line_end": 455,
+    "signature": "def __init__(self, text)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "text"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 461,
+    "line_end": 461,
+    "signature": "def __init__(self, uid)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "uid"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 464,
+    "line_end": 464,
+    "signature": "def __init__(self, cid)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "cid"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 467,
+    "line_end": 471,
+    "signature": "def __init__(self, uid, chat_id, text, args)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "uid",
+      "chat_id",
+      "text",
+      "args"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_Msg",
+      "_User",
+      "_Chat"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "args",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 473,
+    "line_end": 473,
+    "signature": "def args(self)",
+    "docstring": null,
+    "decorators": [
+      "property"
+    ],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "__init__",
+    "module": "tests.smoke",
+    "file_path": "/home/phoenix/repos/lever-runner/tests/smoke.py",
+    "line_start": 476,
+    "line_end": 480,
+    "signature": "def __init__(self, args)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "args"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "list"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "main",
+    "module": "src.lever_runner.cli",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/cli.py",
+    "line_start": 19,
+    "line_end": 116,
+    "signature": "def main(argv) -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "argv"
+    ],
+    "arg_types": {
+      "argv": "list[str]"
+    },
+    "return_type": "int",
+    "calls": [
+      "strip",
+      "teach",
+      "list",
+      "startswith",
+      "len",
+      "float",
+      "rstrip",
+      "print",
+      "do",
+      "append",
+      "join",
+      "export_main",
+      "partition",
+      "extend",
+      "status",
+      "split"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "_rotate_if_needed",
+    "module": "src.lever_runner.token_logger",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/token_logger.py",
+    "line_start": 41,
+    "line_end": 79,
+    "signature": "def _rotate_if_needed(path, max_bytes, backup_count) -> None",
+    "docstring": "If `path` exceeds max_bytes, rotate: name -> name.1, .1 -> .2, etc.\n\nKeeps at most `backup_count` backups; the oldest is dropped.\nThis is a small reimplementation of RotatingFileHandler to avoid\nholding a long-lived file handle inside a stateless helper.",
+    "decorators": [],
+    "arg_names": [
+      "path",
+      "max_bytes",
+      "backup_count"
+    ],
+    "arg_types": {
+      "path": "str",
+      "max_bytes": "int",
+      "backup_count": "int"
+    },
+    "return_type": "None",
+    "calls": [
+      "exists",
+      "stat",
+      "Path",
+      "unlink",
+      "with_suffix",
+      "range",
+      "replace"
+    ],
+    "called_by": [
+      "tests.smoke.main",
+      "src.lever_runner.token_logger._append"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_append",
+    "module": "src.lever_runner.token_logger",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/token_logger.py",
+    "line_start": 82,
+    "line_end": 87,
+    "signature": "def _append(path, record) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "path",
+      "record"
+    ],
+    "arg_types": {
+      "path": "str",
+      "record": "dict"
+    },
+    "return_type": "None",
+    "calls": [
+      "dumps",
+      "_rotate_if_needed",
+      "write",
+      "Path",
+      "mkdir",
+      "open"
+    ],
+    "called_by": [
+      "src.lever_runner.token_logger.log_intent",
+      "src.lever_runner.token_logger.log_embed"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "log_intent",
+    "module": "src.lever_runner.token_logger",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/token_logger.py",
+    "line_start": 90,
+    "line_end": 104,
+    "signature": "def log_intent(backend, tokens_in, tokens_out, source) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "backend",
+      "tokens_in",
+      "tokens_out",
+      "source"
+    ],
+    "arg_types": {
+      "backend": "str",
+      "tokens_in": "int",
+      "tokens_out": "int",
+      "source": "str"
+    },
+    "return_type": "None",
+    "calls": [
+      "_append",
+      "time",
+      "TokenRecord",
+      "asdict"
+    ],
+    "called_by": [
+      "src.lever_runner.orchestrator.do"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "log_embed",
+    "module": "src.lever_runner.token_logger",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/token_logger.py",
+    "line_start": 107,
+    "line_end": 121,
+    "signature": "def log_embed(text, source) -> None",
+    "docstring": "Approximate embedding token accounting. all-MiniLM-L6-v2 tokenizes\nwith a WordPiece vocab; we count ~1 token per 0.75 words.",
+    "decorators": [],
+    "arg_names": [
+      "text",
+      "source"
+    ],
+    "arg_types": {
+      "text": "str",
+      "source": "str"
+    },
+    "return_type": "None",
+    "calls": [
+      "split",
+      "len",
+      "max",
+      "_append",
+      "time",
+      "int"
+    ],
+    "called_by": [
+      "src.lever_runner.orchestrator.do"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_check",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 31,
+    "line_end": 32,
+    "signature": "def _check(label, ok, detail, level) -> tuple[str, str, str]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "label",
+      "ok",
+      "detail",
+      "level"
+    ],
+    "arg_types": {
+      "label": "str",
+      "ok": "bool",
+      "detail": "str",
+      "level": "str"
+    },
+    "return_type": "tuple[str, str, str]",
+    "calls": [],
+    "called_by": [
+      "src.lever_runner.doctor.check_python",
+      "src.lever_runner.doctor.check_lancedb",
+      "src.lever_runner.doctor.check_telegram_token",
+      "src.lever_runner.doctor.check_allowed_user",
+      "src.lever_runner.doctor.check_db_path",
+      "src.lever_runner.doctor.check_sandbox_path",
+      "src.lever_runner.doctor.check_llm_backend",
+      "src.lever_runner.doctor.check_fallbacks",
+      "src.lever_runner.doctor.check_log_dir",
+      "src.lever_runner.doctor.check_disk_space",
+      "src.lever_runner.doctor.check_smoke"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "check_python",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 35,
+    "line_end": 40,
+    "signature": "def check_python() -> tuple[str, str, str]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "tuple[str, str, str]",
+    "calls": [
+      "_check"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "check_lancedb",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 43,
+    "line_end": 48,
+    "signature": "def check_lancedb() -> tuple[str, str, str]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "tuple[str, str, str]",
+    "calls": [
+      "_check",
+      "str"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "check_telegram_token",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 51,
+    "line_end": 58,
+    "signature": "def check_telegram_token() -> tuple[str, str, str]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "tuple[str, str, str]",
+    "calls": [
+      "strip",
+      "len",
+      "_check",
+      "getenv",
+      "split"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "check_allowed_user",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 61,
+    "line_end": 67,
+    "signature": "def check_allowed_user() -> tuple[str, str, str]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "tuple[str, str, str]",
+    "calls": [
+      "strip",
+      "getenv",
+      "_check",
+      "isdigit"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "check_db_path",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 70,
+    "line_end": 84,
+    "signature": "def check_db_path() -> tuple[str, str, str]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "tuple[str, str, str]",
+    "calls": [
+      "exists",
+      "_check",
+      "getenv",
+      "sorted",
+      "isabs",
+      "list_tables",
+      "connect",
+      "abspath"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "check_sandbox_path",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 87,
+    "line_end": 99,
+    "signature": "def check_sandbox_path() -> tuple[str, str, str]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "tuple[str, str, str]",
+    "calls": [
+      "remove",
+      "write",
+      "_check",
+      "getenv",
+      "join",
+      "makedirs",
+      "isabs",
+      "open"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "check_llm_backend",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 102,
+    "line_end": 126,
+    "signature": "def check_llm_backend() -> tuple[str, str, str]",
+    "docstring": "Check the configured LLM backend is reachable.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "tuple[str, str, str]",
+    "calls": [
+      "strip",
+      "lower",
+      "raise_for_status",
+      "_check",
+      "getenv",
+      "get"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "check_fallbacks",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 129,
+    "line_end": 138,
+    "signature": "def check_fallbacks() -> tuple[str, str, str]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "tuple[str, str, str]",
+    "calls": [
+      "strip",
+      "lower",
+      "_check",
+      "getenv",
+      "split"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "check_log_dir",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 141,
+    "line_end": 160,
+    "signature": "def check_log_dir() -> tuple[str, str, str]",
+    "docstring": "Verify the directory holding token_usage.jsonl and embed_usage.jsonl is writable.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "tuple[str, str, str]",
+    "calls": [
+      "remove",
+      "write",
+      "dirname",
+      "_check",
+      "getenv",
+      "join",
+      "makedirs",
+      "isabs",
+      "abspath",
+      "open"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "check_disk_space",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 163,
+    "line_end": 180,
+    "signature": "def check_disk_space() -> tuple[str, str, str]",
+    "docstring": "Warn if less than 1GB free on the lancedb path's filesystem.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "tuple[str, str, str]",
+    "calls": [
+      "exists",
+      "dirname",
+      "_check",
+      "getenv",
+      "isabs",
+      "disk_usage",
+      "abspath"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "check_smoke",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 183,
+    "line_end": 191,
+    "signature": "def check_smoke() -> tuple[str, str, str]",
+    "docstring": "Run a tiny in-process smoke (no LLM call) to verify DB+embedder wiring.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "tuple[str, str, str]",
+    "calls": [
+      "_check",
+      "str",
+      "count",
+      "CommandStore"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "main",
+    "module": "src.lever_runner.doctor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/doctor.py",
+    "line_start": 209,
+    "line_end": 235,
+    "signature": "def main() -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "gmtime",
+      "print",
+      "strftime",
+      "fn",
+      "load_dotenv"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "_is_loopback",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 96,
+    "line_end": 102,
+    "signature": "def _is_loopback(host) -> bool",
+    "docstring": "True if the bind address is loopback (127.0.0.0/8 or ::1).",
+    "decorators": [],
+    "arg_names": [
+      "host"
+    ],
+    "arg_types": {
+      "host": "str"
+    },
+    "return_type": "bool",
+    "calls": [
+      "startswith"
+    ],
+    "called_by": [
+      "src.lever_runner.http_api.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_check_token",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 105,
+    "line_end": 112,
+    "signature": "def _check_token(headers) -> bool",
+    "docstring": "True if the request's Authorization header matches HTTP_API_TOKEN.",
+    "decorators": [],
+    "arg_names": [
+      "headers"
+    ],
+    "arg_types": {},
+    "return_type": "bool",
+    "calls": [
+      "strip",
+      "lower",
+      "startswith",
+      "get",
+      "split"
+    ],
+    "called_by": [
+      "src.lever_runner.http_api.do_GET",
+      "src.lever_runner.http_api.do_POST"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_chat_id_from",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 115,
+    "line_end": 118,
+    "signature": "def _chat_id_from(data, qs) -> str",
+    "docstring": "chat_id may come from JSON body or query string. Default = 'default'.",
+    "decorators": [],
+    "arg_names": [
+      "data",
+      "qs"
+    ],
+    "arg_types": {
+      "data": "dict",
+      "qs": "dict"
+    },
+    "return_type": "str",
+    "calls": [
+      "get",
+      "str"
+    ],
+    "called_by": [
+      "src.lever_runner.http_api.do_GET",
+      "src.lever_runner.http_api.do_POST"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "main",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 307,
+    "line_end": 324,
+    "signature": "def main() -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "_is_loopback",
+      "ThreadingHTTPServer",
+      "print",
+      "serve_forever"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "__init__",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 65,
+    "line_end": 67,
+    "signature": "def __init__(self, rpm)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "rpm"
+    ],
+    "arg_types": {
+      "rpm": "int"
+    },
+    "return_type": null,
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_get_or_create",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 69,
+    "line_end": 75,
+    "signature": "def _get_or_create(self, key) -> _Window",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "key"
+    ],
+    "arg_types": {
+      "key": "str"
+    },
+    "return_type": "_Window",
+    "calls": [
+      "_Window",
+      "get",
+      "time"
+    ],
+    "called_by": [
+      "src.lever_runner.http_api.allow"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "allow",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 77,
+    "line_end": 83,
+    "signature": "def allow(self, key) -> tuple[bool, int, float]",
+    "docstring": "Return (allowed, requests_remaining_in_window, window_reset_at).",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "key"
+    ],
+    "arg_types": {
+      "key": "str"
+    },
+    "return_type": "tuple[bool, int, float]",
+    "calls": [
+      "_get_or_create"
+    ],
+    "called_by": [
+      "src.lever_runner.http_api._rate_limit"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "cleanup",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 85,
+    "line_end": 90,
+    "signature": "def cleanup(self) -> None",
+    "docstring": "Evict stale windows to prevent unbounded memory growth.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "time",
+      "items"
+    ],
+    "called_by": [
+      "src.lever_runner.http_api.do_GET",
+      "src.lever_runner.http_api.do_POST"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_send",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 131,
+    "line_end": 139,
+    "signature": "def _send(self, code, payload) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "code",
+      "payload"
+    ],
+    "arg_types": {
+      "code": "int",
+      "payload": "dict"
+    },
+    "return_type": "None",
+    "calls": [
+      "dumps",
+      "str",
+      "items",
+      "len",
+      "write",
+      "send_header",
+      "send_response",
+      "encode",
+      "end_headers"
+    ],
+    "called_by": [
+      "src.lever_runner.http_api._rate_limit",
+      "src.lever_runner.http_api.do_GET",
+      "src.lever_runner.http_api.do_POST"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_rate_limit",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 141,
+    "line_end": 151,
+    "signature": "def _rate_limit(self) -> bool",
+    "docstring": "Apply per-IP rate limit. Returns False if the request should be\nrejected (and already sent a 429 response).",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "bool",
+    "calls": [
+      "str",
+      "allow",
+      "_send",
+      "time",
+      "int"
+    ],
+    "called_by": [
+      "src.lever_runner.http_api.do_GET",
+      "src.lever_runner.http_api.do_POST"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_read_body",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 153,
+    "line_end": 162,
+    "signature": "def _read_body(self, max_bytes) -> bytes",
+    "docstring": "Read the request body, enforcing a size limit. Returns empty\nbytes if the content-length is missing or exceeds the limit.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "max_bytes"
+    ],
+    "arg_types": {
+      "max_bytes": "int"
+    },
+    "return_type": "bytes",
+    "calls": [
+      "get",
+      "read",
+      "int"
+    ],
+    "called_by": [
+      "src.lever_runner.http_api.do_POST"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_check_token",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 164,
+    "line_end": 173,
+    "signature": "def _check_token(self) -> bool",
+    "docstring": "Return True if the request is authorized (no token configured\nor bearer token matches). If this returns False, the caller must\nstill send the 401 \u2014 we just check.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "bool",
+    "calls": [
+      "strip",
+      "lower",
+      "startswith",
+      "get",
+      "split"
+    ],
+    "called_by": [
+      "src.lever_runner.http_api.do_GET",
+      "src.lever_runner.http_api.do_POST"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_serve_file",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 175,
+    "line_end": 203,
+    "signature": "def _serve_file(self, rel_path) -> None",
+    "docstring": "Serve a static file from the web/ directory.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "rel_path"
+    ],
+    "arg_types": {
+      "rel_path": "str"
+    },
+    "return_type": "None",
+    "calls": [
+      "getsize",
+      "startswith",
+      "str",
+      "write",
+      "send_header",
+      "read",
+      "dirname",
+      "send_response",
+      "splitext",
+      "join",
+      "end_headers",
+      "isfile",
+      "get",
+      "lstrip",
+      "normpath",
+      "abspath",
+      "open"
+    ],
+    "called_by": [
+      "src.lever_runner.http_api.do_GET"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "do_GET",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 205,
+    "line_end": 253,
+    "signature": "def do_GET(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "urlparse",
+      "sorted",
+      "_serve_file",
+      "_check_token",
+      "parse_qs",
+      "list",
+      "len",
+      "open_table",
+      "_send",
+      "cleanup",
+      "round",
+      "connect",
+      "time",
+      "_rate_limit",
+      "list_tables",
+      "count_rows",
+      "status",
+      "_chat_id_from",
+      "list_commands"
+    ],
+    "called_by": [
+      "tests.smoke.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "do_POST",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 255,
+    "line_end": 301,
+    "signature": "def do_POST(self)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "strip",
+      "teach",
+      "_rate_limit",
+      "_send",
+      "loads",
+      "do",
+      "urlparse",
+      "cleanup",
+      "_check_token",
+      "_read_body",
+      "get",
+      "int",
+      "_chat_id_from",
+      "parse_qs"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "log_message",
+    "module": "src.lever_runner.http_api",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/http_api.py",
+    "line_start": 303,
+    "line_end": 304,
+    "signature": "def log_message(self, format)",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "format"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_new_session",
+    "module": "src.lever_runner.executor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/executor.py",
+    "line_start": 63,
+    "line_end": 68,
+    "signature": "def _new_session() -> Path",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "Path",
+    "calls": [
+      "mkdir",
+      "uuid4"
+    ],
+    "called_by": [
+      "src.lever_runner.executor.run_command"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_sandbox_env",
+    "module": "src.lever_runner.executor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/executor.py",
+    "line_start": 71,
+    "line_end": 80,
+    "signature": "def _sandbox_env() -> dict[str, str]",
+    "docstring": "Build a minimal environment with only whitelisted variables.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "dict[str, str]",
+    "calls": [],
+    "called_by": [
+      "src.lever_runner.executor.run_command"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_set_resource_limits",
+    "module": "src.lever_runner.executor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/executor.py",
+    "line_start": 83,
+    "line_end": 97,
+    "signature": "def _set_resource_limits() -> None",
+    "docstring": "Apply RLIMIT_CPU and RLIMIT_AS to the child process (called via preexec_fn).",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "setrlimit"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_validate_command",
+    "module": "src.lever_runner.executor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/executor.py",
+    "line_start": 100,
+    "line_end": 114,
+    "signature": "def _validate_command(command) -> str | None",
+    "docstring": "Check a command string for shell-injection metacharacters.\n\nReturns an error message if validation fails, or None if the command\nlooks safe. We split the command on whitespace and check each token\n(after the first, which is the program name) against a safe-character\nwhitelist.",
+    "decorators": [],
+    "arg_names": [
+      "command"
+    ],
+    "arg_types": {
+      "command": "str"
+    },
+    "return_type": "str | None",
+    "calls": [
+      "match",
+      "split",
+      "search"
+    ],
+    "called_by": [
+      "src.lever_runner.executor.run_command"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "run_command",
+    "module": "src.lever_runner.executor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/executor.py",
+    "line_start": 117,
+    "line_end": 197,
+    "signature": "def run_command(command) -> RunResult",
+    "docstring": "Execute a shell command string in a fresh sandbox dir with\nrestricted env, resource limits, and process-group kill on timeout.",
+    "decorators": [],
+    "arg_names": [
+      "command"
+    ],
+    "arg_types": {
+      "command": "str"
+    },
+    "return_type": "RunResult",
+    "calls": [
+      "str",
+      "RunResult",
+      "_validate_command",
+      "Popen",
+      "_sandbox_env",
+      "communicate",
+      "killpg",
+      "kill",
+      "rmtree",
+      "time",
+      "_new_session",
+      "warning"
+    ],
+    "called_by": [
+      "src.lever_runner.orchestrator.do"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "main",
+    "module": "src.lever_runner.__main__",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/__main__.py",
+    "line_start": 11,
+    "line_end": 13,
+    "signature": "def main()",
+    "docstring": "Entry point for `lever-runner` console script.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_cli_main",
+      "SystemExit"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "_blake3_hex",
+    "module": "src.lever_runner.export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/export_nail.py",
+    "line_start": 46,
+    "line_end": 59,
+    "signature": "def _blake3_hex(data) -> str",
+    "docstring": "Compute a BLAKE3-compatible hash.\n\nFalls back to blake2b if the blake3 package is not installed.\nPincherOS uses BLAKE3, but for cross-compatibility we accept either.",
+    "decorators": [],
+    "arg_names": [
+      "data"
+    ],
+    "arg_types": {
+      "data": "bytes"
+    },
+    "return_type": "str",
+    "calls": [
+      "blake3",
+      "hexdigest",
+      "blake2b"
+    ],
+    "called_by": [
+      "tests.test_export_nail.test_blake3_hex_produces_hex_string",
+      "src.lever_runner.export_nail.export_nail"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "_reflexes_schema_sql",
+    "module": "src.lever_runner.export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/export_nail.py",
+    "line_start": 62,
+    "line_end": 75,
+    "signature": "def _reflexes_schema_sql() -> str",
+    "docstring": "Return the CREATE TABLE SQL matching pincherOS's reflexes table.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "str",
+    "calls": [],
+    "called_by": [
+      "src.lever_runner.export_nail._pack_rows_into_sqlite"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_pack_rows_into_sqlite",
+    "module": "src.lever_runner.export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/export_nail.py",
+    "line_start": 78,
+    "line_end": 148,
+    "signature": "def _pack_rows_into_sqlite(rows) -> bytes",
+    "docstring": "Create an in-memory SQLite DB with the pincherOS reflexes schema,\ninserting lever-runner command rows. Returns the raw DB bytes.",
+    "decorators": [],
+    "arg_names": [
+      "rows"
+    ],
+    "arg_types": {
+      "rows": "list[dict]"
+    },
+    "return_type": "bytes",
+    "calls": [
+      "float",
+      "unlink",
+      "pack",
+      "serialize",
+      "isoformat",
+      "get",
+      "now",
+      "len",
+      "close",
+      "read",
+      "isinstance",
+      "connect",
+      "hasattr",
+      "_clamp_confidence",
+      "commit",
+      "execute",
+      "_reflexes_schema_sql",
+      "mkstemp",
+      "open"
+    ],
+    "called_by": [
+      "tests.test_export_nail.test_pack_rows_creates_valid_db",
+      "tests.test_export_nail.test_pack_rows_empty",
+      "src.lever_runner.export_nail.export_nail"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "_clamp_confidence",
+    "module": "src.lever_runner.export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/export_nail.py",
+    "line_start": 151,
+    "line_end": 153,
+    "signature": "def _clamp_confidence(trust_score) -> float",
+    "docstring": "Convert lever-runner trust (0-100) to pincherOS confidence (0-1).",
+    "decorators": [],
+    "arg_names": [
+      "trust_score"
+    ],
+    "arg_types": {
+      "trust_score": "float"
+    },
+    "return_type": "float",
+    "calls": [
+      "max",
+      "min"
+    ],
+    "called_by": [
+      "tests.test_export_nail.test_clamp_confidence",
+      "src.lever_runner.export_nail._pack_rows_into_sqlite"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "_build_manifest",
+    "module": "src.lever_runner.export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/export_nail.py",
+    "line_start": 156,
+    "line_end": 173,
+    "signature": "def _build_manifest(reflex_count, checksums, source) -> dict[str, Any]",
+    "docstring": "Build a .nail manifest dict.",
+    "decorators": [],
+    "arg_names": [
+      "reflex_count",
+      "checksums",
+      "source"
+    ],
+    "arg_types": {
+      "reflex_count": "int",
+      "checksums": "dict[str, str]",
+      "source": "str"
+    },
+    "return_type": "dict[str, Any]",
+    "calls": [
+      "isoformat",
+      "now"
+    ],
+    "called_by": [
+      "tests.test_export_nail.test_build_manifest",
+      "src.lever_runner.export_nail.export_nail"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "_build_identity",
+    "module": "src.lever_runner.export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/export_nail.py",
+    "line_start": 176,
+    "line_end": 187,
+    "signature": "def _build_identity() -> dict[str, Any]",
+    "docstring": "Build a default identity.json for the nail archive.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "dict[str, Any]",
+    "calls": [
+      "isoformat",
+      "now"
+    ],
+    "called_by": [
+      "tests.test_export_nail.test_build_identity",
+      "src.lever_runner.export_nail.export_nail"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "_build_config",
+    "module": "src.lever_runner.export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/export_nail.py",
+    "line_start": 190,
+    "line_end": 201,
+    "signature": "def _build_config() -> str",
+    "docstring": "Build a default config.toml for the nail archive.",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "str",
+    "calls": [],
+    "called_by": [
+      "tests.test_export_nail.test_build_config",
+      "src.lever_runner.export_nail.export_nail"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "_get_all_rows",
+    "module": "src.lever_runner.export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/export_nail.py",
+    "line_start": 208,
+    "line_end": 212,
+    "signature": "def _get_all_rows(store) -> list[dict]",
+    "docstring": "Get all rows from the store, including embeddings.",
+    "decorators": [],
+    "arg_names": [
+      "store"
+    ],
+    "arg_types": {
+      "store": "CommandStore"
+    },
+    "return_type": "list[dict]",
+    "calls": [
+      "to_dict",
+      "to_pandas"
+    ],
+    "called_by": [
+      "src.lever_runner.export_nail.export_nail"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_filter_by_pack",
+    "module": "src.lever_runner.export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/export_nail.py",
+    "line_start": 215,
+    "line_end": 239,
+    "signature": "def _filter_by_pack(rows, pack_name) -> list[dict]",
+    "docstring": "Filter rows by matching against a skill pack file.\n\nPacks are JSONL files in the packs/ directory. We load the pack's\nintent phrases and filter rows to only those whose intent_phrase\nappears in the pack.",
+    "decorators": [],
+    "arg_names": [
+      "rows",
+      "pack_name"
+    ],
+    "arg_types": {
+      "rows": "list[dict]",
+      "pack_name": "str"
+    },
+    "return_type": "list[dict]",
+    "calls": [
+      "strip",
+      "startswith",
+      "exists",
+      "loads",
+      "Path",
+      "print",
+      "add",
+      "set",
+      "get",
+      "open"
+    ],
+    "called_by": [
+      "tests.test_export_nail.test_filter_by_existing_pack",
+      "src.lever_runner.export_nail.export_nail"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "export_nail",
+    "module": "src.lever_runner.export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/export_nail.py",
+    "line_start": 242,
+    "line_end": 322,
+    "signature": "def export_nail(output_path) -> dict[str, Any]",
+    "docstring": "Export lever-runner commands as a .nail file.\n\nReturns a summary dict with count and path.",
+    "decorators": [],
+    "arg_names": [
+      "output_path"
+    ],
+    "arg_types": {
+      "output_path": "str"
+    },
+    "return_type": "dict[str, Any]",
+    "calls": [
+      "_get_all_rows",
+      "mkdir",
+      "encode",
+      "pop",
+      "CommandStore",
+      "BytesIO",
+      "get",
+      "write_bytes",
+      "SystemExit",
+      "_build_identity",
+      "dumps",
+      "_filter_by_pack",
+      "len",
+      "print",
+      "_build_manifest",
+      "_add_bytes_to_tar",
+      "ZstdCompressor",
+      "Path",
+      "compress",
+      "str",
+      "_blake3_hex",
+      "_build_config",
+      "getvalue",
+      "_pack_rows_into_sqlite",
+      "open"
+    ],
+    "called_by": [
+      "tests.test_export_nail.test_export_creates_valid_nail",
+      "tests.test_export_nail.test_export_with_min_trust",
+      "tests.test_export_nail.test_export_no_embeddings",
+      "src.lever_runner.export_nail.main"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "_add_bytes_to_tar",
+    "module": "src.lever_runner.export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/export_nail.py",
+    "line_start": 325,
+    "line_end": 329,
+    "signature": "def _add_bytes_to_tar(tar, name, data) -> None",
+    "docstring": "Add bytes as a file to a tar archive.",
+    "decorators": [],
+    "arg_names": [
+      "tar",
+      "name",
+      "data"
+    ],
+    "arg_types": {
+      "tar": "tarfile.TarFile",
+      "name": "str",
+      "data": "bytes"
+    },
+    "return_type": "None",
+    "calls": [
+      "addfile",
+      "len",
+      "BytesIO",
+      "TarInfo"
+    ],
+    "called_by": [
+      "src.lever_runner.export_nail.export_nail"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "main",
+    "module": "src.lever_runner.export_nail",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/export_nail.py",
+    "line_start": 336,
+    "line_end": 356,
+    "signature": "def main() -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "parse_args",
+      "export_nail",
+      "print",
+      "ArgumentParser",
+      "add_argument"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "main",
+    "module": "src.lever_runner.benchmark",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/benchmark.py",
+    "line_start": 54,
+    "line_end": 118,
+    "signature": "def main() -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "build",
+      "count",
+      "sum",
+      "CommandStore",
+      "get",
+      "enumerate",
+      "len",
+      "dirname",
+      "print",
+      "connect",
+      "int",
+      "drop_table",
+      "do",
+      "getenv",
+      "list_tables",
+      "get_embedder",
+      "remove",
+      "insert",
+      "loads",
+      "append",
+      "mean",
+      "join",
+      "open"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "main",
+    "module": "src.lever_runner.seed_export",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/seed_export.py",
+    "line_start": 26,
+    "line_end": 67,
+    "signature": "def main() -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "write",
+      "parse_args",
+      "limit",
+      "print",
+      "CommandStore",
+      "search",
+      "ArgumentParser",
+      "dump",
+      "to_list",
+      "add_argument"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "_all_rows",
+    "module": "src.lever_runner.auto_promote",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/auto_promote.py",
+    "line_start": 39,
+    "line_end": 45,
+    "signature": "def _all_rows(table)",
+    "docstring": "Return every row as a list of dicts, dropping the schema seed.\nUses search().to_list() rather than to_pandas() to avoid the pandas\ndependency (lancedb's to_pandas() triggers a pyarrow pandas shim\nthat requires pandas to be importable).",
+    "decorators": [],
+    "arg_names": [
+      "table"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "to_list",
+      "limit",
+      "search"
+    ],
+    "called_by": [
+      "src.lever_runner.auto_promote.promote_winners",
+      "src.lever_runner.auto_promote.rewrite_losers"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "promote_winners",
+    "module": "src.lever_runner.auto_promote",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/auto_promote.py",
+    "line_start": 48,
+    "line_end": 60,
+    "signature": "def promote_winners(store) -> int",
+    "docstring": "Bump trust for commands that have been used a lot and are still below 90.",
+    "decorators": [],
+    "arg_names": [
+      "store"
+    ],
+    "arg_types": {
+      "store": "CommandStore"
+    },
+    "return_type": "int",
+    "calls": [
+      "_all_rows",
+      "update",
+      "min"
+    ],
+    "called_by": [
+      "tests.smoke.main",
+      "src.lever_runner.auto_promote.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "rewrite_with_remote_llm",
+    "module": "src.lever_runner.auto_promote",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/auto_promote.py",
+    "line_start": 63,
+    "line_end": 124,
+    "signature": "def rewrite_with_remote_llm(intent, old_command, failure_count) -> str | None",
+    "docstring": "Ask a remote LLM to propose a corrected command. Returns the command\nstring or None if no key is configured / call fails.",
+    "decorators": [],
+    "arg_names": [
+      "intent",
+      "old_command",
+      "failure_count"
+    ],
+    "arg_types": {
+      "intent": "str",
+      "old_command": "str",
+      "failure_count": "int"
+    },
+    "return_type": "str | None",
+    "calls": [
+      "strip",
+      "splitlines",
+      "endswith",
+      "rstrip",
+      "json",
+      "print",
+      "post",
+      "getenv",
+      "raise_for_status"
+    ],
+    "called_by": [
+      "src.lever_runner.auto_promote.rewrite_losers"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "rewrite_losers",
+    "module": "src.lever_runner.auto_promote",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/auto_promote.py",
+    "line_start": 127,
+    "line_end": 156,
+    "signature": "def rewrite_losers(store) -> int",
+    "docstring": "Find low-trust failing commands, ask the remote LLM to fix them,\ninsert the fix at trust=TRUST_REWRITTEN, soft-delete the old one.",
+    "decorators": [],
+    "arg_names": [
+      "store"
+    ],
+    "arg_types": {
+      "store": "CommandStore"
+    },
+    "return_type": "int",
+    "calls": [
+      "teach",
+      "len",
+      "_all_rows",
+      "print",
+      "rewrite_with_remote_llm",
+      "delete_command",
+      "getenv",
+      "int"
+    ],
+    "called_by": [
+      "tests.smoke.main",
+      "src.lever_runner.auto_promote.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_iter_chat_tables",
+    "module": "src.lever_runner.auto_promote",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/auto_promote.py",
+    "line_start": 159,
+    "line_end": 177,
+    "signature": "def _iter_chat_tables()",
+    "docstring": "Yield (chat_id, CommandStore) for every commands_* table in the DB.\n\nWith v0.2 per-chat isolation, a single global sweep no longer covers\nall chats. We discover tables at runtime by listing them in the\nLanceDB directory and instantiating a CommandStore for each. The\n'default' chat uses the legacy single-table name to preserve data\nacross upgrades (see store._migrate_legacy_table_if_needed).",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "startswith",
+      "len",
+      "Path",
+      "mkdir",
+      "sorted",
+      "list_tables",
+      "CommandStore",
+      "connect"
+    ],
+    "called_by": [
+      "src.lever_runner.auto_promote.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "main",
+    "module": "src.lever_runner.auto_promote",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/auto_promote.py",
+    "line_start": 180,
+    "line_end": 192,
+    "signature": "def main() -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "rewrite_losers",
+      "count",
+      "print",
+      "_iter_chat_tables",
+      "promote_winners"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "_iter_jsonl",
+    "module": "src.lever_runner.seed_import",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/seed_import.py",
+    "line_start": 33,
+    "line_end": 41,
+    "signature": "def _iter_jsonl(stream) -> Iterable[dict]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "stream"
+    ],
+    "arg_types": {},
+    "return_type": "Iterable[dict]",
+    "calls": [
+      "enumerate",
+      "strip",
+      "startswith",
+      "loads",
+      "print"
+    ],
+    "called_by": [
+      "src.lever_runner.seed_import.main"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "main",
+    "module": "src.lever_runner.seed_import",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/seed_import.py",
+    "line_start": 44,
+    "line_end": 103,
+    "signature": "def main() -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "float",
+      "teach",
+      "_iter_jsonl",
+      "CommandStore",
+      "search",
+      "get",
+      "add_argument",
+      "list",
+      "len",
+      "print",
+      "set",
+      "to_list",
+      "strip",
+      "drop_table",
+      "limit",
+      "list_tables",
+      "add",
+      "parse_args",
+      "ArgumentParser",
+      "open"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "do",
+    "module": "src.lever_runner.orchestrator",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/orchestrator.py",
+    "line_start": 38,
+    "line_end": 177,
+    "signature": "def do(user_request) -> DoResult",
+    "docstring": "End-to-end: extract intent + args \u2192 embed \u2192 find best \u2192 substitute \u2192 optionally run.\n\nchat_id scopes the store to a per-chat table. Defaults to \"default\"\nfor CLI usage. The Telegram bot passes str(update.effective_chat.id).",
+    "decorators": [],
+    "arg_names": [
+      "user_request"
+    ],
+    "arg_types": {
+      "user_request": "str"
+    },
+    "return_type": "DoResult",
+    "calls": [
+      "extract_intent",
+      "log_embed",
+      "float",
+      "find_best",
+      "run_command",
+      "min",
+      "log_intent",
+      "update_trust",
+      "substitute_args",
+      "getenv",
+      "get_placeholders",
+      "join",
+      "CommandStore",
+      "DoResult",
+      "has_placeholders"
+    ],
+    "called_by": [
+      "tests.test_params.test_template_command_with_args",
+      "tests.test_params.test_template_command_without_args_fails",
+      "tests.test_params.test_non_template_command_unchanged",
+      "tests.test_params.test_template_with_invalid_arg_rejected",
+      "tests.smoke.main",
+      "src.lever_runner.cli.main",
+      "src.lever_runner.http_api.do_POST",
+      "src.lever_runner.benchmark.main"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "teach",
+    "module": "src.lever_runner.orchestrator",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/orchestrator.py",
+    "line_start": 180,
+    "line_end": 198,
+    "signature": "def teach(intent_phrase, command) -> str",
+    "docstring": "Insert a new command. ``trust`` overrides the default new-command\ntrust (TRUST_NEW_COMMAND, normally 50). Useful for \"I know this is\na good command, start it higher\" or \"this came from a less-trusted\nsource, start it lower\".\n\nSupports parameterized commands with {{param}} placeholders in both\nthe intent phrase and the command, e.g.:\n    teach(\"show logs for {{container}}\", \"docker logs --tail 100 {{container}}\")",
+    "decorators": [],
+    "arg_names": [
+      "intent_phrase",
+      "command"
+    ],
+    "arg_types": {
+      "intent_phrase": "str",
+      "command": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "teach",
+      "CommandStore"
+    ],
+    "called_by": [],
+    "has_tests": true
+  },
+  {
+    "name": "status",
+    "module": "src.lever_runner.orchestrator",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/orchestrator.py",
+    "line_start": 201,
+    "line_end": 203,
+    "signature": "def status(chat_id) -> dict",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "chat_id"
+    ],
+    "arg_types": {
+      "chat_id": "str"
+    },
+    "return_type": "dict",
+    "calls": [
+      "count",
+      "CommandStore"
+    ],
+    "called_by": [
+      "src.lever_runner.cli.main",
+      "src.lever_runner.http_api.do_GET"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "list_commands",
+    "module": "src.lever_runner.orchestrator",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/orchestrator.py",
+    "line_start": 206,
+    "line_end": 224,
+    "signature": "def list_commands(chat_id) -> dict",
+    "docstring": "List commands in the table, sorted by trust desc. Returns a dict\nwith `commands` (list of dicts) and `total` (unfiltered count).",
+    "decorators": [],
+    "arg_names": [
+      "chat_id"
+    ],
+    "arg_types": {
+      "chat_id": "str"
+    },
+    "return_type": "dict",
+    "calls": [
+      "list_all",
+      "count",
+      "CommandStore"
+    ],
+    "called_by": [
+      "tests.smoke.main",
+      "src.lever_runner.http_api.do_GET"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "total_tokens",
+    "module": "src.lever_runner.orchestrator",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/orchestrator.py",
+    "line_start": 34,
+    "line_end": 35,
+    "signature": "def total_tokens(self) -> int",
+    "docstring": null,
+    "decorators": [
+      "property"
+    ],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_format_do",
+    "module": "src.lever_runner.bot",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/bot.py",
+    "line_start": 56,
+    "line_end": 83,
+    "signature": "def _format_do(result) -> str",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "result"
+    ],
+    "arg_types": {},
+    "return_type": "str",
+    "calls": [
+      "append",
+      "join",
+      "strip",
+      "len"
+    ],
+    "called_by": [
+      "tests.test_bot.test_format_do_basic_success",
+      "tests.test_bot.test_format_do_failed_command",
+      "tests.test_bot.test_format_do_no_match",
+      "tests.test_bot.test_format_do_error_without_match",
+      "tests.test_bot.test_format_do_no_run",
+      "tests.test_bot.test_format_do_stdout_truncation",
+      "tests.test_bot.test_format_do_stderr_truncation",
+      "tests.test_bot.test_format_do_empty_stdout_stderr"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "_is_authorized",
+    "module": "src.lever_runner.bot",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/bot.py",
+    "line_start": 91,
+    "line_end": 104,
+    "signature": "def _is_authorized(update) -> bool",
+    "docstring": "True if the message is from the allowed user (or no allowlist set).\n\nWhen ALLOWED_USER_ID is unset, the bot responds to anyone \u2014 useful for\ntesting. Set it in .env to a Telegram numeric user ID to lock down.",
+    "decorators": [],
+    "arg_names": [
+      "update"
+    ],
+    "arg_types": {
+      "update": "Update"
+    },
+    "return_type": "bool",
+    "calls": [
+      "str"
+    ],
+    "called_by": [
+      "tests.test_bot.test_authorized_when_allowlist_empty",
+      "tests.test_bot.test_authorized_when_allowlist_matches",
+      "tests.test_bot.test_authorized_when_allowlist_does_not_match",
+      "tests.test_bot.test_authorized_handles_none_user",
+      "tests.smoke.main"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "main",
+    "module": "src.lever_runner.bot",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/bot.py",
+    "line_start": 329,
+    "line_end": 345,
+    "signature": "def main() -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "CommandHandler",
+      "token",
+      "build",
+      "add_handler",
+      "MessageHandler",
+      "info",
+      "builder",
+      "SystemExit",
+      "run_polling"
+    ],
+    "called_by": [
+      "tests.test_bot.test_main_raises_without_token",
+      "tests.test_bot.test_main_starts_with_token",
+      "tests.test_bot.test_main_registers_handlers"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "_timeout_sec",
+    "module": "src.lever_runner.intent_extractor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/intent_extractor.py",
+    "line_start": 31,
+    "line_end": 33,
+    "signature": "def _timeout_sec() -> float",
+    "docstring": "Return the current LLM timeout from env (dynamic so tests can override at runtime).",
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": "float",
+    "calls": [
+      "float",
+      "getenv"
+    ],
+    "called_by": [
+      "src.lever_runner.intent_extractor._post_minimax_or_openai",
+      "src.lever_runner.intent_extractor._post_ollama"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_is_retryable_http_error",
+    "module": "src.lever_runner.intent_extractor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/intent_extractor.py",
+    "line_start": 49,
+    "line_end": 52,
+    "signature": "def _is_retryable_http_error(e) -> bool",
+    "docstring": "True if the error's status code is a transient provider issue.",
+    "decorators": [],
+    "arg_names": [
+      "e"
+    ],
+    "arg_types": {
+      "e": "requests.exceptions.HTTPError"
+    },
+    "return_type": "bool",
+    "calls": [
+      "getattr"
+    ],
+    "called_by": [
+      "tests.smoke.main",
+      "src.lever_runner.intent_extractor.extract"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_parse_args",
+    "module": "src.lever_runner.intent_extractor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/intent_extractor.py",
+    "line_start": 118,
+    "line_end": 129,
+    "signature": "def _parse_args(raw) -> dict[str, str]",
+    "docstring": "Parse key=value pairs from LLM output. Returns an empty dict if none found.",
+    "decorators": [],
+    "arg_names": [
+      "raw"
+    ],
+    "arg_types": {
+      "raw": "str"
+    },
+    "return_type": "dict[str, str]",
+    "calls": [
+      "strip",
+      "splitlines",
+      "isidentifier",
+      "partition"
+    ],
+    "called_by": [
+      "tests.test_params.test_single_arg",
+      "tests.test_params.test_multiple_args",
+      "tests.test_params.test_no_equals",
+      "tests.test_params.test_with_spaces",
+      "tests.test_params.test_invalid_key_rejected",
+      "tests.test_params.test_empty_value_rejected",
+      "src.lever_runner.intent_extractor._normalize"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "_approx_tokens",
+    "module": "src.lever_runner.intent_extractor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/intent_extractor.py",
+    "line_start": 137,
+    "line_end": 139,
+    "signature": "def _approx_tokens(text) -> int",
+    "docstring": "Crude but consistent: ~1 token per 4 chars of English.",
+    "decorators": [],
+    "arg_names": [
+      "text"
+    ],
+    "arg_types": {
+      "text": "str"
+    },
+    "return_type": "int",
+    "calls": [
+      "max",
+      "len"
+    ],
+    "called_by": [
+      "src.lever_runner.intent_extractor._try_one_backend",
+      "src.lever_runner.intent_extractor.extract"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_post_minimax_or_openai",
+    "module": "src.lever_runner.intent_extractor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/intent_extractor.py",
+    "line_start": 142,
+    "line_end": 206,
+    "signature": "def _post_minimax_or_openai(base_url, api_key, model, system, user) -> str",
+    "docstring": "Call any Anthropic-compatible or OpenAI-compatible chat endpoint.",
+    "decorators": [],
+    "arg_names": [
+      "base_url",
+      "api_key",
+      "model",
+      "system",
+      "user"
+    ],
+    "arg_types": {
+      "base_url": "str",
+      "api_key": "str",
+      "model": "str",
+      "system": "str",
+      "user": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "strip",
+      "str",
+      "endswith",
+      "rstrip",
+      "json",
+      "_timeout_sec",
+      "isinstance",
+      "post",
+      "get",
+      "ValueError",
+      "raise_for_status"
+    ],
+    "called_by": [
+      "src.lever_runner.intent_extractor._try_one_backend"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_post_ollama",
+    "module": "src.lever_runner.intent_extractor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/intent_extractor.py",
+    "line_start": 209,
+    "line_end": 228,
+    "signature": "def _post_ollama(host, model, system, user) -> str",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "host",
+      "model",
+      "system",
+      "user"
+    ],
+    "arg_types": {
+      "host": "str",
+      "model": "str",
+      "system": "str",
+      "user": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "strip",
+      "rstrip",
+      "json",
+      "_timeout_sec",
+      "post",
+      "raise_for_status"
+    ],
+    "called_by": [
+      "src.lever_runner.intent_extractor._try_one_backend"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_normalize",
+    "module": "src.lever_runner.intent_extractor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/intent_extractor.py",
+    "line_start": 231,
+    "line_end": 250,
+    "signature": "def _normalize(raw) -> tuple[str, dict[str, str]]",
+    "docstring": "Tighten the LLM output to a clean phrase and extract key=value args.\n\nThe LLM outputs the intent phrase on the first line, optionally\nfollowed by key=value argument lines.\n\nReturns (phrase, args).",
+    "decorators": [],
+    "arg_names": [
+      "raw"
+    ],
+    "arg_types": {
+      "raw": "str"
+    },
+    "return_type": "tuple[str, dict[str, str]]",
+    "calls": [
+      "strip",
+      "lower",
+      "splitlines",
+      "sub",
+      "len",
+      "join",
+      "_parse_args",
+      "split"
+    ],
+    "called_by": [
+      "tests.test_params.test_empty_input",
+      "tests.test_params.test_phrase_only",
+      "tests.test_params.test_phrase_with_args",
+      "tests.test_params.test_multiline_args",
+      "tests.test_params.test_strips_punctuation",
+      "tests.test_params.test_truncates_long_phrase",
+      "src.lever_runner.intent_extractor._passthrough_fallback",
+      "src.lever_runner.intent_extractor.extract"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "_resolve_api_key",
+    "module": "src.lever_runner.intent_extractor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/intent_extractor.py",
+    "line_start": 258,
+    "line_end": 271,
+    "signature": "def _resolve_api_key(backend, explicit) -> tuple[str, list[str]]",
+    "docstring": "Return (api_key, key_env_list) for the given backend.",
+    "decorators": [],
+    "arg_names": [
+      "backend",
+      "explicit"
+    ],
+    "arg_types": {
+      "backend": "str",
+      "explicit": "str | None"
+    },
+    "return_type": "tuple[str, list[str]]",
+    "calls": [
+      "strip",
+      "get",
+      "getenv",
+      "split"
+    ],
+    "called_by": [
+      "src.lever_runner.intent_extractor._try_one_backend"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_try_one_backend",
+    "module": "src.lever_runner.intent_extractor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/intent_extractor.py",
+    "line_start": 281,
+    "line_end": 320,
+    "signature": "def _try_one_backend(backend, system, user) -> _CallResult",
+    "docstring": "Make one LLM call to one backend. Returns the raw response text\nplus estimated input tokens. Raises on any HTTP / connection error.",
+    "decorators": [],
+    "arg_names": [
+      "backend",
+      "system",
+      "user"
+    ],
+    "arg_types": {
+      "backend": "str",
+      "system": "str",
+      "user": "str"
+    },
+    "return_type": "_CallResult",
+    "calls": [
+      "lower",
+      "RuntimeError",
+      "_CallResult",
+      "_resolve_api_key",
+      "_post_ollama",
+      "getenv",
+      "_post_minimax_or_openai",
+      "ValueError",
+      "_approx_tokens",
+      "upper",
+      "sorted",
+      "join",
+      "get",
+      "keys"
+    ],
+    "called_by": [
+      "src.lever_runner.intent_extractor.extract"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_passthrough_fallback",
+    "module": "src.lever_runner.intent_extractor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/intent_extractor.py",
+    "line_start": 323,
+    "line_end": 332,
+    "signature": "def _passthrough_fallback(user_request) -> Extraction",
+    "docstring": "Final fallback: the user's raw request is the intent phrase.",
+    "decorators": [],
+    "arg_names": [
+      "user_request"
+    ],
+    "arg_types": {
+      "user_request": "str"
+    },
+    "return_type": "Extraction",
+    "calls": [
+      "Extraction",
+      "_normalize"
+    ],
+    "called_by": [
+      "src.lever_runner.intent_extractor.extract"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_resolve_fallback_chain",
+    "module": "src.lever_runner.intent_extractor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/intent_extractor.py",
+    "line_start": 335,
+    "line_end": 349,
+    "signature": "def _resolve_fallback_chain(primary) -> list[str]",
+    "docstring": "Read LLM_FALLBACKS and return a list of fallback backends.",
+    "decorators": [],
+    "arg_names": [
+      "primary"
+    ],
+    "arg_types": {
+      "primary": "str"
+    },
+    "return_type": "list[str]",
+    "calls": [
+      "strip",
+      "lower",
+      "append",
+      "getenv",
+      "set",
+      "keys",
+      "split",
+      "warning"
+    ],
+    "called_by": [
+      "tests.smoke.main",
+      "src.lever_runner.intent_extractor.extract"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "extract",
+    "module": "src.lever_runner.intent_extractor",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/intent_extractor.py",
+    "line_start": 352,
+    "line_end": 435,
+    "signature": "def extract(user_request) -> Extraction",
+    "docstring": "Return a clean intent phrase, extracted args, plus token accounting.\n\nCalls the primary LLM_BACKEND first; on a retryable error (timeout,\nconnection refused, 429, 5xx) it tries each entry in LLM_FALLBACKS\nin order. The last entry is always 'passthrough' so a complete\nprovider outage degrades to using the raw user request as the\nintent (rather than hanging or 5xxing the user).",
+    "decorators": [],
+    "arg_names": [
+      "user_request"
+    ],
+    "arg_types": {
+      "user_request": "str"
+    },
+    "return_type": "Extraction",
+    "calls": [
+      "strip",
+      "lower",
+      "enumerate",
+      "Extraction",
+      "len",
+      "getattr",
+      "_normalize",
+      "error",
+      "_is_retryable_http_error",
+      "_resolve_fallback_chain",
+      "getenv",
+      "_approx_tokens",
+      "_try_one_backend",
+      "info",
+      "_passthrough_fallback",
+      "warning"
+    ],
+    "called_by": [
+      "tests.test_params.test_passthrough_extracts_phrase",
+      "tests.test_params.test_passthrough_empty_request",
+      "tests.smoke.main"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "_table_name_for",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 46,
+    "line_end": 58,
+    "signature": "def _table_name_for(chat_id) -> str",
+    "docstring": "Return a safe LanceDB table name for the given chat id.\n\nThe legacy single-table layout used the bare name 'commands' with\nno suffix, so we treat chat_id == 'default' (or the empty string)\nas a request for the legacy table to preserve data across upgrades.",
+    "decorators": [],
+    "arg_names": [
+      "chat_id"
+    ],
+    "arg_types": {
+      "chat_id": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "str",
+      "sub"
+    ],
+    "called_by": [
+      "src.lever_runner.store.__init__"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_migrate_legacy_table_if_needed",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 61,
+    "line_end": 81,
+    "signature": "def _migrate_legacy_table_if_needed(db) -> None",
+    "docstring": "If a v0.1.x 'commands' table exists with real data and no\n'commands_default' table yet, rename it. Idempotent.",
+    "decorators": [],
+    "arg_names": [
+      "db"
+    ],
+    "arg_types": {
+      "db": "lancedb.DBConnection"
+    },
+    "return_type": "None",
+    "calls": [
+      "open_table",
+      "drop_table",
+      "limit",
+      "create_table",
+      "list_tables",
+      "set",
+      "search",
+      "to_list"
+    ],
+    "called_by": [
+      "src.lever_runner.store.__init__"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "_get_embedder",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 96,
+    "line_end": 99,
+    "signature": "def _get_embedder()",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "SentenceTransformer"
+    ],
+    "called_by": [
+      "src.lever_runner.store.embedder"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "has_placeholders",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 343,
+    "line_end": 345,
+    "signature": "def has_placeholders(text) -> bool",
+    "docstring": "True if the text contains {{param}} placeholders.",
+    "decorators": [],
+    "arg_names": [
+      "text"
+    ],
+    "arg_types": {
+      "text": "str"
+    },
+    "return_type": "bool",
+    "calls": [
+      "bool",
+      "search"
+    ],
+    "called_by": [
+      "tests.test_params.test_simple_placeholder",
+      "tests.test_params.test_multiple_placeholders",
+      "tests.test_params.test_empty_string",
+      "tests.test_params.test_partial_braces",
+      "tests.test_params.test_command_with_placeholder",
+      "src.lever_runner.orchestrator.do"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "get_placeholders",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 348,
+    "line_end": 350,
+    "signature": "def get_placeholders(text) -> list[str]",
+    "docstring": "Return a list of unique placeholder names in order of appearance.",
+    "decorators": [],
+    "arg_names": [
+      "text"
+    ],
+    "arg_types": {
+      "text": "str"
+    },
+    "return_type": "list[str]",
+    "calls": [
+      "list",
+      "fromkeys",
+      "findall"
+    ],
+    "called_by": [
+      "tests.test_params.test_single_placeholder",
+      "tests.test_params.test_multiple_unique",
+      "tests.test_params.test_duplicate_placeholder",
+      "tests.test_params.test_order_preserved",
+      "src.lever_runner.orchestrator.do",
+      "src.lever_runner.store.substitute_args"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "strip_placeholders",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 353,
+    "line_end": 359,
+    "signature": "def strip_placeholders(text) -> str",
+    "docstring": "Remove {{param}} placeholders for embedding/matching purposes.\n\nThis produces a clean phrase suitable for embedding without the\ntemplate syntax, e.g. \"show logs for {{container}}\" \u2192 \"show logs for\".",
+    "decorators": [],
+    "arg_names": [
+      "text"
+    ],
+    "arg_types": {
+      "text": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "strip",
+      "sub"
+    ],
+    "called_by": [
+      "tests.test_params.test_no_placeholders",
+      "tests.test_params.test_strip_single",
+      "tests.test_params.test_strip_multiple",
+      "tests.test_params.test_only_placeholder",
+      "src.lever_runner.store.find_best",
+      "src.lever_runner.store.teach"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "validate_arg",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 362,
+    "line_end": 375,
+    "signature": "def validate_arg(name, value) -> str",
+    "docstring": "Validate a single argument value. Only allows alphanumeric, dash,\nunderscore, and dot. Returns the value if valid, raises ValueError otherwise.\n\nThis prevents shell injection through parameterized commands.",
+    "decorators": [],
+    "arg_names": [
+      "name",
+      "value"
+    ],
+    "arg_types": {
+      "name": "str",
+      "value": "str"
+    },
+    "return_type": "str",
+    "calls": [
+      "match",
+      "ValueError"
+    ],
+    "called_by": [
+      "tests.test_params.test_alphanumeric",
+      "tests.test_params.test_with_dashes",
+      "tests.test_params.test_with_underscores",
+      "tests.test_params.test_with_dots",
+      "tests.test_params.test_with_numbers",
+      "tests.test_params.test_complex_name",
+      "tests.test_params.test_reject_semicolon",
+      "tests.test_params.test_reject_pipe",
+      "tests.test_params.test_reject_backticks",
+      "tests.test_params.test_reject_dollar_sign",
+      "tests.test_params.test_reject_ampersand",
+      "tests.test_params.test_reject_spaces",
+      "tests.test_params.test_reject_empty",
+      "tests.test_params.test_reject_redirect",
+      "src.lever_runner.store.substitute_args"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "substitute_args",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 378,
+    "line_end": 395,
+    "signature": "def substitute_args(template, args) -> str",
+    "docstring": "Substitute {{param}} placeholders in a template with validated args.\n\nAll placeholders in the template must have a corresponding arg value.\nAll arg values are validated against the safe-character set.\n\nReturns the substituted string.",
+    "decorators": [],
+    "arg_names": [
+      "template",
+      "args"
+    ],
+    "arg_types": {
+      "template": "str",
+      "args": "dict[str, str]"
+    },
+    "return_type": "str",
+    "calls": [
+      "items",
+      "get_placeholders",
+      "join",
+      "ValueError",
+      "validate_arg",
+      "replace"
+    ],
+    "called_by": [
+      "tests.test_params.test_arg_in_middle",
+      "tests.test_params.test_missing_arg_raises",
+      "tests.test_params.test_invalid_arg_raises",
+      "tests.test_params.test_no_placeholders_no_args",
+      "tests.test_params.test_extra_args_ignored",
+      "src.lever_runner.orchestrator.do"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "__init__",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 112,
+    "line_end": 157,
+    "signature": "def __init__(self, chat_id) -> None",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "chat_id"
+    ],
+    "arg_types": {
+      "chat_id": "str"
+    },
+    "return_type": "None",
+    "calls": [
+      "float",
+      "str",
+      "_seed_from_init_db",
+      "open_table",
+      "Path",
+      "Lock",
+      "_table_name_for",
+      "mkdir",
+      "_migrate_legacy_table_if_needed",
+      "create_table",
+      "timedelta",
+      "getenv",
+      "list_tables",
+      "connect"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_seed_from_init_db",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 159,
+    "line_end": 188,
+    "signature": "def _seed_from_init_db(self) -> None",
+    "docstring": "Bulk-import SEED_COMMANDS into this chat's table.\n\nCalled once per chat, on first construction. Encodes all intent\nphrases in a single batch for speed (~0.5s for 66 phrases vs\n~3s one-at-a-time).",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "None",
+    "calls": [
+      "str",
+      "uuid4",
+      "zip",
+      "append",
+      "tolist",
+      "encode",
+      "add"
+    ],
+    "called_by": [
+      "src.lever_runner.store.__init__"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "embedder",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 191,
+    "line_end": 194,
+    "signature": "def embedder(self)",
+    "docstring": null,
+    "decorators": [
+      "property"
+    ],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": null,
+    "calls": [
+      "_get_embedder"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "_embed",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 196,
+    "line_end": 198,
+    "signature": "def _embed(self, phrase) -> list[float]",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "phrase"
+    ],
+    "arg_types": {
+      "phrase": "str"
+    },
+    "return_type": "list[float]",
+    "calls": [
+      "tolist",
+      "encode"
+    ],
+    "called_by": [
+      "src.lever_runner.store.find_best",
+      "src.lever_runner.store.teach"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "count",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 200,
+    "line_end": 203,
+    "signature": "def count(self) -> int",
+    "docstring": null,
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "int",
+    "calls": [
+      "len",
+      "limit",
+      "search",
+      "count_rows",
+      "to_list",
+      "where"
+    ],
+    "called_by": [
+      "tests.smoke.main",
+      "src.lever_runner.doctor.check_smoke",
+      "src.lever_runner.benchmark.main",
+      "src.lever_runner.auto_promote.main",
+      "src.lever_runner.orchestrator.status",
+      "src.lever_runner.orchestrator.list_commands"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "list_all",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 205,
+    "line_end": 230,
+    "signature": "def list_all(self) -> list[dict]",
+    "docstring": "Return up to `limit` commands, skipping soft-deleted rows and the\nschema seed. `min_trust` filters out low-trust entries. Sorted by\n`trust_score` descending so the most-trusted commands come first.\n\n`offset` is implemented as a Python-side slice because lancedb's\n.to_pandas() / .search() pagination semantics vary by version; the\ntables we're listing from are O(hundreds) rows so this is fine.",
+    "decorators": [],
+    "arg_names": [
+      "self"
+    ],
+    "arg_types": {},
+    "return_type": "list[dict]",
+    "calls": [
+      "sort_values",
+      "max",
+      "to_dict",
+      "to_pandas"
+    ],
+    "called_by": [
+      "tests.smoke.main",
+      "src.lever_runner.orchestrator.list_commands"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "get_by_id",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 232,
+    "line_end": 238,
+    "signature": "def get_by_id(self, row_id) -> dict | None",
+    "docstring": "Return one row by id, or None. Includes all metadata fields.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "row_id"
+    ],
+    "arg_types": {
+      "row_id": "str"
+    },
+    "return_type": "dict | None",
+    "calls": [
+      "to_dict",
+      "to_pandas"
+    ],
+    "called_by": [],
+    "has_tests": false
+  },
+  {
+    "name": "find_best",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 240,
+    "line_end": 274,
+    "signature": "def find_best(self, intent_phrase, top_k) -> list[Match]",
+    "docstring": "Return top-k matches sorted by ascending L2 distance (best first),\ndropping the schema seed.\n\nFor template commands with {{param}} placeholders, the intent_phrase\ncolumn stores the template (e.g. \"show logs for {{container}}\"), but\nthe embedding is computed on the stripped version (\"show logs for\")\nso the search works correctly regardless of the actual argument value.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "intent_phrase",
+      "top_k"
+    ],
+    "arg_types": {
+      "intent_phrase": "str",
+      "top_k": "int"
+    },
+    "return_type": "list[Match]",
+    "calls": [
+      "float",
+      "Match",
+      "len",
+      "_embed",
+      "max",
+      "limit",
+      "append",
+      "strip_placeholders",
+      "sort",
+      "search",
+      "get",
+      "to_list"
+    ],
+    "called_by": [
+      "tests.smoke.main",
+      "src.lever_runner.orchestrator.do"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "teach",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 276,
+    "line_end": 295,
+    "signature": "def teach(self, intent_phrase, command, trust) -> str",
+    "docstring": "Insert a new command. Returns its id.\n\nFor parameterized commands (containing {{param}} placeholders),\nthe intent_phrase is stored as-is but the embedding is computed\nfrom the stripped version so matching works correctly.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "intent_phrase",
+      "command",
+      "trust"
+    ],
+    "arg_types": {
+      "intent_phrase": "str",
+      "command": "str",
+      "trust": "float | None"
+    },
+    "return_type": "str",
+    "calls": [
+      "strip",
+      "float",
+      "str",
+      "uuid4",
+      "_embed",
+      "strip_placeholders",
+      "add"
+    ],
+    "called_by": [
+      "tests.test_params.test_teach_stores_template",
+      "tests.test_params.test_teach_regular_command",
+      "tests.smoke.main",
+      "src.lever_runner.cli.main",
+      "src.lever_runner.http_api.do_POST",
+      "src.lever_runner.auto_promote.rewrite_losers",
+      "src.lever_runner.seed_import.main",
+      "src.lever_runner.orchestrator.teach"
+    ],
+    "has_tests": true
+  },
+  {
+    "name": "update_trust",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 297,
+    "line_end": 325,
+    "signature": "def update_trust(self, row_id) -> None",
+    "docstring": "Apply a small trust adjustment + bump the appropriate counter.\n\nUses a per-store lock to serialize concurrent updates to the same\nrow, preventing lost updates when two requests race on the same\ncommand (classic TOCTOU on the read-modify-write cycle).",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "row_id"
+    ],
+    "arg_types": {
+      "row_id": "str"
+    },
+    "return_type": "None",
+    "calls": [
+      "float",
+      "update",
+      "min",
+      "max",
+      "limit",
+      "search",
+      "to_list",
+      "where",
+      "int"
+    ],
+    "called_by": [
+      "src.lever_runner.orchestrator.do"
+    ],
+    "has_tests": false
+  },
+  {
+    "name": "delete_command",
+    "module": "src.lever_runner.store",
+    "file_path": "/home/phoenix/repos/lever-runner/src/lever_runner/store.py",
+    "line_start": 327,
+    "line_end": 329,
+    "signature": "def delete_command(self, row_id) -> None",
+    "docstring": "Permanently remove a command from the table by id.",
+    "decorators": [],
+    "arg_names": [
+      "self",
+      "row_id"
+    ],
+    "arg_types": {
+      "row_id": "str"
+    },
+    "return_type": "None",
+    "calls": [
+      "delete"
+    ],
+    "called_by": [
+      "tests.smoke.main",
+      "src.lever_runner.auto_promote.rewrite_losers"
+    ],
+    "has_tests": false
+  }
+]
