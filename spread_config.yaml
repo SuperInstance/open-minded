@@ -1,0 +1,23 @@
+# Where spreader state lives
+state_dir: ~/.open-mind/state/
+
+# How often to re-spread (seconds)
+spread_interval: 3600
+
+# Connected services
+lever_runner:
+  enabled: true
+  db_path: ~/.lever-runner/commands.db
+
+pincherOS:
+  enabled: true
+  nail_export_path: ~/.open-mind/exports/
+
+PLATO:
+  enabled: false  # future
+  room: default
+
+# Tripartite defaults
+defaults:
+  device_type: auto   # auto-detect via hardware_probe
+  preference: auto    # let synchronizer decide
