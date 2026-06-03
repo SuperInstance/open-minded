@@ -9,7 +9,7 @@ Quick start:
     spread(result, continuous=True)
 """
 
-from interpreter.induction.ingester import ingest, IngestResult, FunctionInfo, ClassInfo
+from interpreter.induction.ingester import ingest, ingest_repo, IngestResult, FunctionInfo, ClassInfo
 from interpreter.induction.vector_builder import VectorBuilder, DualVector
 from interpreter.induction.synchronizer import Synchronizer, SyncDecision, Decision, HardwareProfile
 from interpreter.induction.spreader import Spreader
@@ -18,7 +18,7 @@ from interpreter.induction.export_nail import export_nail, export_nail_batch
 from interpreter.induction.hardware_probe import probe_hardware, HardwareCapabilities
 
 __all__ = [
-    "ingest", "IngestResult", "FunctionInfo", "ClassInfo",
+    "ingest", "ingest_repo", "IngestResult", "FunctionInfo", "ClassInfo",
     "VectorBuilder", "DualVector",
     "Synchronizer", "SyncDecision", "Decision", "HardwareProfile",
     "Spreader",

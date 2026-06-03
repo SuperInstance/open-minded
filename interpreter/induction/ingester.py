@@ -28,6 +28,24 @@ try:
 except ImportError:
     git = None
 
+# Multi-language support (lazy-loaded)
+HAS_TREE_SITTER = None  # None = not checked yet
+_ts_parse_file = None
+_detect_language = None
+
+
+def _ensure_tree_sitter():
+    global HAS_TREE_SITTER, _ts_parse_file, _detect_language
+    if HAS_TREE_SITTER is None:
+        try:
+            from interpreter.induction.multi_lang_parser import parse_file, detect_language
+            _ts_parse_file = parse_file
+            _detect_language = detect_language
+            HAS_TREE_SITTER = True
+        except (ImportError, Exception):
+            HAS_TREE_SITTER = False
+    return HAS_TREE_SITTER
+
 
 @dataclass
 class FunctionInfo:
@@ -319,6 +337,13 @@ def _mark_tested_functions(functions: list[FunctionInfo], test_files: list[str],
             func.has_tests = True
 
 
+def _supported_extensions():
+    """File extensions we can parse."""
+    if _ensure_tree_sitter():
+        return {".py", ".rs", ".c", ".h", ".cpp", ".hpp", ".cc", ".js", ".ts"}
+    return {".py"}
+
+
 def ingest(repo_url: str, target_dir: Optional[str] = None, cleanup: bool = False) -> IngestResult:
     """Ingest a GitHub repo into structured knowledge.
 
@@ -332,36 +357,74 @@ def ingest(repo_url: str, target_dir: Optional[str] = None, cleanup: bool = Fals
     """
     # Clone
     local_path = _clone_repo(repo_url, target_dir)
+    return _ingest_local(local_path, repo_url=repo_url, cleanup=cleanup)
 
-    # Discover Python files
+
+def ingest_repo(local_path: str, cleanup: bool = False) -> IngestResult:
+    """Ingest a local repo directory into structured knowledge.
+
+    Args:
+        local_path: Path to the local repository
+        cleanup: Whether to remove the repo after ingestion
+
+    Returns:
+        IngestResult with all extracted data
+    """
+    return _ingest_local(local_path, repo_url=local_path, cleanup=cleanup)
+
+
+def _ingest_local(local_path: str, repo_url: str, cleanup: bool = False) -> IngestResult:
+    """Core ingestion logic for a local directory."""
     all_functions = []
     all_classes = []
     test_files = []
+    supported = _supported_extensions()
+
+    # Track language stats
+    lang_stats = {}
 
     for dirpath, dirnames, filenames in os.walk(local_path):
         dirnames[:] = [
             d
             for d in dirnames
             if not d.startswith(".")
-            and d not in ("__pycache__", "node_modules", ".git", "venv", ".venv")
+            and d not in ("__pycache__", "node_modules", ".git", "venv", ".venv",
+                          "target", "build", "cmake-build-*", "out")
         ]
 
         for filename in filenames:
-            if not filename.endswith(".py"):
+            ext = os.path.splitext(filename)[1].lower()
+            if ext not in supported:
                 continue
 
             file_path = os.path.join(dirpath, filename)
             rel_path = os.path.relpath(file_path, local_path)
 
             # Module prefix from file path
-            module = rel_path.replace(os.sep, ".").removesuffix(".py")
+            module = rel_path.replace(os.sep, ".")
+            for suffix in (".py", ".rs", ".c", ".h", ".cpp", ".hpp", ".cc", ".js", ".ts"):
+                module = module.removesuffix(suffix)
             if module.endswith(".__init__"):
                 module = module.removesuffix(".__init__")
 
-            if _is_test_file(rel_path):
+            # Track language
+            lang = _detect_language(file_path) if _ensure_tree_sitter() else ("python" if ext == ".py" else None)
+            if lang:
+                lang_stats[lang] = lang_stats.get(lang, 0) + 1
+
+            if ext == ".py" and _is_test_file(rel_path):
+                test_files.append(rel_path)
+            elif ext == ".rs" and ("test" in rel_path.lower() or filename.startswith("test_")):
                 test_files.append(rel_path)
 
-            funcs, cls_list = _parse_python_file(file_path, module)
+            # Parse based on language
+            if _ensure_tree_sitter():
+                funcs, cls_list = _ts_parse_file(file_path, module)
+            elif ext == ".py":
+                funcs, cls_list = _parse_python_file(file_path, module)
+            else:
+                continue
+
             all_functions.extend(funcs)
             all_classes.extend(cls_list)
 
@@ -394,6 +457,9 @@ def ingest(repo_url: str, target_dir: Optional[str] = None, cleanup: bool = Fals
                 for f in files
                 if f.endswith(".py")
             ),
+            "function_count": len(all_functions),
+            "class_count": len(all_classes),
+            "languages": lang_stats,
         },
     )
 
