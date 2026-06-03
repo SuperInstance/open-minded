@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "open-interpreter"
+name = "open-mind"
 packages = [
     {include = "interpreter"},
 ]

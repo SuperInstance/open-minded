@@ -1,7 +1,9 @@
 import argparse
+import json
 import subprocess
 import os
 import platform
+import time
 import pkg_resources
 import appdirs
 from ..utils.display_markdown_message import display_markdown_message
@@ -85,7 +87,23 @@ arguments = [
 
 def cli(interpreter):
 
-    parser = argparse.ArgumentParser(description="Open Interpreter")
+    parser = argparse.ArgumentParser(description="open-mind")
+    subparsers = parser.add_subparsers(dest="command")
+
+    # Induction subcommands
+    induce_parser = subparsers.add_parser("induce", help="Ingest a GitHub repo and build vector models")
+    induce_parser.add_argument("repo_url", help="GitHub repository URL")
+    induce_parser.add_argument("--target-dir", help="Local directory to clone into", default=None)
+    induce_parser.add_argument("--cleanup", action="store_true", help="Remove cloned repo after ingestion")
+    induce_parser.add_argument("--verbose", "-v", action="store_true", help="Print detailed results")
+
+    spread_parser = subparsers.add_parser("spread", help="Start continuous spreading on a repo")
+    spread_parser.add_argument("repo_url", help="GitHub repository URL")
+    spread_parser.add_argument("--passes", type=int, default=5, help="Number of spreading passes (default: 5)")
+    spread_parser.add_argument("--target-dir", help="Local directory to clone into", default=None)
+
+    status_parser = subparsers.add_parser("inspector", help="Show induction state")
+    status_parser.add_argument("--repo", help="Repo URL to inspect", default=None)
 
     # Add arguments
     for arg in arguments:
@@ -165,4 +183,97 @@ def cli(interpreter):
         interpreter.model = "gpt-3.5-turbo"
         print("`interpreter --fast` is depracated and will be removed in the next version. Please use `interpreter --model gpt-3.5-turbo`")
 
+    # Handle induction subcommands
+    if args.command == "induce":
+        _handle_induce(args)
+        return
+    elif args.command == "spread":
+        _handle_spread(args)
+        return
+    elif args.command == "inspector":
+        _handle_inspector(args)
+        return
+
     interpreter.chat()
+
+
+def _handle_induce(args):
+    """Handle the `interpreter induce` subcommand."""
+    from interpreter.induction import ingest as do_ingest
+
+    print(f"\n🧠 Inducing: {args.repo_url}")
+    print("   Ingesting repository...")
+
+    result = do_ingest(args.repo_url, target_dir=args.target_dir, cleanup=args.cleanup)
+
+    print(f"\n✅ Ingestion complete!")
+    print(f"   Functions: {result.stats['total_functions']}")
+    print(f"   Classes: {result.stats['total_classes']}")
+    print(f"   Test files: {result.stats['test_files']}")
+    print(f"   Tested functions: {result.stats['tested_functions']}")
+    print(f"   Python files: {result.stats['python_files']}")
+
+    if args.verbose:
+        print(f"\n   Call graph entries: {len(result.call_graph)}")
+        print(f"   Top-level modules:")
+        for key in sorted(result.file_structure.keys())[:10]:
+            print(f"     {key}/ ({len(result.file_structure[key])} files)")
+
+
+def _handle_spread(args):
+    """Handle the `interpreter spread` subcommand."""
+    from interpreter.induction import Spreader
+
+    print(f"\n🔄 Spreading: {args.repo_url}")
+    print(f"   Running {args.passes} passes...")
+
+    spreader = Spreader(args.repo_url, target_dir=args.target_dir)
+
+    for i in range(1, args.passes + 1):
+        print(f"\n   Pass {i}/{args.passes}...", end=" ")
+        spreader._run_pass(i)
+        spreader.state.current_pass = i
+        spreader.state.last_pass_at = time.time()
+        spreader._save_state()
+        phase = spreader.state.phase.value
+        print(f"[{phase}]")
+
+    status = spreader.status()
+    print(f"\n✅ Spreading complete!")
+    print(f"   Phase: {status['phase']}")
+    print(f"   Hot paths: {status['hot_paths']}")
+    if status.get('decisions'):
+        for decision, count in status['decisions'].items():
+            print(f"   {decision}: {count} functions")
+
+
+def _handle_inspector(args):
+    """Handle the `interpreter inspector` subcommand."""
+    import glob
+
+    state_dir = os.path.expanduser("~/.open-mind/spreader")
+
+    if args.repo:
+        safe_name = args.repo.replace("/", "_").replace(":", "_")
+        state_file = os.path.join(state_dir, f"{safe_name}.json")
+        if not os.path.exists(state_file):
+            print(f"No state found for {args.repo}")
+            return
+        with open(state_file) as f:
+            data = json.load(f)
+        print(f"\n📊 Inspector: {args.repo}")
+        for key, value in data.items():
+            print(f"   {key}: {value}")
+    else:
+        # List all known repos
+        state_files = glob.glob(os.path.join(state_dir, "*.json"))
+        if not state_files:
+            print("No induction state found. Run `interpreter induce <repo_url>` first.")
+            return
+        print("\n📊 Known repos:")
+        for sf in state_files:
+            with open(sf) as f:
+                data = json.load(f)
+            phase = data.get("phase", "unknown")
+            passes = f"{data.get('current_pass', 0)}/{data.get('total_passes', 0)}"
+            print(f"   {data.get('repo_url', os.path.basename(sf))} [{phase}] pass {passes}")

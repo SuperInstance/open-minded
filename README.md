@@ -1,18 +1,12 @@
-<h1 align="center">● Open Interpreter</h1>
+<h1 align="center">● open-mind</h1>
 
 <p align="center">
-    <a href="https://discord.gg/6p3fD6rBVm">
-        <img alt="Discord" src="https://img.shields.io/discord/1146610656779440188?logo=discord&style=flat&logoColor=white"/>
-    </a>
-    <a href="README_JA.md"><img src="https://img.shields.io/badge/ドキュメント-日本語-white.svg" alt="JA doc"/></a>
-    <a href="README_ZH.md"><img src="https://img.shields.io/badge/文档-中文版-white.svg" alt="ZH doc"/></a>
-    <a href="README_IN.md"><img src="https://img.shields.io/badge/Hindi-white.svg" alt="IN doc"/></a>
     <img src="https://img.shields.io/static/v1?label=license&message=MIT&color=white&style=flat" alt="License"/>
     <br>
     <br>
-    <b>Let language models run code on your computer.</b><br>
-    An open-source, locally running implementation of OpenAI's Code Interpreter.<br>
-    <br><a href="https://openinterpreter.com">Get early access to the desktop app</a>‎ ‎ |‎ ‎ <b><a href="https://docs.openinterpreter.com/">Read our new docs</a></b><br>
+    <b>A living, iterating version of any codebase.</b><br>
+    Based on Open Interpreter — extended with an induction engine that builds<br>
+    vector models of any GitHub repo for induction and deduction.<br>
 </p>
 
 <br>
@@ -287,9 +281,111 @@ Please see our [Contributing Guidelines](./CONTRIBUTING.md) for more details on 
 
 ## License
 
-Open Interpreter is licensed under the MIT License. You are permitted to use, copy, modify, distribute, sublicense and sell copies of the software.
+open-mind is licensed under the MIT License. You are permitted to use, copy, modify, distribute, sublicense and sell copies of the software.
 
-**Note**: This software is not affiliated with OpenAI.
+Based on [Open Interpreter](https://github.com/KillianLucas/open-interpreter) by Killian Lucas.
+
+---
+
+# 🧠 Induction Engine
+
+open-mind adds an **induction engine** to Open Interpreter — a system that takes any GitHub repo and creates a living, iterating version of it.
+
+## Concept
+
+Every function in a codebase has two sides to its inference:
+
+- **Input side**: What context triggers this function? Who calls it? What arguments does it expect?
+- **Output side**: What does this function produce? What does it call? What are its side effects?
+
+The induction engine builds **vector representations of both sides** for every function, enabling:
+
+- **Induction**: Given input context, find the function that handles it (search input vectors)
+- **Deduction**: Given a function, predict what it produces (search output vectors)
+- **Hybrid**: Chain input→output across functions to predict entire execution flows
+
+## The Tripartite Decision
+
+For each function, the synchronizer decides the best execution strategy based on three factors:
+
+| Factor | Questions |
+|--------|----------|
+| **Hardware** | GPU available? RAM? Edge device? Battery? |
+| **Application** | Latency required? Safety-critical? Creative output? |
+| **User** | Manual control? Speed vs quality? Power saving? |
+
+Decisions map to four strategies:
+
+- **HARDCODE** — Compiled/fast path (high safety, low latency)
+- **MODEL** — LLM inference (creative, flexible)
+- **HYBRID** — Cache + model fallback (balanced)
+- **CACHED** — Pre-computed, read-only (edge, low power)
+
+## The Spreader
+
+The continuous iteration engine runs in passes:
+
+1. **Ingest** — Clone, parse AST, extract functions/classes, build call graph
+2. **Vectorize** — Build dual-side vectors (input + output) for every function
+3. **Test** — Run tests, observe behaviors, refine output vectors
+4. **Analyze** — Identify hot paths, make tripartite decisions
+5. **Monitor** — Feed hardware readings back, refine continuously
+
+## CLI
+
+```bash
+# Ingest a repo and build initial vectors
+interpreter induce https://github.com/user/repo
+
+# Start continuous spreading (5 passes)
+interpreter spread https://github.com/user/repo
+
+# Check induction status
+interpreter inspector
+interpreter inspector --repo https://github.com/user/repo
+```
+
+## Python API
+
+```python
+from interpreter.induction import ingest, VectorBuilder, Spreader, Synchronizer, Decision
+
+# Ingest a repo
+result = ingest("https://github.com/user/repo")
+print(f"Found {result.stats['total_functions']} functions")
+
+# Build vectors
+builder = VectorBuilder()
+vectors = builder.build_all(result)
+
+# Search: "what function handles authentication?"
+matches = builder.search_input("handle authentication")
+
+# Make a tripartite decision
+sync = Synchronizer()
+decision = sync.decide(
+    hardware={"gpu": False, "ram_gb": 8},
+    application={"latency_ms": 100, "safety": 0.9},
+    user={"prefer_speed": True},
+)
+print(decision.decision)  # Decision.HARDCODE
+
+# Run the full spreader
+spreader = Spreader("https://github.com/user/repo")
+spreader.start(passes=5)
+print(spreader.status())
+```
+
+## Module Structure
+
+```
+interpreter/induction/
+├── __init__.py       — Public API
+├── ingester.py       — Clone + index a repo (AST, embeddings, docs, tests)
+├── vector_builder.py — Build vectors for input→output pairs of every function
+├── synchronizer.py   — Tripartite decision: hardcode, model, or hybrid
+└── spreader.py       — The continuous iteration engine
+```
 
 > Having access to a junior programmer working at the speed of your fingertips ... can make new workflows effortless and efficient, as well as open the benefits of programming to new audiences.
 >
