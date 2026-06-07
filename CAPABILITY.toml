@@ -1,0 +1,30 @@
+# CAPABILITY.toml — open-mind
+# Code analysis and induction engine with capability discovery.
+
+[capability]
+name = "open-mind"
+version = "0.1.7"
+description = "Code analysis induction engine with capability discovery, tripartite synchronization, and AST-based code understanding"
+
+[capability.capabilities]
+capability_discovery = "module: interpreter.induction — discovers and catalogs capabilities across codebases"
+induce_patterns = "fn induce(repo: Repository) -> PatternGraph — extracts structural patterns from code"
+tripartite_sync = "fn sync(local, remote, base) -> MergeResult — three-way synchronization of code models"
+ast_parse = "fn parse(code: str) -> AST — full AST parsing with semantic annotations"
+rag_query = "fn query(index: Index, question: str) -> Results — retrieval-augmented generation over code"
+code_interpret = "fn interpret(code: str, context: Context) -> Execution — safe code execution with analysis"
+
+[capability.exports]
+PatternGraph = "class — directed graph of discovered code patterns"
+InductionResult = "class { patterns, confidence, coverage }"
+MergeResult = "class { merged, conflicts, resolutions }"
+Context = "class { files, symbols, types, imports }"
+
+[capability.depends]
+depends = ["open-iterator", "open-terminal"]
+
+[capability.integrations]
+open-iterator = "Capability manifests scanned during code analysis induction"
+open-terminal = "Agent sessions use induction engine for code understanding"
+open-parallel = "Pattern induction parallelized across AST subtrees"
+open-application = "Capability loader uses discovery module for runtime binding"
