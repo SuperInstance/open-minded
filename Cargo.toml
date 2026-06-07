@@ -1,0 +1,12 @@
+[package]
+name = "open-mind-capability-discovery"
+version = "0.1.0"
+edition = "2021"
+description = "Capability discovery engine for open-mind — reads CAPABILITY.toml files and builds integration graphs"
+license = "MIT"
+
+[dependencies]
+toml = "0.8"
+
+[dev-dependencies]
+tempfile = "3"

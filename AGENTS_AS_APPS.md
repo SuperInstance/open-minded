@@ -1,138 +1,192 @@
-# Agents as Applications: open-mind
+# Agents as Applications: Open-Mind as the Agent Brain
 
-> The agent doesn't analyze your code. The agent *is* the code analysis application.
+## Vision
 
-## The Shift
+Open-mind is the **interpreter that knows your code**. In the agents-as-applications paradigm, open-mind becomes the cognitive engine that:
 
-Traditional code analysis tools are static: they parse once, report once, and sit idle until the next human command. **open-mind** breaks that model. The induction engine, tripartite synchronizer, and AST parser aren't features of an application — they *are* the agent's sensory organs. When an agent ingests a repository, it doesn't produce a report for a human to read. It produces a **living model** that becomes the agent's ongoing perception of the codebase.
+1. **Scans** repositories for `CAPABILITY.toml` manifests
+2. **Understands** what each SuperInstance crate does and how they connect
+3. **Suggests** integrations based on what's already present
+4. **Wires** crates together automatically
 
-The agent *is* the application. The code analysis doesn't happen *to* the agent. The agent *performs* the analysis as its native mode of existence.
-
-## CAPABILITY.toml Discovery
-
-SuperInstance Rust crates expose their integration surface through `CAPABILITY.toml` files — machine-readable capability manifests that agents discover automatically. Instead of hard-coding bindings, the agent reads the manifest, understands the crate's types and traits, and dynamically constructs the appropriate analysis pipeline.
-
-### Example CAPABILITY.toml
-
-```toml
-[capability]
-name = "conservation-law"
-version = "0.1.0"
-description = "Symplectic integration and Noether conservation for agent dynamics"
-
-[[integration_point]]
-name = "symplectic_integrator"
-trait = "SymplecticIntegrator"
-input = "AgentState<f64, N>"
-output = "Vec<AgentState<f64, N>>"
-complexity = "O(steps * N)"
-
-[[integration_point]]
-name = "noether_verification"
-trait = "Symmetry"
-input = "&dyn Symmetry<S, N>, trajectory: &[AgentState<S, N>]"
-output = "ChargeMonitor<S>"
-complexity = "O(steps * N)"
-
-[[integration_point]]
-name = "energy_budget"
-trait = "Lagrangian"
-input = "&AgentState<f64, N>"
-output = "f64"
-complexity = "O(N)"
-```
-
-### Agent-Driven Integration
-
-```python
-from interpreter.induction import ingest
-import tomllib
-import subprocess
-
-class AgentAsCodeAnalyzer:
-    def __init__(self, repo_url: str):
-        self.model = ingest(repo_url)
-        self.capabilities = self._discover_capabilities()
-
-    def _discover_capabilities(self) -> dict:
-        """Scan for CAPABILITY.toml files in known SuperInstance crates."""
-        caps = {}
-        for crate in ["conservation-law", "spectral-fleet", "t-minus",
-                      "categorical-agents", "ga-core", "wasserstein-agents"]:
-            try:
-                result = subprocess.run(
-                    ["cargo", "metadata", "--format-version", "1", "--manifest-path",
-                     f"{crate}/Cargo.toml"],
-                    capture_output=True, text=True, timeout=10
-                )
-                with open(f"{crate}/CAPABILITY.toml", "rb") as f:
-                    caps[crate] = tomllib.load(f)
-            except FileNotFoundError:
-                continue
-        return caps
-
-    def analyze_dynamics(self, function_name: str) -> dict:
-        """Use conservation-law to check if a function preserves invariants."""
-        func = self.model.functions[function_name]
-        # Map function's state mutations to AgentState transitions
-        states = self._extract_state_trajectory(func)
-
-        # The agent *becomes* the symplectic integrator
-        # by calling the Rust crate through FFI or subprocess
-        return self._invoke_capability(
-            "conservation-law",
-            "symplectic_integrator",
-            {"states": states, "mass": 1.0, "dt": 0.001}
-        )
-
-    def _invoke_capability(self, crate: str, point: str, params: dict) -> dict:
-        """Dynamically invoke a capability discovered from CAPABILITY.toml."""
-        cap = self.capabilities[crate]
-        integration = next(p for p in cap["integration_point"] if p["name"] == point)
-        # Agent constructs the call based on the manifest's input/output signatures
-        print(f"Agent invoking {integration['trait']} (complexity: {integration['complexity']})")
-        return {"trait": integration["trait"], "params": params}
-
-# The agent doesn't *use* open-mind. The agent *is* open-mind.
-analyzer = AgentAsCodeAnalyzer("https://github.com/your-org/your-repo")
-report = analyzer.analyze_dynamics("critical_loop")
-```
-
-## What This Enables
-
-**Self-tuning analysis depth.** The tripartite synchronizer reads `CAPABILITY.toml` complexity fields to decide HARDCODE vs CACHED vs MODEL. A symplectic integration with O(steps × N) complexity becomes a CACHED decision when N < 10, and a MODEL decision when energy drift exceeds tolerance.
-
-**Cross-crate reasoning.** The agent discovers that `spectral-fleet` provides `top_k_eigenpairs` with O(k × max_iter × nnz) complexity. It maps this onto a codebase's call-graph eigenvalue problem: which functions have the highest "influence" eigenvalue? The agent *is* the spectral clustering application.
-
-**Capability negotiation.** When two agents meet, they exchange `CAPABILITY.toml` manifests. Agent A discovers Agent B has `wasserstein-agents` with W₂ distance computation. They negotiate a transport plan for merging their codebase models without human intervention.
+This transforms open-mind from a generic code interpreter into a **self-integrating agent brain** — it reads the ecosystem, discovers capabilities, and composes them.
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────┐
-│           Agent (open-mind)             │
-│  ┌─────────┐  ┌─────────────────────┐  │
-│  │ Induct  │  │  CAPABILITY.toml    │  │
-│  │ Engine  │◄─┤  Discovery Scanner  │  │
-│  └────┬────┘  └─────────────────────┘  │
-│       │                                 │
-│  ┌────▼────┐  ┌─────────────────────┐  │
-│  │Tripartite│  │  Dynamic Capability │  │
-│  │  Sync   │◄─┤  Binder (FFI/JSON)  │  │
-│  └────┬────┘  └─────────────────────┘  │
-│       │                                 │
-│  ┌────▼─────────────────────────────┐  │
-│  │  Living Model = Application State │  │
-│  └──────────────────────────────────┘  │
-└─────────────────────────────────────────┘
+┌─────────────────────────────────────────────────┐
+│                  open-mind                       │
+│              (Agent Brain)                       │
+│                                                  │
+│  ┌──────────────────┐  ┌──────────────────────┐ │
+│  │ CapabilityScanner │  │  DependencyGraph     │ │
+│  │                  │  │                      │ │
+│  │ • scan_directory │→│  │ • topological_sort  │ │
+│  │ • parse_manifest │  │ • transitive_deps    │ │
+│  │ • find_integrations│  │ • dependents_of     │ │
+│  └──────────────────┘  └──────────────────────┘ │
+│           │                      │               │
+│           ▼                      ▼               │
+│  ┌─────────────────────────────────────────────┐ │
+│  │         Integration Suggestions             │ │
+│  │                                             │ │
+│  │  • Required deps first (priority 0)         │ │
+│  │  • Synergy matches next (priority 3)        │ │
+│  │  • Optional enhancements last (priority 5)  │ │
+│  └─────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────┘
+         │ reads                    │ writes
+         ▼                         ▼
+  ┌──────────────┐        ┌──────────────────┐
+  │ CAPABILITY   │        │ Cargo.toml       │
+  │ .toml files  │        │ (auto-updated)   │
+  └──────────────┘        └──────────────────┘
 ```
 
-The agent's memory *is* the application state. The induction engine's SQLite store isn't a cache — it's the agent's episodic memory. The tripartite synchronizer isn't a scheduler — it's the agent's prefrontal cortex, deciding where to spend cognition.
+## Workflow: Scan → Discover → Suggest → Wire
 
-## Next Steps
+### Step 1: Scan
 
-1. **CAPABILITY.toml validator** — A `cargo` subcommand that verifies capability manifests against actual `src/lib.rs` exports.
-2. **Agent capability market** — Agents publish their `CAPABILITY.toml` to a fleet registry; other agents subscribe to capabilities they need.
-3. **Conservation-aware ingestion** — Use `conservation-law` energy budgets to bound how much computation the agent spends on each function analysis.
-4. **Wasserstein model merging** — When two agents ingest the same repo, use `wasserstein-agents` to align their models and detect drift.
-5. **Spectral test prioritization** — Use `spectral-fleet` eigenvalue decomposition on the test dependency graph to rank which tests to run first.
+```python
+# The open-mind interpreter loads the capability scanner
+from capability_discovery import CapabilityScanner
+
+scanner = CapabilityScanner()
+manifests = scanner.scan_directory("/path/to/project")
+```
+
+The scanner walks the directory tree, skipping `target/`, `.git/`, `node_modules/`, and hidden directories. Every `CAPABILITY.toml` is parsed into a `CapabilityManifest`.
+
+### Step 2: Discover
+
+```python
+# Each manifest describes:
+# - What the crate does (description, category)
+# - What it needs (integrations with kind: required/optional)
+# - What it provides (exports: typed symbols)
+
+for m in manifests:
+    print(f"{m.name} v{m.version}: {m.description}")
+    for dep, spec in m.integrations.items():
+        print(f"  → {dep} ({spec.kind}): {spec.reason}")
+```
+
+### Step 3: Suggest
+
+```python
+# Given what you already have, what should you add?
+known = ["spectral-fleet", "conservation-law"]
+suggestions = scanner.find_integrations(known)
+
+for s in suggestions:
+    print(f"[P{s.priority}] Add {s.crate_name}: {s.reason}")
+    print(f"    Synergizes with: {', '.join(s.synergizes_with)}")
+```
+
+### Step 4: Wire
+
+```python
+# The agent brain takes the suggestions and modifies Cargo.toml,
+# adds use declarations, and generates integration boilerplate.
+
+graph = scanner.build_dependency_graph(manifests)
+order = graph.topological_sort()  # Install in dependency order
+
+for crate_name in order:
+    wire_into_project(crate_name)
+```
+
+## CAPABILITY.toml Format
+
+Every SuperInstance crate includes a `CAPABILITY.toml` in its root:
+
+```toml
+[capability]
+name = "spectral-fleet"
+version = "0.2.0"
+description = "Eigenvalue-based agent ranking"
+category = "analytics"
+
+[capability.integrations]
+fleet-warden = { kind = "optional", reason = "Feed fleet health into spectral ranking" }
+conservation-law = { kind = "required", reason = "Energy budgets constrain eigenvalue computation" }
+
+[capability.exports]
+eigenvalues = "Vec<f64>"
+rankings = "Vec<AgentRank>"
+```
+
+### Fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `name` | ✅ | Unique crate name |
+| `version` | ❌ | Semantic version (default: "0.0.0") |
+| `description` | ❌ | Human-readable summary |
+| `category` | ❌ | Tag: analytics, governance, physics, etc. |
+| `integrations` | ❌ | Map of crate name → IntegrationSpec |
+| `exports` | ❌ | Map of symbol name → type signature |
+
+### IntegrationSpec
+
+```toml
+# Full form
+fleet-warden = { kind = "optional", reason = "Why this integration exists" }
+
+# Shorthand (kind only)
+fleet-warden = "optional"
+```
+
+**Kinds:**
+- `required` — Must be present for this crate to function
+- `optional` — Enhances functionality when present
+- `conflicts` — Cannot coexist with this crate
+
+## SuperInstance Crate Ecosystem
+
+```
+                    fleet-warden
+                   ╱            ╲
+                  ╱              ╲
+    conservation-law ─── spectral-fleet
+              │                    │
+              │                    │
+        hodge-music          intention-field
+              │                    │
+              └────── room-topology
+                          │
+                      openrooms
+```
+
+## Integration with the Induction Engine
+
+Open-mind's existing induction engine can be extended to:
+
+1. **Induce from CAPABILITY.toml** — Learn crate patterns from manifest data
+2. **Auto-generate integration code** — Use induced patterns to write wiring code
+3. **Validate integrations** — Run the integration graph through the induction pipeline
+
+## Getting Started
+
+```bash
+# Clone the ecosystem
+git clone https://github.com/SuperInstance/open-mind
+cd open-mind
+
+# Run the capability scanner
+cargo test src/capability_discovery.rs
+
+# In Python, use the scanner via open-mind's interpreter
+python -m interpreter "scan ./my-project for capabilities and suggest integrations"
+```
+
+## The Agent IS the Brain
+
+The key insight: **the agent doesn't generate code to scan capabilities — it IS the scanner**. Open-mind with capability discovery becomes an agent that:
+
+- Understands its own ecosystem
+- Knows what capabilities exist and how they connect
+- Can reason about missing integrations
+- Auto-composes new agent configurations
+
+This is agents-as-applications: the agent is not a tool-user, it IS the application.
